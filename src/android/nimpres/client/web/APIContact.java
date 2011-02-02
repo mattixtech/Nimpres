@@ -45,5 +45,24 @@ public class APIContact {
 	}
 	public static void pushDPSToWeb(String login, String password, String fileName, String pesentationTitle, boolean passwordProtect){
 		
+		/*Posting file cod
+		 	File file = new File("path/to/your/file.txt");
+			try {
+			         HttpClient client = new DefaultHttpClient();  
+			         String postURL = "http://someposturl.com";
+			         HttpPost post = new HttpPost(postURL); 
+			     FileBody bin = new FileBody(file);
+			     MultipartEntity reqEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);  
+			     reqEntity.addPart("myFile", bin);
+			     post.setEntity(reqEntity);  
+			     HttpResponse response = client.execute(post);  
+			     HttpEntity resEntity = response.getEntity();  
+			     if (resEntity != null) {    
+			               Log.i("RESPONSE",EntityUtils.toString(resEntity));
+			         }
+			} catch (Exception e) {
+			    e.printStackTrace();
+			}
+		 */
 	}
 }
