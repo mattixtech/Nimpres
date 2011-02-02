@@ -34,6 +34,14 @@
 			return FALSE;
 		}
 		
+		/*Attempts to create a new login, returns TRUE if successfull, FALSE otherwise*/
+		static function create_new_login($id = '', $password = '', $key = ''){
+		//TODO
+			$mydb = new MySQLDatabase(DATABASE_ADDR,DATABASE_NAME,DATABASE_USER,DATABASE_PASSWORD);
+				if(GLOBAL_DEBUGGING)
+					$mydb -> debug_on();
+		}
+		
 		/*Member functions*/
 		/******************/
 	}
