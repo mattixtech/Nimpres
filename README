@@ -1,0 +1,22 @@
+Overview:
+==================
+
+Nimpres (Nimble Presenter)
+
+Nimpres is Android device hosted mobile presentation sharing software. The software allows for a slideshow to be hosted and controlled 
+on an Android tablet/phone and then viewed by one or more Android client devices on the LAN or over the Internet. Clients will
+remain synchronized with the slideshow host and advance to the next slide when told to do so by the presenter.
+
+
+Directory contents:
+===================
+
+cloud/server - Our webserver code, the api etc...
+cloud/client - Our webbrowser code, for client side scripts
+documentation - Some docs exmplaining how things work
+src - Our Android device client code
+
+License:
+===================
+
+See LICENSE file for details (MIT License).
