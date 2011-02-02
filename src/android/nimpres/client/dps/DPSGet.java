@@ -54,7 +54,7 @@ public class DPSGet {
 	 * @param fileName
 	 * @param folderToSave
 	 * @param ctx
-	 * @return
+	 * @return the folder name of the extracted dps
 	 */
 	public static String DownloadFromURL(String packageURL, String fileName,
 			String folderToSave, Context ctx) {

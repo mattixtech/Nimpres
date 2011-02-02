@@ -63,6 +63,7 @@ public class NimpresSettings {
     /*
      * Settings
      */
+    public static final String METAFILE_NAME = "meta-inf.xml";
 	public static final String PEER_BROADCAST_ADDRESS = "255.255.255.255";
 	
 	
