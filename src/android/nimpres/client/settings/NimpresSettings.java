@@ -24,5 +24,15 @@ public class NimpresSettings {
 	/*
      * Messages
      */
-	public static final String MSG_PRESENTATION_STATUS = "PS:";
+	
+	/*
+	 * UDP
+	 */
+	public static final String MSG_PRESENTATION_STATUS = "PS";
+	
+	/*
+	 * TCP
+	 */
+	public static final String MSG_REQUEST_FILE_TRANSFER = "REQ";
+	public static final String MSG_RESPONSE_FILE_TRANSFER = "RESP";
 }
