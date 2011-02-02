@@ -1,4 +1,4 @@
-package android.nimpres.client.wlan;
+package android.nimpres.client.lan;
 
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;

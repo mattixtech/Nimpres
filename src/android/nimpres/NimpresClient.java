@@ -1,8 +1,8 @@
 package android.nimpres;
 
 import android.app.Activity;
+import android.nimpres.client.lan.LANAdvertiser;
 import android.nimpres.client.presentation.Presentation;
-import android.nimpres.client.wlan.LANAdvertiser;
 import android.os.Bundle;
 
 
