@@ -52,6 +52,9 @@ public class NimpresClient extends Activity {
         //testLANAdvertising();
         //testLANListening();
         
+        //Exit the app after performing test
+        this.finish();
+        
     }
     
     
