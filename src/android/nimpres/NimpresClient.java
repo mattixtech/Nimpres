@@ -17,14 +17,19 @@ public class NimpresClient extends Activity {
         Context ctx = this.getApplicationContext();
         
         //Set to main view
-        setContentView(R.layout.main);
-        APIContact.validateLogin("Jordan", "testing");
+        setContentView(R.layout.main);        
+              
         /*If testing code please make a method below and call it here*/
+        testLoginAPI();
         //testLANAdvertising();
         //testLANListening();
         
     }
     
+    public static void testLoginAPI(){
+    	//Test login API
+    	APIContact.validateLogin("Jordan", "testing");
+    }
     //Testing the LAN advertising
     public static void testLANAdvertising(){
     	Presentation Pres = new Presentation();
