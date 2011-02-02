@@ -2,7 +2,6 @@ package android.nimpres;
 
 import android.app.Activity;
 import android.os.Bundle;
-//Matt
 
 
 public class NimpresClient extends Activity {
