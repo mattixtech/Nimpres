@@ -1,6 +1,9 @@
 package android.nimpres.client.lan;
+
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 /*This class provides static methods for manipulating messages*/
-import java.io.*;
+
 
 public class Message {
 
