@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<presentation>
+	<number_slides>4</number_slides>
+	<presentation_owner><![CDATA[matt@mattixtech.net]]></presentation_owner>
+	<presentation_title><![CDATA[Some people]]></presentation_title>
+	<presentation_timestamp>1296269077</pesentation_timestamp>
+	
+	<slides>
+		<slide number="1">
+			<file><![CDATA[Albert.jpg]]></file>
+			<title><![CDATA[Albert]]></title>
+			<notes><![CDATA[Blah Blah]]></notes>
+		</slide>
+		<slide number="2">
+			<file><![CDATA[Matt.jpg]]></file>
+			<title><![CDATA[Matt]]></title>
+			<notes><![CDATA[Blah Blah]]></notes>
+		</slide>
+		<slide number="3">
+			<file><![CDATA[Will.jpg]]></file>
+			<title><![CDATA[Will]]></title>
+			<notes><![CDATA[Blah Blah]]></notes>
+		</slide>
+		<slide number="4">
+			<file><![CDATA[Jordan.jpg]]></file>
+			<title><![CDATA[Jordan]]></title>
+			<notes><![CDATA[Blah Blah]]></notes>
+		</slide>
+	</slides>
+</presentation>
