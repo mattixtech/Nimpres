@@ -34,6 +34,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import android.nimpres.client.presentation.Presentation;
 import android.nimpres.client.presentation.Slide;
@@ -74,6 +75,22 @@ public class DPSReader {
 				presCreated.setOwner(owner);
 				
 				Slide[] slides = new Slide[numberSlides];
+				
+				NodeList slideElements = presElement.getElementsByTagName("slide");
+				
+				for(int i=0;i<slideElements.getLength();i++){
+					Element thisSlide = (Element) slideElements.item(i);
+					int thisSlideNumber = Integer.parseInt(thisSlide.getAttribute("number"));
+					Log.d("DPSReader","found slide #:"+thisSlideNumber);
+					String thisSlideTitle = thisSlide.getElementsByTagName("title").item(0).getTextContent();
+					Log.d("DPSReader","found slide title:"+thisSlideTitle);
+					String thisSlideFileComments = thisSlide.getElementsByTagName("file").item(0).getTextContent();
+					Log.d("DPSReader","found slide file:"+thisSlideFileComments);
+					String thisSlideNotes = thisSlide.getElementsByTagName("notes").item(0).getTextContent();
+					Log.d("DPSReader","found slide notes:"+thisSlideNotes);
+					
+					slides[thisSlideNumber-1] = new Slide(thisSlideFile,thisSlideNumber,thisSlideFileComments,thisSlideTitle);
+				}
 				
 				presCreated.setSlideFiles(slides);
 				
