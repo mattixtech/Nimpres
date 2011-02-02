@@ -147,7 +147,7 @@ public class DPSGet {
 					fileoutputstream.write(buf, 0, n);
 				fileoutputstream.close();
 				in.closeEntry();
-				ctx.deleteFile(fileName);
+				//ctx.deleteFile(fileName);
 			}
 			ret= dirToMake.toString();
 		} catch (Exception e) {

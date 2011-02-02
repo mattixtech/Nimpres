@@ -43,7 +43,7 @@ public class APIContact {
 	    }
 		return false;
 	}
-	public static void pushDPSToWeb(String login, String password, String pesentationTitle, boolean passwordProtect){
+	public static void pushDPSToWeb(String login, String password, String fileName, String pesentationTitle, boolean passwordProtect){
 		
 	}
 }
