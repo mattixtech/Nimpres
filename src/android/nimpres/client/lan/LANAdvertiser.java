@@ -40,7 +40,7 @@ public class LANAdvertiser implements Runnable{
                 if((thisTime-startTime) > (1000*NimpresSettings.HELLO_TIMER))
                 {
                     outputSocket.send(pkt);
-                    Log.d("LANAdvertiser:"," sent presentation status message");
+                    Log.d("LANAdvertiser"," sent presentation status message");
                     /*Loop through current list of all peers to make sure we have heard a HELLO from them recently*/
                     /*for(int i = 0;i<GBManager.numPeers();i++){
                         if((thisTime - GBManager.getPeerTime(GBManager.getPeerByIndex(i))) > 1000*GrabBoxProtocol.DEAD_TIMER){
@@ -52,12 +52,12 @@ public class LANAdvertiser implements Runnable{
                 }
             }
         }catch(Exception e){
-        	 Log.d("LANAdvertiser:"," Exception: "+e.toString());
+        	 Log.d("LANAdvertiser"," Exception: "+e.toString());
         }
 	}
 	
 	public static void initMessage(){
-		Log.d("LANAdvertiser:","init");
+		Log.d("LANAdvertiser","init");
 	}
 	
 	public boolean isStopped(){

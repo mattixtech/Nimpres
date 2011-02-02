@@ -3,6 +3,13 @@ package android.nimpres.client.settings;
 public class NimpresSettings {
 	
 	/*
+	 * API Addresses
+	 */
+	
+	public static final String NimpresAPIAddress = "http://droidshare.testing.mattixtec.net/";
+	public static final String API_Login_Address = "login.php";
+	
+	/*
      * Timers:
      */
     public static final double HELLO_TIMER = 1; //Send hello every X seconds
