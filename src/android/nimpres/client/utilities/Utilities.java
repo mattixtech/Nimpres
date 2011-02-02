@@ -26,11 +26,16 @@
  */
 package android.nimpres.client.utilities;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.Enumeration;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
+import android.content.Context;
 import android.util.Log;
 
 public class Utilities {
@@ -47,9 +52,69 @@ public class Utilities {
 	            }
 	        }
 	    } catch (SocketException ex) {
-	        Log.e("Exception:", ex.toString());
+	        Log.e("Utilities", ex.toString());
 	    }
 	    return null;
+	}
+	
+	/**
+	 * Deletes the requested directory and all files inside of it.
+	 * @param path
+	 * @return
+	 */
+	static public boolean deleteDirectory(File path) {
+		if (path.exists()) {
+			File[] files = path.listFiles();
+			for (int i = 0; i < files.length; i++) {
+				if (files[i].isDirectory()) {
+					deleteDirectory(files[i]);
+				} else {
+					files[i].delete();
+				}
+			}
+		}
+		return (path.delete());
+	}
+	
+	/**
+	 * Extracts a zipped file to the requested folder, first deleting the contents of the requested folder.
+	 * @param fileName
+	 * @param toFolder
+	 * @param ctx
+	 * @return
+	 */
+	static public String unzip(String fileName, String toFolder, Context ctx) {
+		String ret="";
+		try {
+			ZipInputStream in = null;
+			String zipPath = fileName;
+			in = new ZipInputStream(ctx.openFileInput(zipPath));
+			byte[] buf = new byte[1024];
+
+			File dirToMake = ctx.getDir(toFolder, Context.MODE_WORLD_WRITEABLE);
+			deleteDirectory(dirToMake);
+			dirToMake = ctx.getDir(toFolder, Context.MODE_WORLD_WRITEABLE);
+			Log.d("Utilities", "Dir to save to: " + dirToMake);
+
+			for (ZipEntry entry = in.getNextEntry(); entry != null; entry = in
+					.getNextEntry()) {
+				Log.d("Utilities", "Extracting: " + entry);
+				String entryName = entry.getName();
+				int n;
+				FileOutputStream fileoutputstream;
+				File newFile = new File(dirToMake, entryName);
+				fileoutputstream = new FileOutputStream(newFile);
+				while ((n = in.read(buf, 0, 1024)) > -1)
+					fileoutputstream.write(buf, 0, n);
+				fileoutputstream.close();
+				in.closeEntry();
+				//ctx.deleteFile(fileName);
+			}
+			ret= dirToMake.toString();
+		} catch (Exception e) {
+			
+		}
+		return ret;
 	}
 	
 }

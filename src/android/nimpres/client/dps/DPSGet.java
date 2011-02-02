@@ -27,7 +27,7 @@
 
 package android.nimpres.client.dps;
 
-/*Imports*/
+
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -36,13 +36,12 @@ import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.channels.FileChannel;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
 import org.apache.http.util.ByteArrayBuffer;
 import android.content.Context;
+import android.nimpres.client.utilities.Utilities;
 import android.os.Environment;
 import android.util.Log;
-/*********/
+
 
 /**
  * This class offers static methods for storing and extracting dsp packages
@@ -64,9 +63,9 @@ public class DPSGet {
 			/* Download the specified presentation off of the Internet */
 			/******************************************************/
 			URL url = new URL(packageURL);
-			Log.d("PresentationPackage", "download begining");
-			Log.d("PresentationPackage", "download url:" + url);
-			Log.d("PresentationPackage", "downloaded file");
+			Log.d("DPSGet", "download begining");
+			Log.d("DPSGet", "download url:" + url);
+			Log.d("DPSGet", "downloaded file");
 			URLConnection ucon = url.openConnection();
 			InputStream is = ucon.getInputStream();
 			BufferedInputStream bis = new BufferedInputStream(is);
@@ -84,10 +83,10 @@ public class DPSGet {
 			/******************************************************/
 			
 			/*Unzip package to requested folder and delete original file*/
-			ret = unzip(fileName, folderToSave, ctx);
+			ret = Utilities.unzip(fileName, folderToSave, ctx);
 
 		} catch (Exception e) {
-			Log.d("Error:", "Error: " + e);
+			Log.d("DPSGet", "Error: " + e);
 		}
 		return ret;
 	}
@@ -109,89 +108,33 @@ public class DPSGet {
 			/******************************************************/
 			File sd = Environment.getExternalStorageDirectory();
 			
-			Log.d("PresentationPackage", "checking SD card");
+			Log.d("DPSGet", "checking SD card");
 			if (sd.exists()) {
-				Log.d("PresentationPackage", "found SD card");
+				Log.d("DPSGet", "found SD card");
 				File toCopy = new File(sd, fileName);
 				
 				if (toCopy.exists()) {
-					Log.d("PresentationPackage", "found file");
+					Log.d("DPSGet", "found file");
 					FileChannel src = new FileInputStream(toCopy).getChannel();
 					FileChannel dst = ctx.openFileOutput(fileName, Context.MODE_PRIVATE).getChannel();
 					dst.transferFrom(src, 0, src.size());
 					src.close();
 					dst.close();
-					Log.d("PresentationPackage", "file copied to internal storage");
+					Log.d("DPSGet", "file copied to internal storage");
 				}
 			}
 			/******************************************************/
 			/*Unzip package to requested folder and delte original file*/
-			ret = unzip(fileName, folderToSave, ctx);
+			ret = Utilities.unzip(fileName, folderToSave, ctx);
 
 		} catch (Exception e) {
-			Log.d("Error:", "Error: " + e);
+			Log.d("DPSGet", "Error: " + e);
 		}
 		
 		return ret;
 	}
 	
-	/**
-	 * Extracts a zipped file to the requested folder, first deleting the contents of the requested folder.
-	 * @param fileName
-	 * @param toFolder
-	 * @param ctx
-	 * @return
-	 */
-	static public String unzip(String fileName, String toFolder, Context ctx) {
-		String ret="";
-		try {
-			ZipInputStream in = null;
-			String zipPath = fileName;
-			in = new ZipInputStream(ctx.openFileInput(zipPath));
-			byte[] buf = new byte[1024];
-
-			File dirToMake = ctx.getDir(toFolder, Context.MODE_WORLD_WRITEABLE);
-			deleteDirectory(dirToMake);
-			dirToMake = ctx.getDir(toFolder, Context.MODE_WORLD_WRITEABLE);
-			Log.d("PresentationPackage", "Dir to save to: " + dirToMake);
-
-			for (ZipEntry entry = in.getNextEntry(); entry != null; entry = in
-					.getNextEntry()) {
-				Log.d("PresentationPackage", "Extracting: " + entry);
-				String entryName = entry.getName();
-				int n;
-				FileOutputStream fileoutputstream;
-				File newFile = new File(dirToMake, entryName);
-				fileoutputstream = new FileOutputStream(newFile);
-				while ((n = in.read(buf, 0, 1024)) > -1)
-					fileoutputstream.write(buf, 0, n);
-				fileoutputstream.close();
-				in.closeEntry();
-				//ctx.deleteFile(fileName);
-			}
-			ret= dirToMake.toString();
-		} catch (Exception e) {
-			
-		}
-		return ret;
-	}
 	
-	/**
-	 * Deletes the requested directory and all files inside of it.
-	 * @param path
-	 * @return
-	 */
-	static public boolean deleteDirectory(File path) {
-		if (path.exists()) {
-			File[] files = path.listFiles();
-			for (int i = 0; i < files.length; i++) {
-				if (files[i].isDirectory()) {
-					deleteDirectory(files[i]);
-				} else {
-					files[i].delete();
-				}
-			}
-		}
-		return (path.delete());
-	}
+	
+	
 }
