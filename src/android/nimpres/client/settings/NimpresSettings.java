@@ -6,8 +6,8 @@ public class NimpresSettings {
 	 * API Addresses
 	 */
 	
-	public static final String NimpresAPIAddress = "http://droidshare.testing.mattixtec.net/";
-	public static final String API_Login_Address = "login.php";
+	public static final String NimpresAPIAddress = "http://droidshare.testing.mattixtech.net/";
+	public static final String API_Login_Address = "api/login.php";
 	
 	/*
      * Timers:

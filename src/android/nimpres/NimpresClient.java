@@ -5,6 +5,7 @@ import android.content.Context;
 import android.nimpres.client.lan.LANAdvertiser;
 import android.nimpres.client.lan.LANListener;
 import android.nimpres.client.presentation.Presentation;
+import android.nimpres.client.web.APIContact;
 import android.os.Bundle;
 
 
@@ -17,10 +18,10 @@ public class NimpresClient extends Activity {
         
         //Set to main view
         setContentView(R.layout.main);
-        
+        APIContact.validateLogin("Jordan", "testing");
         /*If testing code please make a method below and call it here*/
-        testLANAdvertising();
-        testLANListening();
+        //testLANAdvertising();
+        //testLANListening();
         
     }
     
