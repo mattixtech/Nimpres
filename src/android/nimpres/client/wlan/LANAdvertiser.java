@@ -48,11 +48,11 @@ public class LANAdvertiser implements Runnable{
                             GBManager.removePeer(GBManager.getPeerByIndex(i));                            
                         }              }*/      
                    
-                    startTime = System.currentTimeMillis();
+                    startTime = SystemClock.uptimeMillis();
                 }
             }
         }catch(Exception e){
-        	
+        	 Log.d("LANAdvertiser:"," Exception: "+e);
         }
 	}
 	

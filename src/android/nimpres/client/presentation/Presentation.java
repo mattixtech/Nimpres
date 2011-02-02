@@ -9,6 +9,10 @@ public class Presentation {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	public void setPresentationName(String name){
+		this.presentationName = name;
+	}
 
 	public int getCurrentSlide() {
 		// TODO Auto-generated method stub
