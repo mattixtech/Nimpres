@@ -33,7 +33,10 @@ public class APIContact {
 	            HttpEntity resEntity = responsePOST.getEntity();  
 	            if (resEntity != null) {    
 	                Log.d("APIContact"," API Response: "+EntityUtils.toString(resEntity));
-	                //Check here for valid response
+	              //Check here for valid response
+	                if(EntityUtils.toString(resEntity).equals("OK"))
+	                	return true;
+	                
 	            }
 	    } catch (Exception e) {
 	        e.printStackTrace();
