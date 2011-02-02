@@ -34,6 +34,7 @@ import android.nimpres.client.lan.LANListener;
 import android.nimpres.client.presentation.Presentation;
 import android.nimpres.client.web.APIContact;
 import android.os.Bundle;
+import android.util.Log;
 
 
 public class NimpresClient extends Activity {
@@ -82,7 +83,7 @@ public class NimpresClient extends Activity {
     }
     
     public static void testDPSDownload(Context ctx){
-    	String folder = DPSGet.DownloadFromURL("http://mattixtech.net/filex/test.dps", "test.dps", "testing_dps", ctx)
-    	Log.d("NimpresClient","downloaded dps to:"+folder)
+    	String folder = DPSGet.DownloadFromURL("http://mattixtech.net/filex/test.dps", "test.dps", "testing_dps", ctx);
+    	Log.d("NimpresClient","downloaded dps to:"+folder);
     }
 }
