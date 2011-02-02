@@ -14,6 +14,8 @@ public class NimpresClient extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+        //Use this object if you need to pass Context to something
         Context ctx = this.getApplicationContext();
         
         //Set to main view
