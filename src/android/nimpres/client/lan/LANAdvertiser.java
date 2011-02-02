@@ -52,7 +52,7 @@ public class LANAdvertiser implements Runnable{
                 }
             }
         }catch(Exception e){
-        	 Log.d("LANAdvertiser:"," Exception: "+e);
+        	 Log.d("LANAdvertiser:"," Exception: "+e.toString());
         }
 	}
 	
