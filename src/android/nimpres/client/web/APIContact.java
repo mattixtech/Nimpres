@@ -75,6 +75,7 @@ public class APIContact {
 	        UrlEncodedFormEntity ent = new UrlEncodedFormEntity(postParams,HTTP.UTF_8);
 	        post.setEntity(ent);
 	        //Send post and store result
+	        Log.d("APIContact","performing post to:"+apiAddress);
             HttpResponse responsePOST = client.execute(post);  
             resEntity = responsePOST.getEntity();
             if (resEntity != null) { 
@@ -97,9 +98,10 @@ public class APIContact {
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
 		params.add(new BasicNameValuePair("login", login));
         params.add(new BasicNameValuePair("password", password));
-        HttpEntity resEntity = apiPostRequest(getAPIAddress(NimpresSettings.API_LOGIN),params);
+        HttpEntity resEntity = apiPostRequest(NimpresSettings.API_LOGIN,params);
 		try{
 			result = EntityUtils.toString(resEntity);
+			Log.d("APIContact","post result:"+result);
 		}catch (Exception e) {
 	        e.printStackTrace();
 	    }
