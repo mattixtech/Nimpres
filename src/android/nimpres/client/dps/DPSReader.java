@@ -36,6 +36,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 import android.nimpres.client.presentation.Presentation;
+import android.nimpres.client.presentation.Slide;
 import android.nimpres.client.settings.NimpresSettings;
 import android.util.Log;
 
@@ -56,8 +57,26 @@ public class DPSReader {
 				doc.getDocumentElement().normalize();
 				Node presRootNode = doc.getElementsByTagName("presentation").item(0);
 				Element presElement = (Element) presRootNode;
-				int numberSlides = Integer.parseInt(presElement.getElementsByTagName("number_slides").item(0).getNodeValue());
-				Log.d("DPSReader","found number_slides:"+numberSlides);
+				int numberSlides = Integer.parseInt(presElement.getElementsByTagName("number_slides").item(0).getTextContent());
+					Log.d("DPSReader","found number_slides:"+numberSlides);
+				String title = presElement.getElementsByTagName("presentation_title").item(0).getTextContent();
+					Log.d("DPSReader","found presentation_title:"+title);
+				String owner = presElement.getElementsByTagName("presentation_owner").item(0).getTextContent();
+					Log.d("DPSReader","found presentation_owner:"+owner);
+				int timestamp = Integer.parseInt(presElement.getElementsByTagName("presentation_timestamp").item(0).getTextContent());
+					Log.d("DPSReader","found presentation_timestamp:"+timestamp);
+				
+				presCreated = new Presentation();
+				presCreated.setCurrentSlide(0);
+				presCreated.setNumSlides(numberSlides);
+				presCreated.setPresentationName(title);
+				presCreated.setTimestamp(timestamp);
+				presCreated.setOwner(owner);
+				
+				Slide[] slides = new Slide[numberSlides];
+				
+				presCreated.setSlideFiles(slides);
+				
 			}catch(Exception e){
 				Log.d("DPSReader","Exception:"+e);
 			}

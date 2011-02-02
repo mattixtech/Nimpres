@@ -29,6 +29,7 @@ package android.nimpres;
 import android.app.Activity;
 import android.content.Context;
 import android.nimpres.client.dps.DPSGet;
+import android.nimpres.client.dps.DPSReader;
 import android.nimpres.client.lan.LANAdvertiser;
 import android.nimpres.client.lan.LANListener;
 import android.nimpres.client.presentation.Presentation;
@@ -83,7 +84,8 @@ public class NimpresClient extends Activity {
     }
     
     public static void testDPSDownload(Context ctx){
-    	String folder = DPSGet.DownloadFromURL("http://mattixtech.net/filex/test.dps", "test.dps", "testing_dps", ctx);
+    	String folder = DPSGet.DownloadFromURL("http://mattixtech.net/filez/test.dps", "test.dps", "testing_dps", ctx);
     	Log.d("NimpresClient","downloaded dps to:"+folder);
+    	DPSReader.makePresentation(folder);
     }
 }
