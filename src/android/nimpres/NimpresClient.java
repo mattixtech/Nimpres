@@ -54,6 +54,11 @@ public class NimpresClient extends Activity {
         
     }
     
+    
+    
+    /*Testing methods*/
+    
+    
     public static void testLoginAPI(){
     	//Test login API
     	APIContact.validateLogin("Jordan", "testing");
