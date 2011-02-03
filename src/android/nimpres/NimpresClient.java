@@ -28,8 +28,8 @@ package android.nimpres;
 
 import android.app.Activity;
 import android.content.Context;
+import android.nimpres.client.dps.DPS;
 import android.nimpres.client.dps.DPSGet;
-import android.nimpres.client.dps.DPSReader;
 import android.nimpres.client.lan.LANAdvertiser;
 import android.nimpres.client.lan.LANListener;
 import android.nimpres.client.presentation.Presentation;
@@ -73,7 +73,7 @@ public class NimpresClient extends Activity {
     
     public static void testLANAdvertising(){
     	Presentation Pres = new Presentation();
-    	Pres.setPresentationName("Test");
+    	Pres.setTitle("Test");
         Thread LANAdvert = new Thread(new LANAdvertiser(Pres));
         LANAdvert.start();
     }
@@ -86,6 +86,8 @@ public class NimpresClient extends Activity {
     public static void testDPSDownload(Context ctx){
     	String folder = DPSGet.DownloadFromURL("http://mattixtech.net/filez/test.dps", "test.dps", "testing_dps", ctx);
     	Log.d("NimpresClient","downloaded dps to:"+folder);
-    	DPSReader.makePresentation(folder);
+    	DPS testDPS = new DPS(folder);
+    	Log.d("NimpresClient","DPS fully created");
+    	Log.d("NimpresClient","DPS presentation title:"+testDPS.getDpsPres().getTitle());
     }
 }

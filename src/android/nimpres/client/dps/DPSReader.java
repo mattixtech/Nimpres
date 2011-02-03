@@ -45,6 +45,11 @@ import android.util.Log;
 
 public class DPSReader {
 
+	/**
+	 * 
+	 * @param dpsPath
+	 * @return
+	 */
 	public static Presentation makePresentation(String dpsPath){
 		Presentation presCreated = null;
 		File metaFile = new File(dpsPath +File.separator+NimpresSettings.METAFILE_NAME);
@@ -70,7 +75,7 @@ public class DPSReader {
 				presCreated = new Presentation();
 				presCreated.setCurrentSlide(0);
 				presCreated.setNumSlides(numberSlides);
-				presCreated.setPresentationName(title);
+				presCreated.setTitle(title);
 				presCreated.setTimestamp(timestamp);
 				presCreated.setOwner(owner);
 				
@@ -84,16 +89,15 @@ public class DPSReader {
 					Log.d("DPSReader","found slide #:"+thisSlideNumber);
 					String thisSlideTitle = thisSlide.getElementsByTagName("title").item(0).getTextContent();
 					Log.d("DPSReader","found slide title:"+thisSlideTitle);
-					String thisSlideFileComments = thisSlide.getElementsByTagName("file").item(0).getTextContent();
-					Log.d("DPSReader","found slide file:"+thisSlideFileComments);
+					String thisSlideFile = thisSlide.getElementsByTagName("file").item(0).getTextContent();
+					Log.d("DPSReader","found slide file:"+thisSlideFile);
 					String thisSlideNotes = thisSlide.getElementsByTagName("notes").item(0).getTextContent();
 					Log.d("DPSReader","found slide notes:"+thisSlideNotes);
 					
-					slides[thisSlideNumber-1] = new Slide(thisSlideFile,thisSlideNumber,thisSlideFileComments,thisSlideTitle);
+					slides[thisSlideNumber-1] = new Slide(thisSlideFile,thisSlideNumber,thisSlideNotes,thisSlideTitle);
 				}
 				
-				presCreated.setSlideFiles(slides);
-				
+				presCreated.setSlideFiles(slides);				
 			}catch(Exception e){
 				Log.d("DPSReader","Exception:"+e);
 			}

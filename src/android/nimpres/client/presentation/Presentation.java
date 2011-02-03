@@ -27,9 +27,12 @@
 package android.nimpres.client.presentation;
 
 public class Presentation {
-	private String presentationName = "";
+	private String title = "";
 	private String owner = "";
 	private int timestamp = 0;
+	private int numSlides = 0;
+	private int currentSlide = 0;
+	private Slide[] slideFiles;
 	
 	/**
 	 * @return the owner
@@ -57,25 +60,20 @@ public class Presentation {
 	 */
 	public void setTimestamp(int timestamp) {
 		this.timestamp = timestamp;
-	}
-
-	private int numSlides = 0;
-	private int currentSlide = 0;
-	private Slide[] slideFiles;
-	
+	}	
 	
 	/**
 	 * @return the presentationName
 	 */
-	public String getPresentationName() {
-		return presentationName;
+	public String getTitle() {
+		return title;
 	}
 
 	/**
 	 * @param presentationName the presentationName to set
 	 */
-	public void setPresentationName(String presentationName) {
-		this.presentationName = presentationName;
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
 	/**

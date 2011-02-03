@@ -49,7 +49,7 @@ public class LANAdvertiser implements Runnable{
 	public void run(){
 		initMessage();
 		byte[] buff = new byte[1024];
-        buff = (NimpresSettings.MSG_PRESENTATION_STATUS+";"+Pres.getPresentationName()+";"+Pres.getCurrentSlide()).getBytes();
+        buff = (NimpresSettings.MSG_PRESENTATION_STATUS+";"+Pres.getTitle()+";"+Pres.getCurrentSlide()).getBytes();
         
         long startTime = SystemClock.uptimeMillis();
         long thisTime = 0;

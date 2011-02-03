@@ -32,10 +32,40 @@ import android.nimpres.client.presentation.Presentation;
 
 public class DPS {
 	private String dpsPath = "";
-	public Presentation dpsPres = null;
+	private Presentation dpsPres = null;
 	
 	public DPS(String dpsFolder){
 		dpsPath = dpsFolder;
 		dpsPres = DPSReader.makePresentation(dpsPath);
 	}
+
+	/**
+	 * @return the dpsPath
+	 */
+	public String getDpsPath() {
+		return dpsPath;
+	}
+
+	/**
+	 * @param dpsPath the dpsPath to set
+	 */
+	public void setDpsPath(String dpsPath) {
+		this.dpsPath = dpsPath;
+	}
+
+	/**
+	 * @return the dpsPres
+	 */
+	public Presentation getDpsPres() {
+		return dpsPres;
+	}
+
+	/**
+	 * @param dpsPres the dpsPres to set
+	 */
+	public void setDpsPres(Presentation dpsPres) {
+		this.dpsPres = dpsPres;
+	}
+	
+	
 }
