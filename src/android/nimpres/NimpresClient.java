@@ -63,6 +63,7 @@ public class NimpresClient extends Activity {
     
     
     
+    
     /*Testing methods*/
     
     
