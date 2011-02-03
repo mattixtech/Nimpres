@@ -57,8 +57,7 @@ public class NimpresClient extends Activity {
         testDPSDownload(ctx);
         
         //Exit the app after performing test
-        this.finish();
-        
+        this.finish();        
     }   
     
     /*Testing methods*/
