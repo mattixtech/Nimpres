@@ -59,10 +59,7 @@ public class NimpresClient extends Activity {
         //Exit the app after performing test
         this.finish();
         
-    }
-    
-    
-    
+    }   
     
     /*Testing methods*/
     
