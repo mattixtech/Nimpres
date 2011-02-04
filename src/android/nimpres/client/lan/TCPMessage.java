@@ -38,7 +38,7 @@ public class TCPMessage {
 	}
 	
 	/**
-	 * 
+	 * Standard constructor to create a message
 	 * @param type
 	 * @param data
 	 */
@@ -50,7 +50,7 @@ public class TCPMessage {
 	}
 	
 	/**
-	 * 
+	 * Constructor that reads in and creates a message
 	 * @param in
 	 */
 	public TCPMessage(DataInputStream in){
@@ -58,7 +58,7 @@ public class TCPMessage {
 	}
 	
 	/**
-	 * 
+	 * Constructor that creates a message and immediately sends it
 	 * @param type
 	 * @param data
 	 * @param out
@@ -72,7 +72,7 @@ public class TCPMessage {
 	}
 	
 	/**
-	 * 
+	 * Manually send the message
 	 * @param out
 	 */
 	public void sendMessage(DataOutputStream out){
@@ -91,7 +91,7 @@ public class TCPMessage {
     }
 	
 	/**
-	 * 
+	 * Manually read a message in
 	 * @param in
 	 */
 	public void getMessage(DataInputStream in){
