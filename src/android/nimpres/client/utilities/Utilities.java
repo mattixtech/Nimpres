@@ -110,11 +110,22 @@ public class Utilities {
 				in.closeEntry();
 				//ctx.deleteFile(fileName);
 			}
-			ret= dirToMake.toString();
+			ret = dirToMake.toString();
 		} catch (Exception e) {
 			
 		}
 		return ret;
+	}
+	
+	/**
+	 * 
+	 * @param location
+	 * @return
+	 */
+	public static boolean isInternetLocation(String location){
+		if(location.indexOf("http://") >= 0 || location.indexOf("https://") >= 0 || location.indexOf("ftp://") >= 0)
+			return true;
+		return false;
 	}
 	
 }

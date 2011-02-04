@@ -81,4 +81,5 @@ public class NimpresSettings {
 	 */
 	public static final String MSG_REQUEST_FILE_TRANSFER = "REQ";
 	public static final String MSG_RESPONSE_FILE_TRANSFER = "RESP";
+	public static final String MSG_RESPONSE_INVALID_REQ = "INV";
 }
