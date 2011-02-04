@@ -62,6 +62,7 @@ public class ServerSocketListener implements Runnable{
             try{
                 if(receiver.isActive()){
                     if(receiver.put(serverSocket.accept())){
+                    	Log.d("ServerSocketListener","added request to receiver");
                         //System.out.println("GrabBox has received synchronization request, adding to queue...");
                     }
                     else
