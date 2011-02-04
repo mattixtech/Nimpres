@@ -1,7 +1,7 @@
 /**
  * Project:			Nimpres Android Client
  * File name: 		DPSServer.java
- * Date modified:	2011-02-02
+ * Date modified:	2011-02-03
  * Description:		Serves a DPS file on the LAN
  * 
  * License:			Copyright (c) 2010 (Matthew Brooks, Jordan Emmons, William Kong)
@@ -26,6 +26,96 @@
  */
 package android.nimpres.client.lan;
 
-public class DPSServer {
+
+
+
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.net.Socket;
+
+import android.content.Context;
+import android.nimpres.client.settings.NimpresSettings;
+import android.util.Log;
+
+public class DPSServer implements Runnable{
+	private boolean isStopped = false;
+	private String dpsFile;
+	private Socket connectionFromClient;
+	private ConnectionReceiver receiver;
+	private Context ctx;
+	
+	public DPSServer(String dpsFileName, Context ctx){
+		dpsFile = dpsFileName;
+		this.ctx = ctx;
+		receiver = new ConnectionReceiver();
+	}
+	
+	public void run(){
+		byte[] outputFile = null;
+		//Start the listener
+		
+        openServerSocket();
+		initMessage();
+		try{
+			Log.d("DPSServer","attempting to read file for serving");
+			File fs = new File(ctx.getFilesDir()+File.separator+dpsFile);
+			int size = (int) fs.length();
+			outputFile = new byte[size];
+			FileInputStream inFile = ctx.openFileInput(dpsFile);
+			inFile.read(outputFile);
+			inFile.close();
+			Log.d("DPSServer","file read");
+		}catch(Exception e){
+			Log.d("DPSServer","Error:"+e.getMessage());
+		}
+		/*
+         * This loop continues to check the queue until it gets a socket connection from it
+         * that connection is removed from the queue and now this server should begin servicing that connection
+         */
+        while(!isStopped()){            
+            //The following statement should always return null until
+            //a socket connection is actually received from the queue
+        	Log.d("DPSServer","waiting for connection from peer");
+            connectionFromClient = receiver.get();
+            if(connectionFromClient != null && receiver.isActive()){
+            	if(connectionFromClient.isConnected()){
+            		try{
+
+                        DataInputStream in = new DataInputStream(connectionFromClient.getInputStream());
+                        DataOutputStream out = new DataOutputStream(connectionFromClient.getOutputStream());
+                        byte[] recPkt = Message.getMessage(in);
+                        if(Message.hasType(recPkt, NimpresSettings.MSG_REQUEST_FILE_TRANSFER)){
+                        	Message.sendMessage(out,NimpresSettings.MSG_RESPONSE_FILE_TRANSFER,outputFile);
+                        	Log.d("DPSServer","transferred dps file to peer");
+                        }else{
+                        	Log.d("DPSServer","received improper request from peer");
+                        }
+
+            		}catch(Exception e){
+                        Log.d("DPSServer","Error:"+e.getMessage());
+                    }
+            	}
+            }
+        }
+	}
+	
+	private void openServerSocket(){
+        Thread socketListener = new Thread(new ServerSocketListener(receiver));
+        socketListener.start();        
+    }
+	
+	public static void initMessage(){
+		Log.d("DPSServer","init");
+	}
+	
+	public boolean isStopped(){
+        return isStopped;
+    }
+	
+	public void stop(){
+        isStopped = true;
+    }
 
 }

@@ -1,7 +1,7 @@
 /**
  * Project:			Nimpres Android Client
  * File name: 		NimpresClient.java
- * Date modified:	2011-02-02
+ * Date modified:	2011-02-03
  * Description:		Android entrypoint for Nimpres app
  * 
  * License:			Copyright (c) 2011 (Matthew Brooks, Jordan Emmons, William Kong)
@@ -80,8 +80,8 @@ public class NimpresClient extends Activity {
     }
     
     public static void testDPSDownload(Context ctx){
-    	DPS testInternetDPS = new DPS("192.168.1.1","lan","","","testing_dps",ctx);
-    	//DPS testInternetDPS = new DPS("http://mattixtech.net/filez/test.dps","internet","","","testing_dps",ctx);
+    	//DPS testInternetDPS = new DPS("192.168.1.1","lan","","","testing_dps",ctx);
+    	DPS testInternetDPS = new DPS("http://mattixtech.net/filez/test.dps","internet","","","dps_download",ctx);
     	Log.d("NimpresClient","DPS fully created");
     	Log.d("NimpresClient","DPS presentation title:"+testInternetDPS.getDpsPres().getTitle());
     	Log.d("NimpresClient","DPS path:"+testInternetDPS.getDpsPath());

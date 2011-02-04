@@ -1,7 +1,7 @@
 /**
  * Project:			Nimpres Android Client
  * File name: 		NimpresSettings.java
- * Date modified:	2011-02-02
+ * Date modified:	2011-02-03
  * Description:		Static settings shared throughout app
  * 
  * License:			Copyright (c) 2011 (Matthew Brooks, Jordan Emmons, William Kong)
@@ -65,7 +65,7 @@ public class NimpresSettings {
      */
     public static final String METAFILE_NAME = "meta-inf.xml";
 	public static final String PEER_BROADCAST_ADDRESS = "255.255.255.255";
-	
+	public static final int SERVER_QUE_SIZE = 32;
 	
 	/*
      * Messages

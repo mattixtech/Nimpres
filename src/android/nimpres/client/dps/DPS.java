@@ -1,7 +1,7 @@
 /**
  * Project:			Nimpres Android Client
  * File name: 		DPS.java
- * Date modified:	2011-02-02
+ * Date modified:	2011-02-03
  * Description:		This class defines a DPS package
  * 
  * License:			Copyright (c) 2011 (Matthew Brooks, Jordan Emmons, William Kong)
@@ -88,7 +88,7 @@ public class DPS {
 		
 		if(remoteType.equalsIgnoreCase("internet")){
 			this.remoteType = "internet";
-			dpsPath = downloadFromURL(dpsLocation+"?id="+this.dpsID+"&password="+this.dpsPassword, desiredFolderName+".dps", desiredFolderName, ctx);
+			dpsPath = downloadFromURL(dpsLocation+"?id="+this.dpsID+"&password="+this.dpsPassword, "tmp"+desiredFolderName+".dps", desiredFolderName, ctx);
 			dpsPres = DPSReader.makePresentation(dpsPath);
 		}else if(remoteType.equalsIgnoreCase("lan")){
 			this.remoteType = "lan";
@@ -126,7 +126,7 @@ public class DPS {
 			
 			/*Save downloaded file to disk*/
 			FileOutputStream fos = ctx.openFileOutput(fileName,
-					Context.MODE_WORLD_READABLE);// new FileOutputStream(file);
+					Context.MODE_PRIVATE);// new FileOutputStream(file);
 			fos.write(baf.toByteArray());
 			fos.close();
 			/******************************************************/
