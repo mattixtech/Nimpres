@@ -74,15 +74,17 @@ public class DPSServer implements Runnable{
          * This loop continues to check the queue until it gets a socket connection from it
          * that connection is removed from the queue and now this server should begin servicing that connection
          */
+		Log.d("DPSServer","waiting for connection from peer");
         while(!isStopped()){            
             //The following statement should always return null until
             //a socket connection is actually received from the queue
-        	Log.d("DPSServer","waiting for connection from peer");
+        	//Thread.sleep(1);
+        	
             connectionFromClient = receiver.get();
             if(connectionFromClient != null && receiver.isActive()){
             	if(connectionFromClient.isConnected()){
             		try{
-
+            			Log.d("DPSServer","peer initiating transfer request");
                         DataInputStream in = new DataInputStream(connectionFromClient.getInputStream());
                         DataOutputStream out = new DataOutputStream(connectionFromClient.getOutputStream());
                         byte[] recPkt = Message.getMessage(in);

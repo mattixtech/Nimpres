@@ -39,6 +39,7 @@ public class ServerSocketListener implements Runnable{
     
     public ServerSocketListener(ConnectionReceiver receiver){
     	this.receiver = receiver;
+    	this.receiver.enable();
     }
 
     public void run(){

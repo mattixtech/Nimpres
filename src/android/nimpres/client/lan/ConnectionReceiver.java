@@ -47,7 +47,7 @@ public class ConnectionReceiver {
 
     public synchronized Socket get(){
         try{
-            return socketQue.poll(1, TimeUnit.MILLISECONDS);
+            return socketQue.poll(10, TimeUnit.MILLISECONDS);
         }catch(Exception e){
             e.printStackTrace();
             return null;

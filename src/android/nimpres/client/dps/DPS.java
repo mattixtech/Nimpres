@@ -213,7 +213,8 @@ public class DPS {
 					Log.d("DPS","peer transfered file");
 					byte[] receivedFile = Message.parseBinData(resPkt);
 					//Attempt to write the received dps file to disk and then extract it
-					FileOutputStream fos = new FileOutputStream(ctx.getFilesDir()+File.separator+dpsID);
+					
+					FileOutputStream fos = ctx.openFileOutput(dpsID, Context.MODE_PRIVATE);
 					fos.write(receivedFile);
 					fos.close();
 					ret = Utilities.unzip(ctx.getFilesDir()+File.separator+dpsID, folderToSave, ctx);

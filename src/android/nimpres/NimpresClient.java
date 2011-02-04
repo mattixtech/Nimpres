@@ -29,6 +29,7 @@ package android.nimpres;
 import android.app.Activity;
 import android.content.Context;
 import android.nimpres.client.dps.DPS;
+import android.nimpres.client.lan.DPSServer;
 import android.nimpres.client.lan.LANAdvertiser;
 import android.nimpres.client.lan.LANListener;
 import android.nimpres.client.presentation.Presentation;
@@ -53,7 +54,8 @@ public class NimpresClient extends Activity {
         //testLoginAPI();
         //testLANAdvertising();
         //testLANListening();
-        testDPSDownload(ctx);
+        //testDPSDownload(ctx);
+        testDPSHosting("test.dps",ctx);
         
         //Exit the app after performing test
         this.finish();        
@@ -77,6 +79,11 @@ public class NimpresClient extends Activity {
     public static void testLANListening(){
     	Thread LANListen = new Thread(new LANListener());
     	LANListen.start();
+    }
+    
+    public static void testDPSHosting(String fileToServe,Context ctx){
+    	Thread dpsServer = new Thread(new DPSServer(fileToServe,ctx));
+    	dpsServer.start();
     }
     
     public static void testDPSDownload(Context ctx){
