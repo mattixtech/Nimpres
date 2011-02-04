@@ -42,7 +42,6 @@ import java.nio.channels.FileChannel;
 import org.apache.http.util.ByteArrayBuffer;
 
 import android.content.Context;
-import android.nimpres.client.lan.Message;
 import android.nimpres.client.lan.TCPMessage;
 import android.nimpres.client.presentation.Presentation;
 import android.nimpres.client.settings.NimpresSettings;
