@@ -55,7 +55,7 @@ public class NimpresClient extends Activity {
         //testLANAdvertising();
         //testLANListening();
         //testDPSDownload(ctx);
-        testDPSHosting("test.dps",ctx);
+        //testDPSHosting("test.dps",ctx);
         
         //Exit the app after performing test
         this.finish();        
