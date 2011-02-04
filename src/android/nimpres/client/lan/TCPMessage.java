@@ -44,6 +44,7 @@ public class TCPMessage {
 	 */
 	public TCPMessage(String type, byte[] data){
 		this.type = type;
+		this.data = new byte[data.length];
 		this.data = data;
 		this.length = this.type.length() + this.data.length + "#$".length();
 	}
@@ -64,6 +65,7 @@ public class TCPMessage {
 	 */
 	public TCPMessage(String type, byte[] data, DataOutputStream out){
 		this.type = type;
+		this.data = new byte[data.length];
 		this.data = data;
 		this.length = this.type.length() + this.data.length + "#$".length();
 		sendMessage(out);
@@ -98,6 +100,7 @@ public class TCPMessage {
             byte[] buff = new byte[len]; //Create a buffer to store the message
             in.readFully(buff);
             type = parseType(buff);
+            data = new byte[len];
             data = parseData(buff);
             length = len;
         }catch(Exception e){
@@ -160,6 +163,7 @@ public class TCPMessage {
 	 * @param data the data to set
 	 */
 	public void setData(byte[] data) {
+		this.data = new byte[data.length];
 		this.data = data;
 	}
 
