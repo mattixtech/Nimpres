@@ -196,8 +196,9 @@ public class DPS {
 		Socket connectionToLANPeer = null;
 		try{
 			//Open socket connection to peer
-			connectionToLANPeer = new Socket(InetAddress.getByName(ipAddress.trim()),NimpresSettings.SERVER_FILE_PORT);
 			Log.d("DPS","attempting to connect to peer:"+ipAddress);
+			connectionToLANPeer = new Socket(InetAddress.getByName(ipAddress.trim()),NimpresSettings.SERVER_FILE_PORT);
+			
 			if(connectionToLANPeer.isConnected()){//Check if socket is connected
 				Log.d("DPS","connected to peer");
 				DataOutputStream out = new DataOutputStream(connectionToLANPeer.getOutputStream());

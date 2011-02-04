@@ -1,8 +1,8 @@
 /**
  * Project:			Nimpres Android Client
- * File name: 		LANListener.java
+ * File name: 		DPSServer.java
  * Date modified:	2011-02-02
- * Description:		Listens for updates about a presentation on the LAN
+ * Description:		Serves a DPS file on the LAN
  * 
  * License:			Copyright (c) 2010 (Matthew Brooks, Jordan Emmons, William Kong)
 					
@@ -26,9 +26,6 @@
  */
 package android.nimpres.client.lan;
 
-public class LANListener implements Runnable{
+public class DPSServer {
 
-	public void run(){
-		
-	}
 }
