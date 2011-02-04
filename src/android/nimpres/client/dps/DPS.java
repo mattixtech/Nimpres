@@ -43,6 +43,7 @@ import org.apache.http.util.ByteArrayBuffer;
 
 import android.content.Context;
 import android.nimpres.client.lan.Message;
+import android.nimpres.client.lan.TCPMessage;
 import android.nimpres.client.presentation.Presentation;
 import android.nimpres.client.settings.NimpresSettings;
 import android.nimpres.client.utilities.Utilities;
@@ -203,23 +204,31 @@ public class DPS {
 				Log.d("DPS","connected to peer");
 				DataOutputStream out = new DataOutputStream(connectionToLANPeer.getOutputStream());
 				DataInputStream in = new DataInputStream(connectionToLANPeer.getInputStream());
-				String msgReq = dpsID + "__" + dpsPassword;//Format the request message
-				Message.sendMessage(out, NimpresSettings.MSG_REQUEST_FILE_TRANSFER,msgReq.getBytes());
-				Log.d("DPS","sent message to peer:"+msgReq);
-				byte[] resPkt  = Message.getMessage(in); //Get the response data from peer
 				
-				if(Message.hasType(resPkt, NimpresSettings.MSG_RESPONSE_FILE_TRANSFER)){
+				//Create and send the TCP request message
+				String msgReq = dpsID + "__" + dpsPassword;//Format the request message				
+				TCPMessage outMsg = new TCPMessage(NimpresSettings.MSG_REQUEST_FILE_TRANSFER,msgReq.getBytes(),out);
+
+				Log.d("DPS","sent message to peer:"+msgReq);
+				
+				//Receive the response message
+				TCPMessage inMsg = new TCPMessage(in);
+				
+				//Check the type of the response message
+				if(inMsg.getType().equals(NimpresSettings.MSG_RESPONSE_FILE_TRANSFER)){
 					//Server responded with the file
 					Log.d("DPS","peer transfered file");
-					byte[] receivedFile = Message.parseBinData(resPkt);
-					//Attempt to write the received dps file to disk and then extract it
 					
+					//Store the data portion of the received message
+					byte[] receivedFile = inMsg.getData();
+					
+					//Attempt to write the received dps file to disk and then extract it					
 					FileOutputStream fos = ctx.openFileOutput(dpsID, Context.MODE_PRIVATE);
 					fos.write(receivedFile);
 					fos.close();
 					ret = Utilities.unzip(ctx.getFilesDir()+File.separator+dpsID, folderToSave, ctx);
 					Log.d("DPS","extracted file to:"+ret);
-				}else if(Message.hasType(resPkt, NimpresSettings.MSG_RESPONSE_INVALID_REQ)){
+				}else if(inMsg.getType().equals(NimpresSettings.MSG_RESPONSE_INVALID_REQ)){
 					//Server denied transfer due to invalid id/password
 					Log.d("DPS","peer denied transfer");
 					ret = "__invalid";				

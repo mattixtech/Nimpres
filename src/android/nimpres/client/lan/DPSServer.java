@@ -46,18 +46,27 @@ public class DPSServer implements Runnable{
 	private ConnectionReceiver receiver;
 	private Context ctx;
 	
+	/**
+	 * 
+	 * @param dpsFileName
+	 * @param ctx
+	 */
 	public DPSServer(String dpsFileName, Context ctx){
 		dpsFile = dpsFileName;
 		this.ctx = ctx;
 		receiver = new ConnectionReceiver();
 	}
 	
+	/**
+	 * 
+	 */
 	public void run(){
 		byte[] outputFile = null;
-		//Start the listener
 		
+		//Start the listener		
         openServerSocket();
 		initMessage();
+		
 		try{
 			Log.d("DPSServer","attempting to read file for serving");
 			File fs = new File(ctx.getFilesDir()+File.separator+dpsFile);
@@ -70,6 +79,7 @@ public class DPSServer implements Runnable{
 		}catch(Exception e){
 			Log.d("DPSServer","Error:"+e.getMessage());
 		}
+		
 		/*
          * This loop continues to check the queue until it gets a socket connection from it
          * that connection is removed from the queue and now this server should begin servicing that connection
@@ -87,9 +97,14 @@ public class DPSServer implements Runnable{
             			Log.d("DPSServer","peer initiating transfer request");
                         DataInputStream in = new DataInputStream(connectionFromClient.getInputStream());
                         DataOutputStream out = new DataOutputStream(connectionFromClient.getOutputStream());
-                        byte[] recPkt = Message.getMessage(in);
-                        if(Message.hasType(recPkt, NimpresSettings.MSG_REQUEST_FILE_TRANSFER)){
-                        	Message.sendMessage(out,NimpresSettings.MSG_RESPONSE_FILE_TRANSFER,outputFile);
+                        
+                        //Get the message from client
+                        TCPMessage inMsg = new TCPMessage(in);
+                        
+                        //Check to make sure the received message is a request for file
+                        if(inMsg.getType().equals(NimpresSettings.MSG_REQUEST_FILE_TRANSFER)){
+                        	//Send the file as a TCPMessage
+                        	TCPMessage outMsg = new TCPMessage(NimpresSettings.MSG_RESPONSE_FILE_TRANSFER,outputFile,out);
                         	Log.d("DPSServer","transferred dps file to peer");
                         }else{
                         	Log.d("DPSServer","received improper request from peer");
@@ -103,19 +118,32 @@ public class DPSServer implements Runnable{
         }
 	}
 	
+	/**
+	 * 
+	 */
 	private void openServerSocket(){
         Thread socketListener = new Thread(new ServerSocketListener(receiver));
         socketListener.start();        
     }
 	
+	/**
+	 * 
+	 */
 	public static void initMessage(){
 		Log.d("DPSServer","init");
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public boolean isStopped(){
         return isStopped;
     }
 	
+	/**
+	 * 
+	 */
 	public void stop(){
         isStopped = true;
     }
