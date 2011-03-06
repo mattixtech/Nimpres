@@ -110,6 +110,26 @@ public class APIContact {
 		return false;
 	}
 	
+	
+	public static int getSlideNumber(String id, String password){
+		String result = "";
+		List<NameValuePair> params = new ArrayList<NameValuePair>();
+		params.add(new BasicNameValuePair("id", id));
+		params.add(new BasicNameValuePair("password", password));
+		HttpEntity resEntity = apiPostRequest(NimpresSettings.API_SLIDE,params);
+		try{
+			result = EntityUtils.toString(resEntity);
+			Log.d("APIContact","post result:"+result);
+		}catch (Exception e) {
+	        e.printStackTrace();
+	    }
+		
+		if( ! result.equals(NimpresSettings.API_RESPONSE_NEGATIVE))
+			return Integer.parseInt(result);
+		else
+			return 0;
+	}
+	
 	public static void pushDPSToWeb(String login, String password, String fileName, String pesentationTitle, boolean passwordProtect){
 		
 		/*Posting file cod
