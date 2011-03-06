@@ -8,14 +8,14 @@
 <TextView 	android:text="Password:" 
 			android:layout_width="wrap_content" 
 			android:layout_height="wrap_content" 
-			android:id="@+id/textView2" 
+			android:id="@+id/textView1" 
 			android:layout_x="26dip" 
 			android:layout_y="168dip"
-			android:layout_below="@id/entry"            
+			android:layout_below="@id/textView1"            
 			android:layout_alignParentRight="true"            
 			android:layout_marginLeft="10px"
-			android:layout_toLeftOf="@id/ok"            
-			android:layout_alignTop="@id/ok"
+			android:layout_toLeftOf="@id/textView1"            
+			android:layout_alignTop="@id/textView1"
 			></TextView>
 			
 <EditText 	android:text="EditText" 
