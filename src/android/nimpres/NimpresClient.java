@@ -87,7 +87,7 @@ public class NimpresClient extends Activity {
     	Button nextButton = (Button)findViewById(R.id.pvNext);
         Button backButton = (Button)findViewById(R.id.pvBack);
         TextView title = (TextView)findViewById(R.id.pvTitle);
-        
+        title.setText("b");
         testDPS = new DPS("http://mattixtech.net/filez/test.dps","internet","","","dps_download",ctx);
         Log.d("NimpresClient","DPS fully created");
         Log.d("NimpresClient","Slide is #"+testDPS.getDpsPres().getCurrentSlide());
@@ -105,7 +105,7 @@ public class NimpresClient extends Activity {
             }
         });
         
-        nextButton.setOnClickListener(new View.OnClickListener() {
+        backButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Perform action on click
             	testDPS.getDpsPres().previousSlide();
