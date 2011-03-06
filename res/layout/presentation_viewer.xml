@@ -1,20 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:orientation="vertical" android:layout_width="fill_parent"
 	android:layout_height="fill_parent">
 	<TextView android:layout_width="fill_parent"
 		android:layout_height="wrap_content" android:id="@+id/pvTitle"
 		android:text="Viewing:Title" />
-	<ImageView android:layout_height="wrap_content"
-		android:layout_width="wrap_content" android:layout_below="@id/pvTitle" android:layout_centerHorizontal="true"
-		android:id="@+id/pvSlide" android:src="@drawable/icon"></ImageView>
 
-	<Button android:text="Back" android:id="@+id/pvBack" android:layout_toLeftOf="@id/pvSlide" android:layout_below="@id/pvTitle"
+	<Button android:text="Back" android:id="@+id/pvBack"
 		android:layout_width="wrap_content" android:layout_height="wrap_content"></Button>
-	<Button android:text="Next" android:id="@+id/pvNext" android:layout_toLeftOf="@id/pvSlide" android:layout_below="@id/pvBack"
+	<Button android:text="Next" android:id="@+id/pvNext" 
 		android:layout_width="wrap_content" android:layout_height="wrap_content"></Button>
-	<Button android:text="Leave" android:id="@+id/pvLeave" android:layout_toLeftOf="@id/pvSlide" android:layout_below="@id/pvNext"
+	<Button android:text="Leave" android:id="@+id/pvLeave" 
 		android:layout_width="wrap_content" android:layout_height="wrap_content"></Button>
-	<Button android:text="Pause/Resume" android:id="@+id/pvPR" android:layout_toLeftOf="@id/pvSlide" android:layout_below="@id/pvLeave"
+	<Button android:text="Pause/Resume" android:id="@+id/pvPR" 
 		android:layout_width="wrap_content" android:layout_height="wrap_content"></Button>
-</RelativeLayout>
+	<ImageView android:src="@drawable/icon" android:layout_height="wrap_content" android:id="@+id/pvSlide" android:layout_width="wrap_content"></ImageView>
+</LinearLayout>
