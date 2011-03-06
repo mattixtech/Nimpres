@@ -123,8 +123,6 @@ public class NimpresClient extends Activity {
 
 	public void testPresentation(Context ctx) {
 		setContentView(R.layout.presentation_viewer);
-		Button nextButton = (Button) findViewById(R.id.pvNext);
-		Button backButton = (Button) findViewById(R.id.pvBack);
 		TextView title = (TextView) findViewById(R.id.pvTitle);
 
 		testDPS = new DPS("http://mattixtech.net/filez/test.dps", "internet",
@@ -138,22 +136,6 @@ public class NimpresClient extends Activity {
 
 		title.setText(testPres.getTitle());
 		updateSlide();
-
-		nextButton.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				// Perform action on click
-				testPres.nextSlide();
-				updateSlide();
-			}
-		});
-
-		backButton.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				// Perform action on click
-				testPres.previousSlide();
-				updateSlide();
-			}
-		});
 		
 	}
 

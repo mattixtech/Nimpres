@@ -4,15 +4,8 @@
 	android:layout_height="fill_parent">
 	<TextView android:layout_width="fill_parent"
 		android:layout_height="wrap_content" android:id="@+id/pvTitle"
-		android:text="Viewing:Title" />
-
-	<Button android:text="Back" android:id="@+id/pvBack"
-		android:layout_width="wrap_content" android:layout_height="wrap_content"></Button>
-	<Button android:text="Next" android:id="@+id/pvNext" 
-		android:layout_width="wrap_content" android:layout_height="wrap_content"></Button>
-	<Button android:text="Leave" android:id="@+id/pvLeave" 
-		android:layout_width="wrap_content" android:layout_height="wrap_content"></Button>
-	<Button android:text="Pause/Resume" android:id="@+id/pvPR" 
-		android:layout_width="wrap_content" android:layout_height="wrap_content"></Button>
-	<ImageView android:src="@drawable/icon" android:layout_height="wrap_content" android:id="@+id/pvSlide" android:layout_width="wrap_content"></ImageView>
+		android:text="" />
+	<ImageView android:src="@drawable/icon"
+		android:layout_height="wrap_content" android:id="@+id/pvSlide"
+		android:layout_width="wrap_content"></ImageView>
 </LinearLayout>
