@@ -26,8 +26,11 @@
  */
 package android.nimpres;
 
+import ds.test.R;
+import ds.test.Test_PresPack;
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.nimpres.client.dps.DPS;
 import android.nimpres.client.lan.DPSServer;
 import android.nimpres.client.lan.LANAdvertiser;
@@ -36,9 +39,15 @@ import android.nimpres.client.presentation.Presentation;
 import android.nimpres.client.web.APIContact;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 
 public class NimpresClient extends Activity {
+	
+	DPS testDPS = null;
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -75,13 +84,40 @@ public class NimpresClient extends Activity {
      * */    
     
     
-    public static void testPresentation(Context ctx){
-    	
-    	DPS testInternetDPS = new DPS("http://mattixtech.net/filez/test.dps","internet","","","dps_download",ctx);
-    	Log.d("NimpresClient","DPS fully created");
-    	//path = testInternetDPS.getDpsPres().getCurrentSlideFile();
-    	
+    public void testPresentation(Context ctx){
+    	setContentView(R.layout.presentation_viewer);
+    	Button nextButton = (Button)ctx.findViewById(R.id.pvNext);
+        Button backButton = (Button)ctx.findViewById(R.id.pvBack);
+        TextView title = (TextView)ctx.findViewById(R.id.pvTitle);
+        
+        testDPS = new DPS("http://mattixtech.net/filez/test.dps","internet","","","dps_download",ctx);
+        
+        title.setText(testDPS.getDpsPres().getTitle());
+        
+        nextButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // Perform action on click
+            	testDPS.getDpsPres().nextSlide();
+            	updateSlide();
+            }
+        });
+        
+        nextButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // Perform action on click
+            	testDPS.getDpsPres().previousSlide();
+            	updateSlide();
+            }
+        });   	
+    	Log.d("NimpresClient","DPS fully created");    	
     }
+    
+    public void updateSlide(){
+    	ImageView slide = (ImageView) findViewById(R.id.pvSlide);
+    	slide.setImageBitmap(BitmapFactory.decodeFile(testDPS.getDpsPres().getCurrentSlideFile()));
+    }
+    
+    
     public static void testLoginAPI(){
     	//Test login API
     	APIContact.validateLogin("Jordan", "testing");
