@@ -37,127 +37,169 @@ import android.nimpres.client.presentation.Presentation;
 import android.nimpres.client.web.APIContact;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-
 public class NimpresClient extends Activity {
-	
+
 	DPS testDPS = null;
 	Presentation testPres = null;
-    /** Called when the activity is first created. */
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        
-        //Use this object if you need to pass Context to something
-        Context ctx = this.getApplicationContext();
-        
-        
-        /*
-         * Testing Code Below
-         */
-        
-        //Set to main view
-        setContentView(R.layout.main);        
-        testPresentation(ctx);      
-        /*If testing code please make a method below and call it here*/
-        //testLoginAPI();
-        //testLANAdvertising();
-        //testLANListening();
-        //testDPSDownload(ctx);
-        //testDPSHosting("test.dps",ctx);
-        
-        //Exit the app after performing test
-        //this.finish();
-        
-        /*
-         * End of testing code
-         */
-    }   
-    
-    /*
-     * Testing methods
-     * */    
-    
-    
-    public void testPresentation(Context ctx){
-    	setContentView(R.layout.presentation_viewer);
-    	Button nextButton = (Button)findViewById(R.id.pvNext);
-        Button backButton = (Button)findViewById(R.id.pvBack);
-        TextView title = (TextView)findViewById(R.id.pvTitle);
 
-        testDPS = new DPS("http://mattixtech.net/filez/test.dps","internet","","","dps_download",ctx);
-        testPres = testDPS.getDpsPres();
-        
-        Log.d("NimpresClient","DPS fully created");
-        Log.d("NimpresClient","Slide is #"+testPres.getCurrentSlide());
-        Log.d("NimpresClient","Path is: "+testPres.getPath()+testPres.getCurrentSlideFile().getFileName()); 
-        
-        title.setText(testPres.getTitle());
-        updateSlide();
-        
-        nextButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                // Perform action on click
-            	testPres.nextSlide();
-            	updateSlide();
-            }
-        });
-        
-        backButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                // Perform action on click
-            	testPres.previousSlide();
-            	updateSlide();
-            }
-        });
-        
-    	    	
-    }
-    
-    public void updateSlide(){
-    	ImageView slide = (ImageView) findViewById(R.id.pvSlide);
-    	Log.d("NimpresClient","Slide is #"+testPres.getCurrentSlide());
-        Log.d("NimpresClient","Path is: "+testPres.getPath()+testPres.getCurrentSlideFile().getFileName()); 
-    	slide.setImageBitmap(BitmapFactory.decodeFile(testPres.getPath()+testPres.getCurrentSlideFile().getFileName()));
-    }
-    
-    
-    public static void testLoginAPI(){
-    	//Test login API
-    	APIContact.validateLogin("Jordan", "testing");
-    }
-    
-    public static void testLANAdvertising(){
-    	Presentation Pres = new Presentation();
-    	Pres.setTitle("Test");
-        Thread LANAdvert = new Thread(new LANAdvertiser(Pres));
-        LANAdvert.start();
-    }
-    
-    public static void testLANListening(){
-    	Thread LANListen = new Thread(new LANListener());
-    	LANListen.start();
-    }
-    
-    public static void testDPSHosting(String fileToServe,Context ctx){
-    	Thread dpsServer = new Thread(new DPSServer(fileToServe,ctx));
-    	dpsServer.start();
-    }
-    
-    public static void testDPSDownload(Context ctx){
-    	//DPS testInternetDPS = new DPS("192.168.1.1","lan","","","testing_dps",ctx);
-    	DPS testInternetDPS = new DPS("http://mattixtech.net/filez/test.dps","internet","","","dps_download",ctx);
-    	Log.d("NimpresClient","DPS fully created");
-    	Log.d("NimpresClient","DPS presentation title:"+testInternetDPS.getDpsPres().getTitle());
-    	Log.d("NimpresClient","DPS path:"+testInternetDPS.getDpsPath());
-    	/*String folder = DPSGet.DownloadFromURL("http://mattixtech.net/filez/test.dps", "test.dps", "testing_dps", ctx);
-    	Log.d("NimpresClient","downloaded dps to:"+folder);
-    	DPS testDPS = new DPS(folder);
-    	Log.d("NimpresClient","DPS fully created");
-    	Log.d("NimpresClient","DPS presentation title:"+testDPS.getDpsPres().getTitle());*/
-    }
+	/** Called when the activity is first created. */
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+
+		// Use this object if you need to pass Context to something
+		Context ctx = this.getApplicationContext();
+
+		/*
+		 * Testing Code Below
+		 */
+
+		// Set to main view
+		setContentView(R.layout.main);
+		testPresentation(ctx);
+		/* If testing code please make a method below and call it here */
+		// testLoginAPI();
+		// testLANAdvertising();
+		// testLANListening();
+		// testDPSDownload(ctx);
+		// testDPSHosting("test.dps",ctx);
+
+		// Exit the app after performing test
+		// this.finish();
+
+		/*
+		 * End of testing code
+		 */
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.pv_menu, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {    
+		// Handle item selection    
+		switch (item.getItemId()) {    
+		case R.id.pvmBack:        
+			testPres.previousSlide();        
+			return true;    
+		case R.id.pvmNext:        
+			testPres.nextSlide();        
+			return true;    
+		case R.id.pvmLeave:        
+			testPres.nextSlide();        
+			return true;  
+		case R.id.pvmPause:        
+			testPres.nextSlide();        
+			return true;  
+		case R.id.pvmResume:        
+			testPres.nextSlide();        
+			return true;  
+		default:        
+			return super.onOptionsItemSelected(item);    
+		}
+	}
+	
+
+	/*
+	 * Testing methods
+	 */
+
+	public void testPresentation(Context ctx) {
+		setContentView(R.layout.presentation_viewer);
+		Button nextButton = (Button) findViewById(R.id.pvNext);
+		Button backButton = (Button) findViewById(R.id.pvBack);
+		TextView title = (TextView) findViewById(R.id.pvTitle);
+
+		testDPS = new DPS("http://mattixtech.net/filez/test.dps", "internet",
+				"", "", "dps_download", ctx);
+		testPres = testDPS.getDpsPres();
+
+		Log.d("NimpresClient", "DPS fully created");
+		Log.d("NimpresClient", "Slide is #" + testPres.getCurrentSlide());
+		Log.d("NimpresClient", "Path is: " + testPres.getPath()
+				+ testPres.getCurrentSlideFile().getFileName());
+
+		title.setText(testPres.getTitle());
+		updateSlide();
+
+		nextButton.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				// Perform action on click
+				testPres.nextSlide();
+				updateSlide();
+			}
+		});
+
+		backButton.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				// Perform action on click
+				testPres.previousSlide();
+				updateSlide();
+			}
+		});
+		
+	}
+
+	public void updateSlide() {
+		ImageView slide = (ImageView) findViewById(R.id.pvSlide);
+		Log.d("NimpresClient", "Slide is #" + testPres.getCurrentSlide());
+		Log.d("NimpresClient", "Path is: " + testPres.getPath()
+				+ testPres.getCurrentSlideFile().getFileName());
+		slide.setImageBitmap(BitmapFactory.decodeFile(testPres.getPath()
+				+ testPres.getCurrentSlideFile().getFileName()));
+	}
+
+	public static void testLoginAPI() {
+		// Test login API
+		APIContact.validateLogin("Jordan", "testing");
+	}
+
+	public static void testLANAdvertising() {
+		Presentation Pres = new Presentation();
+		Pres.setTitle("Test");
+		Thread LANAdvert = new Thread(new LANAdvertiser(Pres));
+		LANAdvert.start();
+	}
+
+	public static void testLANListening() {
+		Thread LANListen = new Thread(new LANListener());
+		LANListen.start();
+	}
+
+	public static void testDPSHosting(String fileToServe, Context ctx) {
+		Thread dpsServer = new Thread(new DPSServer(fileToServe, ctx));
+		dpsServer.start();
+	}
+
+	public static void testDPSDownload(Context ctx) {
+		// DPS testInternetDPS = new
+		// DPS("192.168.1.1","lan","","","testing_dps",ctx);
+		DPS testInternetDPS = new DPS("http://mattixtech.net/filez/test.dps",
+				"internet", "", "", "dps_download", ctx);
+		Log.d("NimpresClient", "DPS fully created");
+		Log.d("NimpresClient", "DPS presentation title:"
+				+ testInternetDPS.getDpsPres().getTitle());
+		Log.d("NimpresClient", "DPS path:" + testInternetDPS.getDpsPath());
+		/*
+		 * String folder =
+		 * DPSGet.DownloadFromURL("http://mattixtech.net/filez/test.dps",
+		 * "test.dps", "testing_dps", ctx);
+		 * Log.d("NimpresClient","downloaded dps to:"+folder); DPS testDPS = new
+		 * DPS(folder); Log.d("NimpresClient","DPS fully created");
+		 * Log.d("NimpresClient"
+		 * ,"DPS presentation title:"+testDPS.getDpsPres().getTitle());
+		 */
+	}
 }
