@@ -34,7 +34,6 @@ public class NimpresSettings {
 	
 	public static final String API_BASE_URL = "http://droidshare.testing.mattixtech.net/api/";
 	public static final String API_LOGIN = "login";
-	public static final String API_LOGIN = "get_status";
 	public static final String API_SLIDE = "get_slide_num";
 	public static final String API_CREATE_ACCOUNT = "create_account";
 	public static final String API_CREATE_PRESENTATION = "create_presentation";
