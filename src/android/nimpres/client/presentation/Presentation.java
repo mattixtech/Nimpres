@@ -1,7 +1,7 @@
 /**
  * Project:			Nimpres Android Client
  * File name: 		Presentation.java
- * Date modified:	2011-02-02
+ * Date modified:	2011-03-06
  * Description:		Represents a presentation
  * 
  * License:			Copyright (c) 2011 (Matthew Brooks, Jordan Emmons, William Kong)
@@ -31,7 +31,7 @@ public class Presentation {
 	private String owner = "";
 	private int timestamp = 0;
 	private int numSlides = 0;
-	private int currentSlide = 0;
+	private int currentSlide = 1;
 	private Slide[] slideFiles;
 	
 	/**
