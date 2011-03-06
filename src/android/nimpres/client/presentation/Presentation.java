@@ -1,7 +1,7 @@
 /**
  * Project:			Nimpres Android Client
  * File name: 		Presentation.java
- * Date modified:	2011-02-02
+ * Date modified:	2011-03-06
  * Description:		Represents a presentation
  * 
  * License:			Copyright (c) 2011 (Matthew Brooks, Jordan Emmons, William Kong)
@@ -28,10 +28,11 @@ package android.nimpres.client.presentation;
 
 public class Presentation {
 	private String title = "";
+	private String path = "";
 	private String owner = "";
 	private int timestamp = 0;
 	private int numSlides = 0;
-	private int currentSlide = 0;
+	private int currentSlide = 1;
 	private Slide[] slideFiles;
 	
 	/**
@@ -46,6 +47,20 @@ public class Presentation {
 	 */
 	public void setOwner(String owner) {
 		this.owner = owner;
+	}
+
+	/**
+	 * @return the path
+	 */
+	public String getPath() {
+		return path;
+	}
+
+	/**
+	 * @param path the path to set
+	 */
+	public void setPath(String path) {
+		this.path = path;
 	}
 
 	/**
@@ -118,8 +133,8 @@ public class Presentation {
 		this.slideFiles = slideFiles;
 	}
 
-	public String getCurrentSlideFile(){
-		return slideFiles[currentSlide].getFileName();
+	public Slide getCurrentSlideFile(){
+		return slideFiles[currentSlide];
 	}
 	
 	public void nextSlide(){

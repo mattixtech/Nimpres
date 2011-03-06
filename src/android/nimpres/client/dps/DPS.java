@@ -1,7 +1,7 @@
 /**
  * Project:			Nimpres Android Client
  * File name: 		DPS.java
- * Date modified:	2011-02-03
+ * Date modified:	2011-03-06
  * Description:		This class defines a DPS package
  * 
  * License:			Copyright (c) 2011 (Matthew Brooks, Jordan Emmons, William Kong)
@@ -57,8 +57,8 @@ public class DPS {
 	private boolean isRemote = false; 		//Specifies whether this dps project originiated on device or was downloaded via LAN/Internet
 	private String remoteType = "";			//"lan" or "internet"
 	private String dpsOrigin = ""; 			//Stores the URL origin or IP Address of the DPS file's original location
-	private String dpsID = "";		//Stores the ID of this DPS file for synchronizing
-	private String dpsPassword = "";	//Stores a password for password protected synchronizing
+	private String dpsID = "";				//Stores the ID of this DPS file for synchronizing
+	private String dpsPassword = "";		//Stores a password for password protected synchronizing
 	
 	/**
 	 * Create a DPS from an ondevice DPS file

@@ -1,7 +1,7 @@
 /**
  * Project:			Nimpres Android Client
  * File name: 		APIContact.java
- * Date modified:	2011-02-02
+ * Date modified:	2011-03-06
  * Description:		Static methods for performing api calls to the webserver
  * 
  * License:			Copyright (c) 2011 (Matthew Brooks, Jordan Emmons, William Kong)
@@ -108,6 +108,31 @@ public class APIContact {
 		if(result.equals(NimpresSettings.API_RESPONSE_POSITIVE))
 			return true;
 		return false;
+	}
+	
+	/**
+	 * This method gets the current slide number for the DPS identified by id
+	 * @param id
+	 * @param password
+	 * @return
+	 */
+	public static int getSlideNumber(String id, String password){
+		String result = "";
+		List<NameValuePair> params = new ArrayList<NameValuePair>();
+		params.add(new BasicNameValuePair("id", id));
+		params.add(new BasicNameValuePair("password", password));
+		HttpEntity resEntity = apiPostRequest(NimpresSettings.API_SLIDE,params);
+		try{
+			result = EntityUtils.toString(resEntity);
+			Log.d("APIContact","post result:"+result);
+		}catch (Exception e) {
+	        e.printStackTrace();
+	    }
+		
+		if( ! result.equals(NimpresSettings.API_RESPONSE_NEGATIVE))
+			return Integer.parseInt(result);
+		else
+			return 0;
 	}
 	
 	public static void pushDPSToWeb(String login, String password, String fileName, String pesentationTitle, boolean passwordProtect){
