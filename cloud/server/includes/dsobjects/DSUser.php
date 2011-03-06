@@ -42,9 +42,11 @@
 				  $mydb -> debug_on();
 			  
 			  if($mydb->record_key_exists("'$login'",'id','login'))	//Check for existence of the login id requested
-				  return FALSE;	//Reply with already taken
+				  return FALSE;
 			  else if(strlen($password)< 8)	// Check if the supplied password is under 8 characters
-				  return FALSE;	//Reply with too short
+				  return FALSE;
+			  else if(strlen($id)< 1)
+			  	  return FALSE;
 			  else{
 				  $insertId = $mydb->escape_query_data($id);
 				  $insertPass = $mydb->escape_query_data($password);
@@ -52,8 +54,7 @@
 				  $sql = "INSERT INTO login (id, password) VALUE ('$insertId', '$insertPass')";
 				  $mydb->run_unsafe_query($sql);
 				  	return TRUE;
-				  //else
-				   // return FALSE;
+
 			  }
 		}
 		
