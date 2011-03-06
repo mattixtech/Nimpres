@@ -6,7 +6,7 @@
 		android:layout_height="wrap_content" android:id="@+id/pvTitle"
 		android:text="Viewing:Title" />
 	<ImageView android:layout_height="wrap_content"
-		android:layout_width="wrap_content" android:layout_below="@id/pvTitle"
+		android:layout_width="wrap_content" android:layout_below="@id/pvSlide"
 		android:id="@+id/pvSlide" android:src="@drawable/icon"></ImageView>
 
 	<Button android:text="Back" android:id="@+id/pvBack" android:layout_below="@id/pvSlide"
