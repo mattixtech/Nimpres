@@ -69,7 +69,7 @@ public class NimpresClient extends Activity {
 		// Set to main view
 		setContentView(R.layout.main);
 		//testSlideNum();
-		// testPresentation(ctx);
+		testPresentation(ctx);
 		/* If testing code please make a method below and call it here */
 		// testLoginAPI();
 		// testLANAdvertising();
