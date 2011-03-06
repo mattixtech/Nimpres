@@ -92,19 +92,24 @@ public class NimpresClient extends Activity {
 		// Handle item selection    
 		switch (item.getItemId()) {    
 		case R.id.pvmBack:        
-			testPres.previousSlide();        
+			testPres.previousSlide();
+			updateSlide();
 			return true;    
 		case R.id.pvmNext:        
-			testPres.nextSlide();        
+			testPres.nextSlide(); 
+			updateSlide();
 			return true;    
 		case R.id.pvmLeave:        
-			testPres.nextSlide();        
+			testPres.nextSlide();
+			updateSlide();
 			return true;  
 		case R.id.pvmPause:        
-			testPres.nextSlide();        
+			testPres.nextSlide();
+			updateSlide();
 			return true;  
 		case R.id.pvmResume:        
-			testPres.nextSlide();        
+			testPres.nextSlide();
+			updateSlide();
 			return true;  
 		default:        
 			return super.onOptionsItemSelected(item);    
