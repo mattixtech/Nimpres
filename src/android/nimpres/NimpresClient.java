@@ -54,7 +54,7 @@ public class NimpresClient extends Activity {
         
         //Set to main view
         setContentView(R.layout.main);        
-              
+        testPresentation(ctx);      
         /*If testing code please make a method below and call it here*/
         //testLoginAPI();
         //testLANAdvertising();
@@ -74,6 +74,14 @@ public class NimpresClient extends Activity {
      * Testing methods
      * */    
     
+    
+    public static void testPresentation(Context ctx){
+    	
+    	DPS testInternetDPS = new DPS("http://mattixtech.net/filez/test.dps","internet","","","dps_download",ctx);
+    	Log.d("NimpresClient","DPS fully created");
+    	//path = testInternetDPS.getDpsPres().getCurrentSlideFile();
+    	
+    }
     public static void testLoginAPI(){
     	//Test login API
     	APIContact.validateLogin("Jordan", "testing");
