@@ -1,7 +1,7 @@
 /**
  * Project:			Nimpres Android Client
  * File name: 		NimpresSettings.java
- * Date modified:	2011-02-03
+ * Date modified:	2011-03-06
  * Description:		Static settings shared throughout app
  * 
  * License:			Copyright (c) 2011 (Matthew Brooks, Jordan Emmons, William Kong)

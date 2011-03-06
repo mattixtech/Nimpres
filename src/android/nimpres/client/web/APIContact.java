@@ -1,7 +1,7 @@
 /**
  * Project:			Nimpres Android Client
  * File name: 		APIContact.java
- * Date modified:	2011-02-02
+ * Date modified:	2011-03-06
  * Description:		Static methods for performing api calls to the webserver
  * 
  * License:			Copyright (c) 2011 (Matthew Brooks, Jordan Emmons, William Kong)
@@ -110,7 +110,12 @@ public class APIContact {
 		return false;
 	}
 	
-	
+	/**
+	 * This method gets the current slide number for the DPS identified by id
+	 * @param id
+	 * @param password
+	 * @return
+	 */
 	public static int getSlideNumber(String id, String password){
 		String result = "";
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
