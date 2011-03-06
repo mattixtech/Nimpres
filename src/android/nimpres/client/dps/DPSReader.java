@@ -78,6 +78,7 @@ public class DPSReader {
 				presCreated.setTitle(title);
 				presCreated.setTimestamp(timestamp);
 				presCreated.setOwner(owner);
+				presCreated.setPath(dpsPath + "/");
 				
 				Slide[] slides = new Slide[numberSlides];
 				

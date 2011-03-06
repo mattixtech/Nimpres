@@ -28,6 +28,7 @@ package android.nimpres.client.presentation;
 
 public class Presentation {
 	private String title = "";
+	private String path = "";
 	private String owner = "";
 	private int timestamp = 0;
 	private int numSlides = 0;
@@ -46,6 +47,20 @@ public class Presentation {
 	 */
 	public void setOwner(String owner) {
 		this.owner = owner;
+	}
+
+	/**
+	 * @return the path
+	 */
+	public String getPath() {
+		return path;
+	}
+
+	/**
+	 * @param path the path to set
+	 */
+	public void setPath(String path) {
+		this.path = path;
 	}
 
 	/**
@@ -118,8 +133,8 @@ public class Presentation {
 		this.slideFiles = slideFiles;
 	}
 
-	public String getCurrentSlideFile(){
-		return slideFiles[currentSlide].getFileName();
+	public Slide getCurrentSlideFile(){
+		return slideFiles[currentSlide];
 	}
 	
 	public void nextSlide(){
