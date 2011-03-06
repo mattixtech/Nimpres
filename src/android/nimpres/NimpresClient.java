@@ -1,7 +1,7 @@
 /**
  * Project:			Nimpres Android Client
  * File name: 		NimpresClient.java
- * Date modified:	2011-02-03
+ * Date modified:	2011-03-06
  * Description:		Android entrypoint for Nimpres app
  * 
  * License:			Copyright (c) 2011 (Matthew Brooks, Jordan Emmons, William Kong)
@@ -47,6 +47,11 @@ public class NimpresClient extends Activity {
         //Use this object if you need to pass Context to something
         Context ctx = this.getApplicationContext();
         
+        
+        /*
+         * Testing Code Below
+         */
+        
         //Set to main view
         setContentView(R.layout.main);        
               
@@ -58,11 +63,16 @@ public class NimpresClient extends Activity {
         //testDPSHosting("test.dps",ctx);
         
         //Exit the app after performing test
-        this.finish();        
+        this.finish();
+        
+        /*
+         * End of testing code
+         */
     }   
     
-    /*Testing methods*/
-    
+    /*
+     * Testing methods
+     * */    
     
     public static void testLoginAPI(){
     	//Test login API
