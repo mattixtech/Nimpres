@@ -64,7 +64,7 @@ public class NimpresClient extends Activity {
 		 * Testing Code Below
 		 */
 		TimerTask task  = new PresentationUpdater();
-		new Timer().scheduleAtFixedRate(task, 100, 200);
+		new Timer().scheduleAtFixedRate(task, 100, 2000);
 
 		// Set to main view
 		setContentView(R.layout.main);
