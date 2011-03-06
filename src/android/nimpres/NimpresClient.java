@@ -26,6 +26,9 @@
  */
 package android.nimpres;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.BitmapFactory;
@@ -34,14 +37,13 @@ import android.nimpres.client.lan.DPSServer;
 import android.nimpres.client.lan.LANAdvertiser;
 import android.nimpres.client.lan.LANListener;
 import android.nimpres.client.presentation.Presentation;
+import android.nimpres.client.presentation.PresentationUpdater;
 import android.nimpres.client.web.APIContact;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -61,10 +63,13 @@ public class NimpresClient extends Activity {
 		/*
 		 * Testing Code Below
 		 */
+		TimerTask task  = new PresentationUpdater();
+		new Timer().scheduleAtFixedRate(task, 100, 200);
 
 		// Set to main view
 		setContentView(R.layout.main);
-		testPresentation(ctx);
+		//testSlideNum();
+		// testPresentation(ctx);
 		/* If testing code please make a method below and call it here */
 		// testLoginAPI();
 		// testLANAdvertising();
@@ -88,34 +93,33 @@ public class NimpresClient extends Activity {
 	}
 
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {    
-		// Handle item selection    
-		switch (item.getItemId()) {    
-		case R.id.pvmBack:        
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// Handle item selection
+		switch (item.getItemId()) {
+		case R.id.pvmBack:
 			testPres.previousSlide();
 			updateSlide();
-			return true;    
-		case R.id.pvmNext:        
-			testPres.nextSlide(); 
-			updateSlide();
-			return true;    
-		case R.id.pvmLeave:        
+			return true;
+		case R.id.pvmNext:
 			testPres.nextSlide();
 			updateSlide();
-			return true;  
-		case R.id.pvmPause:        
+			return true;
+		case R.id.pvmLeave:
 			testPres.nextSlide();
 			updateSlide();
-			return true;  
-		case R.id.pvmResume:        
+			return true;
+		case R.id.pvmPause:
 			testPres.nextSlide();
 			updateSlide();
-			return true;  
-		default:        
-			return super.onOptionsItemSelected(item);    
+			return true;
+		case R.id.pvmResume:
+			testPres.nextSlide();
+			updateSlide();
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
 		}
 	}
-	
 
 	/*
 	 * Testing methods
@@ -136,7 +140,7 @@ public class NimpresClient extends Activity {
 
 		title.setText(testPres.getTitle());
 		updateSlide();
-		
+
 	}
 
 	public void updateSlide() {
@@ -151,6 +155,14 @@ public class NimpresClient extends Activity {
 	public static void testLoginAPI() {
 		// Test login API
 		APIContact.validateLogin("Jordan", "testing");
+		
+	}
+
+	public static void testSlideNum() {
+		
+
+		int slideNum = APIContact.getSlideNumber("2", "test");
+		Log.d("NimpresClient", "slide # " + slideNum);
 	}
 
 	public static void testLANAdvertising() {
