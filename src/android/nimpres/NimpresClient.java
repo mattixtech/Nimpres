@@ -75,7 +75,7 @@ public class NimpresClient extends Activity {
 		// testLANAdvertising();
 		// testLANListening();
 		// testDPSDownload(ctx);
-		// testDPSHosting("test.dps",ctx);
+		// testDPSHosting("cars.dps",ctx);
 
 		// Exit the app after performing test
 		// this.finish();
@@ -193,8 +193,8 @@ public class NimpresClient extends Activity {
 		Log.d("NimpresClient", "DPS path:" + testInternetDPS.getDpsPath());
 		/*
 		 * String folder =
-		 * DPSGet.DownloadFromURL("http://mattixtech.net/filez/test.dps",
-		 * "test.dps", "testing_dps", ctx);
+		 * DPSGet.DownloadFromURL("http://mattixtech.net/filez/cars.dps",
+		 * "cars.dps", "testing_dps", ctx);
 		 * Log.d("NimpresClient","downloaded dps to:"+folder); DPS testDPS = new
 		 * DPS(folder); Log.d("NimpresClient","DPS fully created");
 		 * Log.d("NimpresClient"
