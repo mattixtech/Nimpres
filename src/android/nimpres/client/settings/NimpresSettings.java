@@ -34,7 +34,11 @@ public class NimpresSettings {
 	
 	public static final String API_BASE_URL = "http://droidshare.testing.mattixtech.net/api/";
 	public static final String API_LOGIN = "login";
+<<<<<<< HEAD
+	public static final String API_LOGIN = "get_status";
+=======
 	public static final String API_SLIDE = "get_slide_num";
+>>>>>>> branch 'refs/heads/master' of git+ssh://git@github.com/mattixtech/Nimpres.git
 	public static final String API_CREATE_ACCOUNT = "create_account";
 	public static final String API_CREATE_PRESENTATION = "create_presentation";
 	public static final String API_UPDATE_PRESENTATION = "update_presentation";

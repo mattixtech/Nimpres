@@ -5,8 +5,11 @@ error_reporting(E_ALL|E_STRICT);
 require_once('settings.php');
 require_once(INCLUDES_DIR . '/' . "functions.php");
 require_once(INCLUDES_DIR . '/' . "MySQLDatabase.php");
-require_once(INCLUDES_DIR . '/' . "Session.php");
+//require_once(INCLUDES_DIR . '/' . "Session.php");
 require_once(INCLUDES_DIR . '/dsobjects/' . "DSUser.php");
+require_once(INCLUDES_DIR . '/dsobjects/' . "PresentationDTO.php");
+require_once(INCLUDES_DIR . '/dsobjects/' . "PresentationDO.php");
+require_once(INCLUDES_DIR . '/dsobjects/' . "PresentationBO.php");
 
 if(GLOBAL_DEBUGGING)
 {
