@@ -26,8 +26,6 @@
  */
 package android.nimpres;
 
-import ds.test.R;
-import ds.test.Test_PresPack;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.BitmapFactory;
@@ -72,7 +70,7 @@ public class NimpresClient extends Activity {
         //testDPSHosting("test.dps",ctx);
         
         //Exit the app after performing test
-        this.finish();
+        //this.finish();
         
         /*
          * End of testing code
@@ -86,18 +84,23 @@ public class NimpresClient extends Activity {
     
     public void testPresentation(Context ctx){
     	setContentView(R.layout.presentation_viewer);
-    	Button nextButton = (Button)ctx.findViewById(R.id.pvNext);
-        Button backButton = (Button)ctx.findViewById(R.id.pvBack);
-        TextView title = (TextView)ctx.findViewById(R.id.pvTitle);
+    	Button nextButton = (Button)findViewById(R.id.pvNext);
+        Button backButton = (Button)findViewById(R.id.pvBack);
+        TextView title = (TextView)findViewById(R.id.pvTitle);
         
         testDPS = new DPS("http://mattixtech.net/filez/test.dps","internet","","","dps_download",ctx);
-        
+        Log.d("NimpresClient","DPS fully created");
+        Log.d("NimpresClient","Slide is #"+testDPS.getDpsPres().getCurrentSlide());
+        Log.d("NimpresClient","Path is: "+testDPS.getDpsPath()+"/"+testDPS.getDpsPres().getCurrentSlideFile()); 
         title.setText(testDPS.getDpsPres().getTitle());
+        updateSlide();
         
         nextButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Perform action on click
             	testDPS.getDpsPres().nextSlide();
+            	Log.d("NimpresClient","Slide is #"+testDPS.getDpsPres().getCurrentSlide()); 
+            	Log.d("NimpresClient","Path is: "+testDPS.getDpsPath()+"/"+testDPS.getDpsPres().getCurrentSlideFile());
             	updateSlide();
             }
         });
@@ -106,15 +109,20 @@ public class NimpresClient extends Activity {
             public void onClick(View v) {
                 // Perform action on click
             	testDPS.getDpsPres().previousSlide();
+            	Log.d("NimpresClient","Slide is #"+testDPS.getDpsPres().getCurrentSlide());
+            	Log.d("NimpresClient","Path is: "+testDPS.getDpsPath()+"/"+testDPS.getDpsPres().getCurrentSlideFile());
             	updateSlide();
             }
-        });   	
-    	Log.d("NimpresClient","DPS fully created");    	
+        });
+        
+    	    	
     }
     
     public void updateSlide(){
     	ImageView slide = (ImageView) findViewById(R.id.pvSlide);
-    	slide.setImageBitmap(BitmapFactory.decodeFile(testDPS.getDpsPres().getCurrentSlideFile()));
+    	Log.d("NimpresClient","Slide is #"+testDPS.getDpsPres().getCurrentSlide());
+    	Log.d("NimpresClient","Path is: "+testDPS.getDpsPath()+"/"+testDPS.getDpsPres().getCurrentSlideFile());
+    	slide.setImageBitmap(BitmapFactory.decodeFile(testDPS.getDpsPath()+"/"+testDPS.getDpsPres().getCurrentSlideFile()));
     }
     
     
