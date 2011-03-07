@@ -32,7 +32,7 @@ public class Presentation {
 	private String owner = "";
 	private int timestamp = 0;
 	private int numSlides = 0;
-	private int currentSlide = 1;
+	private int currentSlide = 0;
 	private Slide[] slideFiles;
 	
 	/**
@@ -116,7 +116,9 @@ public class Presentation {
 	 * @param currentSlide the currentSlide to set
 	 */
 	public void setCurrentSlide(int currentSlide) {
-		this.currentSlide = currentSlide;
+		if(currentSlide < this.numSlides)
+			this.currentSlide = currentSlide;
+			
 	}
 
 	/**

@@ -63,8 +63,7 @@ public class NimpresClient extends Activity {
 		/*
 		 * Testing Code Below
 		 */
-		//TimerTask task  = new PresentationUpdater();
-		//new Timer().scheduleAtFixedRate(task, 100, 2000);
+		
 
 		// Set to main view
 		setContentView(R.layout.main);
@@ -128,11 +127,17 @@ public class NimpresClient extends Activity {
 	public void testPresentation(Context ctx) {
 		setContentView(R.layout.presentation_viewer);
 		TextView title = (TextView) findViewById(R.id.pvTitle);
-
-		testDPS = new DPS("http://mattixtech.net/filez/test.dps", "internet",
-				"", "", "dps_download", ctx);
+		title.setText("b");
+		testDPS = new DPS("http://mattixtech.net/filez/will.dps", "internet",
+				"", "", "dps_down", ctx);
 		testPres = testDPS.getDpsPres();
-
+		
+		ImageView slide = (ImageView) findViewById(R.id.pvSlide);
+		
+		TimerTask task  = new PresentationUpdater(testPres,slide);
+		
+		new Timer().scheduleAtFixedRate(task, 100, 2000);
+		
 		Log.d("NimpresClient", "DPS fully created");
 		Log.d("NimpresClient", "Slide is #" + testPres.getCurrentSlide());
 		Log.d("NimpresClient", "Path is: " + testPres.getPath()
