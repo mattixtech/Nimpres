@@ -5,7 +5,11 @@
 	<TextView android:layout_width="fill_parent"
 		android:layout_height="wrap_content" android:id="@+id/pvTitle"
 		android:text="" />
+	<TextView android:layout_height="wrap_content"
+		android:layout_width="wrap_content" android:text="" android:id="@+id/pvSlideTitle"></TextView>
 	<ImageView android:src="@drawable/icon"
 		android:layout_height="wrap_content" android:id="@+id/pvSlide"
 		android:layout_width="wrap_content"></ImageView>
+	<TextView android:text="" android:id="@+id/pvNotes"
+		android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
 </LinearLayout>
