@@ -129,7 +129,7 @@ public class NimpresClient extends Activity {
 		setContentView(R.layout.presentation_viewer);
 		TextView title = (TextView) findViewById(R.id.pvTitle);
 
-		testDPS = new DPS("http://mattixtech.net/filez/cars3.dps", "internet",
+		testDPS = new DPS("http://mattixtech.net/filez/test.dps", "internet",
 				"", "", "dps_download", ctx);
 		testPres = testDPS.getDpsPres();
 
@@ -185,7 +185,7 @@ public class NimpresClient extends Activity {
 	public static void testDPSDownload(Context ctx) {
 		// DPS testInternetDPS = new
 		// DPS("192.168.1.1","lan","","","testing_dps",ctx);
-		DPS testInternetDPS = new DPS("http://mattixtech.net/filez/cars3.dps",
+		DPS testInternetDPS = new DPS("http://mattixtech.net/filez/test.dps",
 				"internet", "", "", "dps_download", ctx);
 		Log.d("NimpresClient", "DPS fully created");
 		Log.d("NimpresClient", "DPS presentation title:"
