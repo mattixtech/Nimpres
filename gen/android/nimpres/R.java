@@ -31,6 +31,7 @@ public final class R {
         public static final int pvSlideTitle=0x7f060011;
         public static final int pvTitle=0x7f060010;
         public static final int pvmBack=0x7f060014;
+        public static final int pvmJump=0x7f060019;
         public static final int pvmLeave=0x7f060016;
         public static final int pvmNext=0x7f060015;
         public static final int pvmPause=0x7f060017;

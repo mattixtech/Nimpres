@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?> 
+<?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 	<item android:id="@+id/pvmBack" android:icon="@drawable/icon"
 		android:title="Back" />
@@ -10,4 +10,6 @@
 		android:title="Pause" />
 	<item android:id="@+id/pvmResume" android:icon="@drawable/icon"
 		android:title="Resume" />
+	<item android:id="@+id/pvmJump" android:icon="@drawable/icon"
+		android:title="Jump To" />
 </menu>

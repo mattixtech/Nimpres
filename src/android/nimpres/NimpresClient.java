@@ -113,6 +113,10 @@ public class NimpresClient extends Activity {
 		case R.id.pvmResume:
 			testPres.setPaused(false);
 			return true;
+		case R.id.pvmJump:
+			testPres.setPaused(true);
+			// prompt for slide number
+			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
