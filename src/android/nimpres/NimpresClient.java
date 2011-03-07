@@ -148,7 +148,7 @@ public class NimpresClient extends Activity {
 		
         
 		//title.setText("b");
-		testDPS = new DPS("http://mattixtech.net/filez/will.dps", "internet",
+		testDPS = new DPS("http://mattixtech.net/filez/chatty.dps", "internet",
 				"", "", "dps_down", ctx);
 		testPres = testDPS.getDpsPres();		
 		
