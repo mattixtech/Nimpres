@@ -34,7 +34,7 @@ public class Presentation {
 	private int numSlides = 0;
 	private int currentSlide = 0;
 	private Slide[] slideFiles;
-	boolean paused = false;
+	private boolean paused = false;
 	
 	/**
 	 * @return the owner
