@@ -24,8 +24,8 @@ public final class R {
         public static final int editText3=0x7f06000a;
         public static final int imageView1=0x7f06000d;
         public static final int listView1=0x7f060008;
-        public static final int pvNotes=0x7f060011;
-        public static final int pvSlide=0x7f060010;
+        public static final int pvNotes=0x7f060010;
+        public static final int pvSlide=0x7f060011;
         public static final int pvSlideTitle=0x7f06000f;
         public static final int pvTitle=0x7f06000e;
         public static final int pvmBack=0x7f060012;
