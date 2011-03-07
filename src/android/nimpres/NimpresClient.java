@@ -40,6 +40,8 @@ import android.nimpres.client.presentation.Presentation;
 import android.nimpres.client.presentation.PresentationUpdater;
 import android.nimpres.client.web.APIContact;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -51,6 +53,8 @@ public class NimpresClient extends Activity {
 
 	DPS testDPS = null;
 	Presentation testPres = null;
+
+	private Handler mHandler = new Handler();
 
 	/** Called when the activity is first created. */
 	@Override
@@ -64,7 +68,8 @@ public class NimpresClient extends Activity {
 		 * Testing Code Below
 		 */
 		
-
+        
+        
 		// Set to main view
 		setContentView(R.layout.main);
 		//testSlideNum();
@@ -121,44 +126,46 @@ public class NimpresClient extends Activity {
 	/*
 	 * Testing methods
 	 */
+	
+	
+	private Runnable mUpdateTask = new Runnable() {
+		   public void run() {
+   
+			   if( ! testPres.isPaused()){
+				   int slideNum = APIContact.getSlideNumber("2", "test");
+				   testPres.setCurrentSlide(slideNum);
+				   updateSlide();
+			   }
+			   
+		       mHandler.postDelayed(this,2000);
+		   }
+		};
+	
 
 	public void testPresentation(Context ctx) {
-		setContentView(R.layout.presentation_viewer);
-		TextView title = (TextView) findViewById(R.id.pvTitle);
 		
-		TextView slideTitle = (TextView) findViewById(R.id.pvSlideTitle);
-		TextView slideNotes = (TextView) findViewById(R.id.pvNotes);
+		setContentView(R.layout.presentation_viewer);	
 		
+        
 		//title.setText("b");
 		testDPS = new DPS("http://mattixtech.net/filez/will.dps", "internet",
 				"", "", "dps_down", ctx);
-		testPres = testDPS.getDpsPres();
-		
-		ImageView slide = (ImageView) findViewById(R.id.pvSlide);
-		
-		TimerTask task  = new PresentationUpdater(testPres,slide);
-		
-		new Timer().scheduleAtFixedRate(task, 100, 2000);
-		
-		Log.d("NimpresClient", "DPS fully created");
-		Log.d("NimpresClient", "Slide is #" + testPres.getCurrentSlide());
-		Log.d("NimpresClient", "Path is: " + testPres.getPath()
-				+ testPres.getCurrentSlideFile().getFileName());
-
-		title.setText(testPres.getTitle());
-		
-		slideTitle.setText(testPres.getCurrentSlideFile().getSlideTitle());
-		slideNotes.setText(testPres.getCurrentSlideFile().getSlideComments());
+		testPres = testDPS.getDpsPres();		
 		
 		updateSlide();
-
+		mHandler.removeCallbacks(mUpdateTask);
+        mHandler.postDelayed(mUpdateTask, 100);
 	}
 
 	public void updateSlide() {
 		ImageView slide = (ImageView) findViewById(R.id.pvSlide);
-		Log.d("NimpresClient", "Slide is #" + testPres.getCurrentSlide());
-		Log.d("NimpresClient", "Path is: " + testPres.getPath()
-				+ testPres.getCurrentSlideFile().getFileName());
+		TextView title = (TextView) findViewById(R.id.pvTitle);		
+		TextView slideTitle = (TextView) findViewById(R.id.pvSlideTitle);
+		TextView slideNotes = (TextView) findViewById(R.id.pvNotes);
+		
+		title.setText(testPres.getTitle());		
+		slideTitle.setText(testPres.getCurrentSlideFile().getSlideTitle());
+		slideNotes.setText(testPres.getCurrentSlideFile().getSlideComments());
 		slide.setImageBitmap(BitmapFactory.decodeFile(testPres.getPath()
 				+ testPres.getCurrentSlideFile().getFileName()));
 	}
