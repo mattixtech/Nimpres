@@ -108,12 +108,10 @@ public class NimpresClient extends Activity {
 			updateSlide();
 			return true;
 		case R.id.pvmPause:
-			testPres.nextSlide();
-			updateSlide();
+			testPres.setPaused(true);
 			return true;
 		case R.id.pvmResume:
-			testPres.nextSlide();
-			updateSlide();
+			testPres.setPaused(false);
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
@@ -127,7 +125,11 @@ public class NimpresClient extends Activity {
 	public void testPresentation(Context ctx) {
 		setContentView(R.layout.presentation_viewer);
 		TextView title = (TextView) findViewById(R.id.pvTitle);
-		title.setText("b");
+		
+		TextView slideTitle = (TextView) findViewById(R.id.pvSlideTitle);
+		TextView slideNotes = (TextView) findViewById(R.id.pvNotes);
+		
+		//title.setText("b");
 		testDPS = new DPS("http://mattixtech.net/filez/will.dps", "internet",
 				"", "", "dps_down", ctx);
 		testPres = testDPS.getDpsPres();
@@ -144,6 +146,10 @@ public class NimpresClient extends Activity {
 				+ testPres.getCurrentSlideFile().getFileName());
 
 		title.setText(testPres.getTitle());
+		
+		slideTitle.setText(testPres.getCurrentSlideFile().getSlideTitle());
+		slideNotes.setText(testPres.getCurrentSlideFile().getSlideComments());
+		
 		updateSlide();
 
 	}

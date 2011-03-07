@@ -34,6 +34,7 @@ public class Presentation {
 	private int numSlides = 0;
 	private int currentSlide = 0;
 	private Slide[] slideFiles;
+	boolean paused = false;
 	
 	/**
 	 * @return the owner
@@ -147,6 +148,20 @@ public class Presentation {
 	public void previousSlide(){
 		if(currentSlide>0)
 			currentSlide--;
+	}
+
+	/**
+	 * @return the paused
+	 */
+	public boolean isPaused() {
+		return paused;
+	}
+
+	/**
+	 * @param paused the paused to set
+	 */
+	public void setPaused(boolean paused) {
+		this.paused = paused;
 	}
 
 }

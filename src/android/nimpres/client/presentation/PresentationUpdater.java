@@ -1,4 +1,5 @@
 package android.nimpres.client.presentation;
+
 import java.util.TimerTask;
 
 import android.graphics.BitmapFactory;
@@ -7,35 +8,38 @@ import android.util.Log;
 import android.widget.ImageView;
 
 public class PresentationUpdater extends TimerTask {
-	
+
 	Presentation pres = null;
 	ImageView img = null;
-	
-	public PresentationUpdater(Presentation pres, ImageView img){
+
+	public PresentationUpdater(Presentation pres, ImageView img) {
 		this.pres = pres;
 		this.img = img;
 	}
-	   public void run() {
-		   int slideNum = APIContact.getSlideNumber("2", "test");
+
+	public void run() {
+		if (!pres.isPaused()) {
+			int slideNum = APIContact.getSlideNumber("2", "test");
 			Log.d("NimpresClient", "slide # " + slideNum);
-			
-			if(pres.getCurrentSlide() != slideNum){
+
+			if (pres.getCurrentSlide() != slideNum) {
 				pres.setCurrentSlide(slideNum);
-				
+
 				img.post(
 
-					    new Runnable() {
+				new Runnable() {
 
-							@Override
-							public void run() {
-								// TODO Auto-generated method stub
-								img.setImageBitmap(BitmapFactory.decodeFile(pres.getPath()+pres.getCurrentSlideFile().getFileName()));
-							}
-					    	
-					        
-					    } 
-				);				
-				
+					@Override
+					public void run() {
+						// TODO Auto-generated method stub
+						img.setImageBitmap(BitmapFactory.decodeFile(pres
+								.getPath()
+								+ pres.getCurrentSlideFile().getFileName()));
+					}
+
+				});
+
 			}
-	   }
+		}
+	}
 }
