@@ -109,6 +109,7 @@ public class NimpresClient extends Activity {
 			updateSlide();
 			return true;
 		case R.id.pvmLeave:
+			testPres.setPaused(true);
 			setContentView(R.layout.end_presentation);
 			return true;
 		case R.id.pvmPause:
