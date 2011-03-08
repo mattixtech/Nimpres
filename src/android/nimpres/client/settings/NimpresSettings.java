@@ -32,14 +32,14 @@ public class NimpresSettings {
 	 * API Addresses
 	 */
 	
-	public static final String API_BASE_URL = "http://droidshare.testing.mattixtech.net/api/";
-	public static final String API_LOGIN = "login";
-	public static final String API_SLIDE = "get_slide_num";
-	public static final String API_CREATE_ACCOUNT = "create_account";
-	public static final String API_CREATE_PRESENTATION = "create_presentation";
-	public static final String API_UPDATE_PRESENTATION = "update_presentation";
-	public static final String API_DELETE_PRESENTATION = "delete_presentation";
-	public static final String API_LIST_PRESENTATIONs = "list_presentations";
+	public static final String API_BASE_URL = "http://api.nimpres.com/";
+	public static final String API_LOGIN = "login"; 								//boolean response
+	public static final String API_PRESENTATION_CURRENT_SLIDE = "get_slide_num"; 	//integer response
+	public static final String API_PRESENTATION_UPDATE_SLIDE = "update_slide_num"; 	//boolean response
+	public static final String API_CREATE_ACCOUNT = "create_account"; 				//boolean response
+	public static final String API_CREATE_PRESENTATION = "create_presentation"; 	//boolean response
+	public static final String API_DELETE_PRESENTATION = "delete_presentation"; 	//boolean response
+	public static final String API_LIST_PRESENTATIONS = "list_presentations"; 		//xml response
 	
 	/*
 	 * API Message

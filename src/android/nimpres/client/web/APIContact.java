@@ -121,7 +121,7 @@ public class APIContact {
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
 		params.add(new BasicNameValuePair("id", id));
 		params.add(new BasicNameValuePair("password", password));
-		HttpEntity resEntity = apiPostRequest(NimpresSettings.API_SLIDE,params);
+		HttpEntity resEntity = apiPostRequest(NimpresSettings.API_PRESENTATION_CURRENT_SLIDE,params);
 		try{
 			result = EntityUtils.toString(resEntity);
 			Log.d("APIContact","post result:"+result);
@@ -147,7 +147,7 @@ public class APIContact {
 		params.add(new BasicNameValuePair("id", id));
 		params.add(new BasicNameValuePair("password", password));
 		params.add(new BasicNameValuePair("slide_num", slide_num));
-		HttpEntity resEntity = apiPostRequest(NimpresSettings.API_SLIDE,params);
+		HttpEntity resEntity = apiPostRequest(NimpresSettings.API_PRESENTATION_UPDATE_SLIDE,params);
 		try{
 			result = EntityUtils.toString(resEntity);
 			Log.d("APIContact","post result:"+result);
