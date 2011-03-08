@@ -30,6 +30,7 @@ require_once('../includes/init.php');
 				$newDTO = new PresentationDTO;
 				
 				//Populate the new PresentationDTO with values from the pres table
+				$newDTO-> pid = $pres_row['pid'];
 				$newDTO-> user = $pres_row['user'];
 				$newDTO-> title = $pres_row['title'];
 				$newDTO-> pres_pass = $pres_row['pres_pass'];
@@ -47,6 +48,27 @@ require_once('../includes/init.php');
 				return $newDTO;
 			}
 			
+		}
+		
+		public static function setByPID($newDTO = '')
+		{
+			ini_set('display_errors',1);
+			error_reporting(E_ALL|E_STRICT);
+			if (!empty($newDTO->pid) && !empty($slide_num)){
+				
+				$mydb = new MySQLDatabase(DATABASE_ADDR,DATABASE_NAME,DATABASE_USER,DATABASE_PASSWORD);
+				if(GLOBAL_DEBUGGING)
+					$mydb -> debug_on();
+			
+				$insert_slide_num = $mydb->escape_query_data($slide_num);
+				$sql = "UPDATE pres_status SET slide_num = '$slide_num' WHERE pid = '$newDTO->pid'";			
+				$mydb->run_unsafe_query($sql);
+				  	return TRUE;
+			}
+			
+			else{
+				return FALSE;
+			}
 		}
 	}
 

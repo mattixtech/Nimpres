@@ -135,6 +135,30 @@ public class APIContact {
 			return 0;
 	}
 	
+	/**
+	 * This method sets the current slide number for the DPS identified by id
+	 * @param id
+	 * @param password
+	 * @return
+	 */
+	public static boolean updateSlideNumber(String id, String password, String slide_num){
+		String result = "";
+		List<NameValuePair> params = new ArrayList<NameValuePair>();
+		params.add(new BasicNameValuePair("id", id));
+		params.add(new BasicNameValuePair("password", password));
+		params.add(new BasicNameValuePair("slide_num", slide_num));
+		HttpEntity resEntity = apiPostRequest(NimpresSettings.API_SLIDE,params);
+		try{
+			result = EntityUtils.toString(resEntity);
+			Log.d("APIContact","post result:"+result);
+		}catch (Exception e) {
+	        e.printStackTrace();
+	    }
+		if(result.equals(NimpresSettings.API_RESPONSE_POSITIVE))
+			return true;
+		return false;
+	}
+	
 	public static void pushDPSToWeb(String login, String password, String fileName, String pesentationTitle, boolean passwordProtect){
 		
 		/*Posting file cod
