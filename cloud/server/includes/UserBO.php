@@ -1,6 +1,6 @@
 <?php
-
-	class DSUser{
+//TODO Convert User to use the three layer architecture
+	class UserBO{
 		/*Member variables*/
 		
 		function __construct(){

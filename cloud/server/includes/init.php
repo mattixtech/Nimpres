@@ -3,13 +3,12 @@
 ini_set('display_errors',1);
 error_reporting(E_ALL|E_STRICT);
 require_once('settings.php');
-require_once(INCLUDES_DIR . '/' . "functions.php");
-require_once(INCLUDES_DIR . '/' . "MySQLDatabase.php");
-//require_once(INCLUDES_DIR . '/' . "Session.php");
-require_once(INCLUDES_DIR . '/dsobjects/' . "DSUser.php");
-require_once(INCLUDES_DIR . '/dsobjects/' . "PresentationDTO.php");
-require_once(INCLUDES_DIR . '/dsobjects/' . "PresentationDO.php");
-require_once(INCLUDES_DIR . '/dsobjects/' . "PresentationBO.php");
+require_once("functions.php");
+require_once("MySQLDatabase.php");
+require_once("UserBO");
+require_once("PresentationDTO.php");
+require_once("PresentationDO.php");
+require_once("PresentationBO.php");
 
 if(GLOBAL_DEBUGGING)
 {

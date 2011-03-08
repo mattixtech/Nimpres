@@ -2,7 +2,7 @@
 
 ini_set('display_errors',1);
 error_reporting(E_ALL|E_STRICT);
-require_once('../includes/init.php');
+require_once('./includes/init.php');
 
 $mydb = new MySQLDatabase(DATABASE_ADDR,DATABASE_NAME,DATABASE_USER,DATABASE_PASSWORD);
   if(GLOBAL_DEBUGGING)
@@ -19,7 +19,7 @@ else if(strlen($password)< 8)	// Check if the supplied password is under 8 chara
 	echo 'TS';	//Reply with too short
 else if (strlen($login)< 1)
 	echo 'NU';
-else if((DSUser::create_new_login($login, $password, $key)))
+else if((UserBO::create_new_login($login, $password, $key)))
 	echo 'OK';
 else
 	echo 'FAIL';
