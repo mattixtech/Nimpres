@@ -55,6 +55,7 @@ public class DPSServer implements Runnable{
 		dpsFile = dpsFileName;
 		this.ctx = ctx;
 		receiver = new ConnectionReceiver();
+		receiver.enable();
 	}
 	
 	/**
@@ -91,7 +92,9 @@ public class DPSServer implements Runnable{
         	//Thread.sleep(1);
         	
             connectionFromClient = receiver.get();
+            
             if(connectionFromClient != null && receiver.isActive()){
+            	Log.d("DPSServer","got something");
             	if(connectionFromClient.isConnected()){
             		try{
             			Log.d("DPSServer","peer initiating transfer request");
@@ -123,7 +126,9 @@ public class DPSServer implements Runnable{
 	 */
 	private void openServerSocket(){
         Thread socketListener = new Thread(new ServerSocketListener(receiver));
-        socketListener.start();        
+        Log.d("DPSServer","Attempting to start ServerSocketListener");
+        Log.d("DPSServer","Listener Object: "+socketListener);
+        socketListener.start();
     }
 	
 	/**

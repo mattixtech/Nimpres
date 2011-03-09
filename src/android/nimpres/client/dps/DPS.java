@@ -126,15 +126,15 @@ public class DPS {
 			
 			int current = 0;
 			while ((current = bis.read()) != -1) {
-				baf.append((byte) current);
-				//byte toWrite = (byte)current;
-				//fos.write(toWrite);
+				//baf.append((byte) current);
+				byte toWrite = (byte)current;
+				fos.write(toWrite);
 			}
 			
 			/*Save downloaded file to disk*/
 			//FileOutputStream fos = ctx.openFileOutput(fileName,
 			//		Context.MODE_PRIVATE);// new FileOutputStream(file);
-			fos.write(baf.toByteArray());
+			//fos.write(baf.toByteArray());
 			fos.close();
 			/******************************************************/
 			
@@ -219,7 +219,7 @@ public class DPS {
 				
 				//Receive the response message
 				TCPMessage inMsg = new TCPMessage(in);
-				
+				Log.d("DPS","received response from peer: "+inMsg);
 				//Check the type of the response message
 				if(inMsg.getType().equals(NimpresSettings.MSG_RESPONSE_FILE_TRANSFER)){
 					//Server responded with the file
@@ -229,10 +229,18 @@ public class DPS {
 					byte[] receivedFile = inMsg.getData();
 					
 					//Attempt to write the received dps file to disk and then extract it					
-					FileOutputStream fos = ctx.openFileOutput(dpsID, Context.MODE_PRIVATE);
+					FileOutputStream fos = ctx.openFileOutput(dpsID, Context.MODE_WORLD_READABLE);
 					fos.write(receivedFile);
 					fos.close();
-					ret = Utilities.unzip(ctx.getFilesDir()+File.separator+dpsID, folderToSave, ctx);
+					File wroteFile = new File(ctx.getFilesDir()+File.separator+dpsID);
+					if(wroteFile.exists())
+						Log.d("DPS","file wrote successfully");
+					else
+						Log.d("DPS","file not wrote");
+					
+					
+					Log.d("DPS","just wrote to disk: "+ctx.getFilesDir()+File.separator+dpsID);
+					ret = Utilities.unzip(dpsID, folderToSave, ctx);
 					Log.d("DPS","extracted file to:"+ret);
 				}else if(inMsg.getType().equals(NimpresSettings.MSG_RESPONSE_INVALID_REQ)){
 					//Server denied transfer due to invalid id/password

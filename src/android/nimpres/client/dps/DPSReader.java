@@ -51,6 +51,7 @@ public class DPSReader {
 	 * @return
 	 */
 	public static Presentation makePresentation(String dpsPath){
+		Log.d("DPSReader","attempting to create presentation from: "+dpsPath);
 		Presentation presCreated = null;
 		File metaFile = new File(dpsPath +File.separator+NimpresSettings.METAFILE_NAME);
 		if(metaFile.exists()){

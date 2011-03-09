@@ -40,7 +40,7 @@ import android.util.Log;
 
 public class Utilities {
 
-	public String getLocalIpAddress() {
+	public static String getLocalIpAddress() {
 	    try {
 	        for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
 	            NetworkInterface intf = en.nextElement();
@@ -84,6 +84,8 @@ public class Utilities {
 	 * @return
 	 */
 	static public String unzip(String fileName, String toFolder, Context ctx) {
+		
+		Log.d("Utilities","attempting unzip: "+fileName+" to: "+toFolder);
 		String ret="";
 		try {
 			ZipInputStream in = null;
@@ -112,7 +114,8 @@ public class Utilities {
 			}
 			ret = dirToMake.toString();
 		} catch (Exception e) {
-			
+			Log.d("Utilities","Unzip exception: "+e.getMessage());
+			e.printStackTrace();
 		}
 		return ret;
 	}
