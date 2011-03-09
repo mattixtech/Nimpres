@@ -35,14 +35,15 @@ import android.nimpres.client.settings.NimpresSettings;
 import android.util.Log;
 
 public class ConnectionReceiver {
-	private boolean isDisabled = true;
+	private boolean isDisabled = false;
     private BlockingQueue<Socket> socketQue;
     
     public ConnectionReceiver(){
         this.socketQue = new ArrayBlockingQueue<Socket>(NimpresSettings.SERVER_QUE_SIZE);
     }
 
-    public synchronized boolean put(Socket s){
+    //Synchronize?
+    public boolean put(Socket s){
         return socketQue.offer(s);
     }
 
@@ -60,7 +61,7 @@ public class ConnectionReceiver {
         isDisabled = true;
     }
 
-    public synchronized boolean isActive(){
+    public boolean isActive(){
         return !isDisabled;
     }
 
