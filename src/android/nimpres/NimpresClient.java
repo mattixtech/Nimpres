@@ -73,8 +73,8 @@ public class NimpresClient extends Activity {
 		// testLoginAPI();
 		//testLANAdvertising();
 		 //testLANListening();
-		 //testDPSDownload(ctx);
-		testDPSHosting("tmpdps_down.dps",ctx);
+		 testDPSDownload(ctx);
+		//testDPSHosting("tmpdps_down.dps",ctx);
 
 		// Exit the app after performing test
 		// this.finish();
@@ -201,7 +201,7 @@ public class NimpresClient extends Activity {
 
 	public static void testDPSDownload(Context ctx) {
 		// DPS testInternetDPS = new
-		DPS lanDPS = new DPS("192.168.1.4","lan","","","testing_dps",ctx);
+		DPS lanDPS = new DPS("192.168.1.4","lan","123","pass","testing_dps",ctx);
 		//DPS testInternetDPS = new DPS("http://mattixtech.net/filez/test.dps",
 		//		"internet", "", "", "dps_download", ctx);
 		Log.d("NimpresClient", "DPS fully created");

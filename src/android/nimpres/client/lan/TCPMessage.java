@@ -103,8 +103,7 @@ public class TCPMessage {
             byte[] buff = new byte[len]; //Create a buffer to store the message
             in.readFully(buff);
             type = parseType(buff);
-            data = new byte[len];
-            data = parseData(buff);
+            data = parseData(type,buff,len);
             length = len;
             Log.d("TCPMessage","Received message: "+type);
         }catch(Exception e){
@@ -128,13 +127,13 @@ public class TCPMessage {
      * @param message
      * @return
      */
-    private byte[] parseData(byte[] message){
-        String strMsg = new String(message);
-        int dataLoc = strMsg.indexOf("$")+1;
-        String dataPortion = strMsg.substring(dataLoc);
-        byte[] data = new byte[dataPortion.length()];
+    private byte[] parseData(String type,byte[] message,int length){
+        //String strMsg = new String(message);
+        //int dataLoc = strMsg.indexOf("$")+1;
+        //String dataPortion = strMsg.substring(dataLoc);
+        byte[] data = new byte[length - (type.length()+"$#".length())];
         int count=0;
-        for(int i=dataLoc;i<message.length;i++)
+        for(int i=(type.length()+"$#".length());i<length;i++)
             data[count++] = message[i];
         return data;
     }
