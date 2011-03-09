@@ -40,7 +40,7 @@ import android.util.Log;
 
 public class Utilities {
 
-	public String getLocalIpAddress() {
+	public static String getLocalIpAddress() {
 	    try {
 	        for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
 	            NetworkInterface intf = en.nextElement();

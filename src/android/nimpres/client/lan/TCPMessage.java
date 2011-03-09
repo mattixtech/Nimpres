@@ -29,6 +29,8 @@ package android.nimpres.client.lan;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 
+import android.util.Log;
+
 public class TCPMessage {
 	private byte[] data = {0};
 	private String type = "";
@@ -83,6 +85,7 @@ public class TCPMessage {
 	            out.write(messageHead.getBytes()); //Send the type
 	            out.write(data); //Send the data
 	            out.flush();
+	            Log.d("TCPMessage","Sent message: "+messageHead);
 	        }catch(Exception e){
 	            System.out.println("error"+e.getMessage());
 	            e.printStackTrace();
@@ -103,6 +106,7 @@ public class TCPMessage {
             data = new byte[len];
             data = parseData(buff);
             length = len;
+            Log.d("TCPMessage","Received message: "+type);
         }catch(Exception e){
             System.out.println("error"+e.getMessage());
             e.printStackTrace();            
