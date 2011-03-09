@@ -6,10 +6,10 @@
 		android:title="Next" />
 	<item android:id="@+id/pvmLeave" android:icon="@drawable/icon"
 		android:title="Leave" />
-	<item android:id="@+id/pvmPause" android:icon="@drawable/icon"
+	<item android:id="@+id/pvmPause" android:icon="@drawable/h72"
 		android:title="Pause" />
-	<item android:id="@+id/pvmResume" android:icon="@drawable/icon"
+	<item android:id="@+id/pvmResume" android:icon="@drawable/m48"
 		android:title="Resume" />
-	<item android:id="@+id/pvmJump" android:icon="@drawable/icon"
+	<item android:id="@+id/pvmJump" android:icon="@drawable/l36"
 		android:title="Jump To" />
 </menu>
