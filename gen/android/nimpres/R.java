@@ -27,8 +27,8 @@ public final class R {
         public static final int editText3=0x7f060009;
         public static final int epNo=0x7f060007;
         public static final int epYes=0x7f060006;
-        public static final int imageView1=0x7f060010;
         public static final int listView1=0x7f06000d;
+        public static final int phvSlide=0x7f060010;
         public static final int phvTitle=0x7f06000f;
         public static final int pvNotes=0x7f060013;
         public static final int pvSlide=0x7f060014;

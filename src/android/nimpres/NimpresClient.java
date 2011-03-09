@@ -39,6 +39,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.*;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -64,18 +65,17 @@ public class NimpresClient extends Activity {
 		// Set to main view
 		setContentView(R.layout.presentation_viewer);
 		// testSlideNum();
-		 testPresentation(ctx);
+		testPresentation(ctx);
 		/* If testing code please make a method below and call it here */
 		// testLoginAPI();
 		// testLANAdvertising();
 		// testLANListening();
 		// testDPSDownload(ctx);
-		//testDPSHosting("tmpdps_down.dps", ctx);
-		//testLANAdvertising();
-		 //testLANListening();
-		 testDPSDownload(ctx);
-		//testDPSHosting("tmpdps_down.dps",ctx);
-
+		// testDPSHosting("tmpdps_down.dps", ctx);
+		// testLANAdvertising();
+		// testLANListening();
+		//testDPSDownload(ctx);
+		// testDPSHosting("tmpdps_down.dps",ctx);
 
 		// Exit the app after performing test
 		// this.finish();
@@ -100,6 +100,7 @@ public class NimpresClient extends Activity {
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		// This avoids touchscreen events flooding the main thread
+
 		synchronized (event) {
 			try {
 				// Waits 16ms.
@@ -120,13 +121,23 @@ public class NimpresClient extends Activity {
 					deltaX = event.getRawX() - initialX;
 					deltaY = event.getRawY() - initialY;
 
+					// swiped up
+					if (deltaY < 0) {
+						// change to next slide
+						testPres.nextSlide();
+						updateSlide();
+					} else // swiped down
+					{	//change to previous slide
+						testPres.previousSlide();
+						updateSlide();
+					}
 
-					// swipped right
+					// swiped right
 					if (deltaX > 0) {
 						// change to next slide
 						testPres.nextSlide();
 						updateSlide();
-					} else {
+					} else { //swiped left
 						// change to previous slide
 						testPres.previousSlide();
 						updateSlide();
@@ -142,8 +153,7 @@ public class NimpresClient extends Activity {
 		}
 		return true;
 	}
-	
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle item selection
@@ -197,7 +207,7 @@ public class NimpresClient extends Activity {
 		setContentView(R.layout.presentation_viewer);
 
 		// title.setText("b");
-		testDPS = new DPS("http://mattixtech.net/filez/will.dps", "internet",
+		testDPS = new DPS("http://presentations.nimpres.com/progress.dps", "internet",
 				"", "", "dps_down", ctx);
 		testPres = testDPS.getDpsPres();
 
@@ -250,9 +260,10 @@ public class NimpresClient extends Activity {
 
 	public static void testDPSDownload(Context ctx) {
 
-		DPS lanDPS = new DPS("192.168.1.4","lan","123","pass","testing_dps",ctx);
-		//DPS testInternetDPS = new DPS("http://mattixtech.net/filez/test.dps",
-		//		"internet", "", "", "dps_download", ctx);
+		DPS lanDPS = new DPS("192.168.1.4", "lan", "123", "pass",
+				"testing_dps", ctx);
+		// DPS testInternetDPS = new DPS("http://mattixtech.net/filez/test.dps",
+		// "internet", "", "", "dps_download", ctx);
 		Log.d("NimpresClient", "DPS fully created");
 		Log.d("NimpresClient", "DPS presentation title:"
 				+ lanDPS.getDpsPres().getTitle());

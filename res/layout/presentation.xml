@@ -5,10 +5,6 @@
 	<TextView android:layout_width="fill_parent" android:id ="@+id/phvTitle"
 		android:layout_height="wrap_content" android:text="Hosting:Title" />
 	<ImageView android:layout_height="wrap_content"
-		android:layout_width="wrap_content" android:id="@+id/imageView1"
+		android:layout_width="wrap_content" android:id="@+id/phvSlide"
 		android:src="@drawable/icon"></ImageView>
-	<TextView android:text="Back" android:id="@+id/textView2"
-		android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
-	<TextView android:text="Next" android:id="@+id/textView1"
-		android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
 </LinearLayout>
