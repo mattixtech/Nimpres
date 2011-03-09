@@ -219,7 +219,7 @@ public class DPS {
 				
 				//Receive the response message
 				TCPMessage inMsg = new TCPMessage(in);
-				
+				Log.d("DPS","received response from peer: "+inMsg);
 				//Check the type of the response message
 				if(inMsg.getType().equals(NimpresSettings.MSG_RESPONSE_FILE_TRANSFER)){
 					//Server responded with the file

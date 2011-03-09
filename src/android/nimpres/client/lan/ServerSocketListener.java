@@ -26,9 +26,11 @@
  */
 package android.nimpres.client.lan;
 
+import java.net.InetAddress;
 import java.net.ServerSocket;
 
 import android.nimpres.client.settings.NimpresSettings;
+import android.nimpres.client.utilities.Utilities;
 import android.util.Log;
 
 public class ServerSocketListener implements Runnable{
@@ -46,7 +48,11 @@ public class ServerSocketListener implements Runnable{
 
         //Attempt to listen on the server port
         try{            
-            serverSocket = new ServerSocket(NimpresSettings.SERVER_FILE_PORT,NimpresSettings.SERVER_QUE_SIZE);
+        	Log.d("ServerSocketListener","trying to start up");
+        	
+            serverSocket = new ServerSocket(NimpresSettings.SERVER_FILE_PORT,NimpresSettings.SERVER_QUE_SIZE,InetAddress.getByName(Utilities.getLocalIpAddress()));
+            Log.d("ServerSocketListener","server socket created: "+serverSocket);
+            this.receiver.enable();
             initMessage();
         } catch(Exception e){
         	Log.d("ServerSocketListener","Cannot open port:"+NimpresSettings.SERVER_FILE_PORT+" "+e.getMessage());
@@ -60,7 +66,9 @@ public class ServerSocketListener implements Runnable{
          */
         while(!isStopped()){
             try{
+            	Log.d("ServerSocketListener","trying to receive");
                 if(receiver.isActive()){
+                	Log.d("ServerSocketListener","receiver was active");
                     if(receiver.put(serverSocket.accept())){
                     	Log.d("ServerSocketListener","added request to receiver");
                         //System.out.println("GrabBox has received synchronization request, adding to queue...");

@@ -32,6 +32,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
 
 import android.nimpres.client.settings.NimpresSettings;
+import android.util.Log;
 
 public class ConnectionReceiver {
 	private boolean isDisabled = true;
@@ -68,6 +69,7 @@ public class ConnectionReceiver {
     }
 
     public synchronized void enable(){
+    	Log.d("ConnectionReceiver","Enabled");
         isDisabled = false;
     }
 }
