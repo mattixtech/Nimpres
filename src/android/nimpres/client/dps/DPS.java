@@ -126,15 +126,15 @@ public class DPS {
 			
 			int current = 0;
 			while ((current = bis.read()) != -1) {
-				baf.append((byte) current);
-				//byte toWrite = (byte)current;
-				//fos.write(toWrite);
+				//baf.append((byte) current);
+				byte toWrite = (byte)current;
+				fos.write(toWrite);
 			}
 			
 			/*Save downloaded file to disk*/
 			//FileOutputStream fos = ctx.openFileOutput(fileName,
 			//		Context.MODE_PRIVATE);// new FileOutputStream(file);
-			fos.write(baf.toByteArray());
+			//fos.write(baf.toByteArray());
 			fos.close();
 			/******************************************************/
 			
