@@ -38,9 +38,7 @@ import android.nimpres.client.web.APIContact;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
+import android.view.*;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -62,19 +60,17 @@ public class NimpresClient extends Activity {
 		/*
 		 * Testing Code Below
 		 */
-		
-        
-        
+
 		// Set to main view
-		setContentView(R.layout.main);
-		//testSlideNum();
-		//testPresentation(ctx);
+		setContentView(R.layout.presentation_viewer);
+		// testSlideNum();
+		 testPresentation(ctx);
 		/* If testing code please make a method below and call it here */
 		// testLoginAPI();
-		//testLANAdvertising();
-		 //testLANListening();
-		 //testDPSDownload(ctx);
-		testDPSHosting("tmpdps_down.dps",ctx);
+		// testLANAdvertising();
+		// testLANListening();
+		// testDPSDownload(ctx);
+		//testDPSHosting("tmpdps_down.dps", ctx);
 
 		// Exit the app after performing test
 		// this.finish();
@@ -91,6 +87,58 @@ public class NimpresClient extends Activity {
 		return true;
 	}
 
+	private float initialX = 0;
+	private float initialY = 0;
+	private float deltaX = 0;
+	private float deltaY = 0;
+
+	@Override
+	public boolean onTouchEvent(MotionEvent event) {
+		// This avoids touchscreen events flooding the main thread
+		synchronized (event) {
+			try {
+				// Waits 16ms.
+				event.wait(16);
+
+				// when user touches the screen
+				if (event.getAction() == MotionEvent.ACTION_DOWN) {
+					// reset deltaX and deltaY
+					deltaX = deltaY = 0;
+
+					// get initial positions
+					initialX = event.getRawX();
+					initialY = event.getRawY();
+				}
+
+				// when screen is released
+				if (event.getAction() == MotionEvent.ACTION_UP) {
+					deltaX = event.getRawX() - initialX;
+					deltaY = event.getRawY() - initialY;
+
+
+					// swipped right
+					if (deltaX > 0) {
+						// change to next slide
+						testPres.nextSlide();
+						updateSlide();
+					} else {
+						// change to previous slide
+						testPres.previousSlide();
+						updateSlide();
+					}
+
+					return true;
+				}
+			}
+
+			catch (InterruptedException e) {
+				return true;
+			}
+		}
+		return true;
+	}
+	
+	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle item selection
@@ -125,44 +173,41 @@ public class NimpresClient extends Activity {
 	/*
 	 * Testing methods
 	 */
-	
-	
+
 	private Runnable mUpdateTask = new Runnable() {
-		   public void run() {
-   
-			   if( ! testPres.isPaused()){
-				   int slideNum = APIContact.getSlideNumber("2", "test");
-				   testPres.setCurrentSlide(slideNum);
-				   updateSlide();
-			   }
-			   
-		       mHandler.postDelayed(this,2000);
-		   }
-		};
-	
+		public void run() {
+
+			if (!testPres.isPaused()) {
+				int slideNum = APIContact.getSlideNumber("2", "test");
+				testPres.setCurrentSlide(slideNum);
+				updateSlide();
+			}
+
+			mHandler.postDelayed(this, 2000);
+		}
+	};
 
 	public void testPresentation(Context ctx) {
-		
-		setContentView(R.layout.presentation_viewer);	
-		
-        
-		//title.setText("b");
+
+		setContentView(R.layout.presentation_viewer);
+
+		// title.setText("b");
 		testDPS = new DPS("http://mattixtech.net/filez/will.dps", "internet",
 				"", "", "dps_down", ctx);
-		testPres = testDPS.getDpsPres();		
-		
+		testPres = testDPS.getDpsPres();
+
 		updateSlide();
 		mHandler.removeCallbacks(mUpdateTask);
-        mHandler.postDelayed(mUpdateTask, 100);
+		mHandler.postDelayed(mUpdateTask, 100);
 	}
 
 	public void updateSlide() {
 		ImageView slide = (ImageView) findViewById(R.id.pvSlide);
-		TextView title = (TextView) findViewById(R.id.pvTitle);		
+		TextView title = (TextView) findViewById(R.id.pvTitle);
 		TextView slideTitle = (TextView) findViewById(R.id.pvSlideTitle);
 		TextView slideNotes = (TextView) findViewById(R.id.pvNotes);
-		
-		title.setText(testPres.getTitle());		
+
+		title.setText(testPres.getTitle());
 		slideTitle.setText(testPres.getCurrentSlideFile().getSlideTitle());
 		slideNotes.setText(testPres.getCurrentSlideFile().getSlideComments());
 		slide.setImageBitmap(BitmapFactory.decodeFile(testPres.getPath()
@@ -172,11 +217,10 @@ public class NimpresClient extends Activity {
 	public static void testLoginAPI() {
 		// Test login API
 		APIContact.validateLogin("Jordan", "testing");
-		
+
 	}
 
 	public static void testSlideNum() {
-		
 
 		int slideNum = APIContact.getSlideNumber("2", "test");
 		Log.d("NimpresClient", "slide # " + slideNum);
@@ -201,9 +245,9 @@ public class NimpresClient extends Activity {
 
 	public static void testDPSDownload(Context ctx) {
 		// DPS testInternetDPS = new
-		DPS lanDPS = new DPS("192.168.1.4","lan","","","testing_dps",ctx);
-		//DPS testInternetDPS = new DPS("http://mattixtech.net/filez/test.dps",
-		//		"internet", "", "", "dps_download", ctx);
+		DPS lanDPS = new DPS("192.168.1.4", "lan", "", "", "testing_dps", ctx);
+		// DPS testInternetDPS = new DPS("http://mattixtech.net/filez/test.dps",
+		// "internet", "", "", "dps_download", ctx);
 		Log.d("NimpresClient", "DPS fully created");
 		Log.d("NimpresClient", "DPS presentation title:"
 				+ lanDPS.getDpsPres().getTitle());

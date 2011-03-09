@@ -8,8 +8,8 @@
 		android:title="Leave" />
 	<item android:id="@+id/pvmPause" android:icon="@drawable/h72"
 		android:title="Pause" />
-	<item android:id="@+id/pvmResume" android:icon="@drawable/m48"
+	<item android:id="@+id/pvmResume" android:icon="@drawable/h72"
 		android:title="Resume" />
-	<item android:id="@+id/pvmJump" android:icon="@drawable/l36"
+	<item android:id="@+id/pvmJump" android:icon="@drawable/h72"
 		android:title="Jump To" />
 </menu>
