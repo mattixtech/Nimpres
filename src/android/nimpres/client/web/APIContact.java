@@ -88,6 +88,29 @@ public class APIContact {
 	}
 	
 	/**
+	 * This method creates a user with a login/password combination
+	 * @param login
+	 * @param password
+	 * @return true if user is created, false otherwise
+	 */
+	public static boolean createUser(String login, String password){
+		String result = "";
+		List<NameValuePair> params = new ArrayList<NameValuePair>();
+		params.add(new BasicNameValuePair("login", login));
+        params.add(new BasicNameValuePair("password", password));
+        HttpEntity resEntity = apiPostRequest(NimpresSettings.API_CREATE_ACCOUNT,params);
+		try{
+			result = EntityUtils.toString(resEntity);
+			Log.d("APIContact","post result:"+result);
+		}catch (Exception e) {
+	        e.printStackTrace();
+	    }
+		if(result.equals(NimpresSettings.API_RESPONSE_POSITIVE))
+			return true;
+		return false;
+	}
+	
+	/**
 	 * This method validates a login/password combination
 	 * @param login
 	 * @param password
@@ -148,6 +171,39 @@ public class APIContact {
 		params.add(new BasicNameValuePair("password", password));
 		params.add(new BasicNameValuePair("slide_num", slide_num));
 		HttpEntity resEntity = apiPostRequest(NimpresSettings.API_PRESENTATION_UPDATE_SLIDE,params);
+		try{
+			result = EntityUtils.toString(resEntity);
+			Log.d("APIContact","post result:"+result);
+		}catch (Exception e) {
+	        e.printStackTrace();
+	    }
+		if(result.equals(NimpresSettings.API_RESPONSE_POSITIVE))
+			return true;
+		return false;
+	}
+	
+	/**
+	 * This method creates a presentation entry in the database
+	 * @param user
+	 * @param title
+	 * @param password
+	 * @param length
+	 * @param slide_num
+	 * @param status
+	 * @param over
+	 * @return
+	 */
+	public static boolean createPresentation(String user, String title, String password, String length, String slide_num, String status, String over){
+		String result = "";
+		List<NameValuePair> params = new ArrayList<NameValuePair>();
+		params.add(new BasicNameValuePair("user", user));
+		params.add(new BasicNameValuePair("title", title));
+		params.add(new BasicNameValuePair("password", password));
+		params.add(new BasicNameValuePair("length", length));
+		params.add(new BasicNameValuePair("slide_num", slide_num));
+		params.add(new BasicNameValuePair("status", status));
+		params.add(new BasicNameValuePair("over", over));
+		HttpEntity resEntity = apiPostRequest(NimpresSettings.API_CREATE_PRESENTATION,params);
 		try{
 			result = EntityUtils.toString(resEntity);
 			Log.d("APIContact","post result:"+result);

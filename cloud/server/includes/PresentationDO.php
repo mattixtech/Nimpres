@@ -2,7 +2,7 @@
 
 ini_set('display_errors',1);
 error_reporting(E_ALL|E_STRICT);
-require_once('../includes/init.php');
+require_once('./includes/init.php');
 
 	class PresentationDO {
 		
@@ -27,48 +27,99 @@ require_once('../includes/init.php');
 				ini_set('display_errors',1);
 				error_reporting(E_ALL|E_STRICT);
 				
-				$newDTO = new PresentationDTO;
+				$newPresDTO = new PresentationDTO;
 				
 				//Populate the new PresentationDTO with values from the pres table
-				$newDTO-> pid = $pres_row['pid'];
-				$newDTO-> user = $pres_row['user'];
-				$newDTO-> title = $pres_row['title'];
-				$newDTO-> pres_pass = $pres_row['pres_pass'];
-				$newDTO-> created = $pres_row['created'];
-				$newDTO-> size = $pres_row['size'];
-				$newDTO-> length = $pres_row['length'];
-				$newDTO-> filename = $pres_row['filename'];
+				$newPresDTO-> pid = $pres_row['pid'];
+				$newPresDTO-> user = $pres_row['user'];
+				$newPresDTO-> title = $pres_row['title'];
+				$newPresDTO-> pres_pass = $pres_row['pres_pass'];
+				$newPresDTO-> created = $pres_row['created'];
+				$newPresDTO-> size = $pres_row['size'];
+				$newPresDTO-> length = $pres_row['length'];
+				$newPresDTO-> filename = $pres_row['filename'];
 				
 				//Continue populating PresentationDTO with values from the pres_status table
-				$newDTO-> slide_num = $pres_status_row['slide_num'];
-				$newDTO-> status = $pres_status_row['status'];
-				$newDTO-> updated_time = $pres_status_row['updated_time'];
-				$newDTO-> pres_pass = $pres_row['pres_pass'];
+				$newPresDTO-> slide_num = $pres_status_row['slide_num'];
+				$newPresDTO-> status = $pres_status_row['status'];
+				$newPresDTO-> updated_time = $pres_status_row['updated_time'];
+				$newPresDTO-> pres_pass = $pres_row['pres_pass'];
 
-				return $newDTO;
+				return $newPresDTO;
 			}
 			
 		}
 		
-		public static function setByPID($newDTO = '')
+		public static function updatePres($newPresDTO = '')
 		{
 			ini_set('display_errors',1);
 			error_reporting(E_ALL|E_STRICT);
-			if (!empty($newDTO->pid) && !empty($slide_num)){
+			if (!empty($newPresDTO->pid)){
 				
 				$mydb = new MySQLDatabase(DATABASE_ADDR,DATABASE_NAME,DATABASE_USER,DATABASE_PASSWORD);
 				if(GLOBAL_DEBUGGING)
 					$mydb -> debug_on();
 			
-				$insert_slide_num = $mydb->escape_query_data($slide_num);
-				$sql = "UPDATE pres_status SET slide_num = '$slide_num' WHERE pid = '$newDTO->pid'";			
+				$sql = "UPDATE pres SET title = '$newPresDTO->title', pres_pass = '$newPresDTO->pres_pass' WHERE pid = '$newPresDTO->pid'";		
 				$mydb->run_unsafe_query($sql);
-				  	return TRUE;
+					
+				$sql = "UPDATE pres_status SET slide_num = '$newPresDTO->slide_num', status = '$newPresDTO->status',over = '$newPresDTO->over' WHERE pid = '$newPresDTO->pid'";		
+				$mydb->run_unsafe_query($sql);
+				return TRUE;
 			}
 			
 			else{
 				return FALSE;
 			}
+		}
+		
+			public static function insertPres($newPresDTO = '')
+		{
+			ini_set('display_errors',1);
+			error_reporting(E_ALL|E_STRICT);
+
+			if (empty($newPresDTO->pid)){
+				
+				$mydb = new MySQLDatabase(DATABASE_ADDR,DATABASE_NAME,DATABASE_USER,DATABASE_PASSWORD);
+				if(GLOBAL_DEBUGGING)
+					$mydb -> debug_on();
+
+				$sql = "INSERT INTO pres (user, title, pres_pass, size, length, filename) VALUE ('$newPresDTO->user', '$newPresDTO->title', '$newPresDTO->pres_pass', '$newPresDTO->size', '$newPresDTO->length', '$newPresDTO->filename')";
+				$mydb->run_unsafe_query($sql);
+
+				$pid = $mydb->get_last_id();
+				$sql = "INSERT INTO pres_status (pid, slide_num, status, over) VALUE ('$pid', '$newPresDTO->slide_num', '$newPresDTO->status', '$newPresDTO->over')";
+				$mydb->run_unsafe_query($sql);
+
+				return TRUE;
+			}
+			
+			else{
+				return FALSE;
+			}
+		}
+		
+		public static function deletePres($newPresDTO = ''){
+			
+			$mydb = new MySQLDatabase(DATABASE_ADDR,DATABASE_NAME,DATABASE_USER,DATABASE_PASSWORD);
+			if(GLOBAL_DEBUGGING)
+				$mydb -> debug_on();
+			
+			if (!empty($newPresDTO->pid)){
+				
+				if(!($mydb->record_key_exists("'$newPresDTO->pid'",'pid','pres')))	//Check for existence of the presentationin pres
+			      return FALSE;
+				$sql = "DELETE FROM pres WHERE pid = '$newPresDTO->pid'";
+				$mydb->run_unsafe_query($sql);
+				
+				if(!($mydb->record_key_exists("'$newPresDTO->pid'",'pid','pres_status')))	//Check for existence of the presentation in pres_status
+			      return FALSE;
+				$sql = "DELETE FROM pres_status WHERE pid = '$newPresDTO->pid'";
+				$mydb->run_unsafe_query($sql);
+				return TRUE;
+			}
+			else 
+				return FALSE;
 		}
 	}
 
