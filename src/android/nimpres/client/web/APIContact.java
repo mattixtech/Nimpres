@@ -59,6 +59,24 @@ public class APIContact {
 		return NimpresSettings.API_BASE_URL + apiCall +".php";
 	}
 	
+	private static boolean validateSlideNumResponse(String result){
+	   try  
+	   {  
+	      int response = Integer.parseInt(result);  
+	      if(response >=0)
+	    	  return true;
+	      else{
+	    	  Log.d("APIContact","slide number response invalid: "+response);
+	    	  return false;
+	      }
+	   }  
+	   catch(Exception e)  
+	   {  
+		  Log.d("APIContact","slide number response invalid: "+e.getMessage());
+	      return false;  
+	   }
+	}
+	
 	/**
 	 * Performs a post request to the specified api with the specified parameters and returns the result
 	 * @param apiAddress
@@ -152,10 +170,10 @@ public class APIContact {
 	        e.printStackTrace();
 	    }
 		
-		if( ! result.equals(NimpresSettings.API_RESPONSE_NEGATIVE))
+		if(validateSlideNumResponse(result))
 			return Integer.parseInt(result);
 		else
-			return 0;
+			return -1;
 	}
 	
 	/**

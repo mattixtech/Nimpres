@@ -197,18 +197,14 @@ public class NimpresClient extends Activity {
 		public void run() {
 
 			if (!testPres.isPaused()) {
-				
-				//ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-				//boolean isConnected = cm.getActiveNetworkInfo().isConnected();
-				
-				//Context.getSystemService(Context.CONNECTIVITY_SERVICE).requestRouteToHost(TYPE_WIFI,);
-				//Check to make sure we are connected to the internet, if so commence API contact
 				if(Utilities.isOnline(ctx)){
 					int slideNum = APIContact.getSlideNumber("2", "test");
-					testPres.setCurrentSlide(slideNum);
-				}else
-					Log.d("NimpresClient","internet connection not present, api contact cancelled");
-				
+					//Make sure slide was not negative (error code -1)
+					if(slideNum >= 0)
+						testPres.setCurrentSlide(slideNum);
+				}
+				else
+					Log.d("NimpresClient","internet connection not present, api contact cancelled");				
 				updateSlide();
 			}
 
