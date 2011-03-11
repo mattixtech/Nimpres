@@ -36,10 +36,16 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.util.Log;
 
 public class Utilities {
 
+	/**
+	 * 
+	 * @return
+	 */
 	public static String getLocalIpAddress() {
 	    try {
 	        for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
@@ -55,6 +61,19 @@ public class Utilities {
 	        Log.e("Utilities", ex.toString());
 	    }
 	    return null;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public static boolean isOnline(Context ctx) {
+	    ConnectivityManager cm = (ConnectivityManager) ctx.getSystemService(Context.CONNECTIVITY_SERVICE);
+	    NetworkInfo netInfo = cm.getActiveNetworkInfo();
+	    if (netInfo != null && netInfo.isConnected()) {
+	        return true;
+	    }
+	    return false;
 	}
 	
 	/**

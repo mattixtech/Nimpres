@@ -29,17 +29,21 @@ package android.nimpres;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
 import android.nimpres.client.dps.DPS;
 import android.nimpres.client.lan.DPSServer;
 import android.nimpres.client.lan.LANAdvertiser;
 import android.nimpres.client.lan.LANListener;
 import android.nimpres.client.presentation.Presentation;
+import android.nimpres.client.utilities.Utilities;
 import android.nimpres.client.web.APIContact;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
-import android.view.*;
-import android.view.ContextMenu.ContextMenuInfo;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -47,7 +51,7 @@ public class NimpresClient extends Activity {
 
 	DPS testDPS = null;
 	Presentation testPres = null;
-
+	Context ctx;
 	private Handler mHandler = new Handler();
 
 	/** Called when the activity is first created. */
@@ -56,7 +60,7 @@ public class NimpresClient extends Activity {
 		super.onCreate(savedInstanceState);
 
 		// Use this object if you need to pass Context to something
-		Context ctx = this.getApplicationContext();
+		ctx = this.getApplicationContext();
 
 		/*
 		 * Testing Code Below
@@ -193,8 +197,18 @@ public class NimpresClient extends Activity {
 		public void run() {
 
 			if (!testPres.isPaused()) {
-				int slideNum = APIContact.getSlideNumber("2", "test");
-				testPres.setCurrentSlide(slideNum);
+				
+				//ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+				//boolean isConnected = cm.getActiveNetworkInfo().isConnected();
+				
+				//Context.getSystemService(Context.CONNECTIVITY_SERVICE).requestRouteToHost(TYPE_WIFI,);
+				//Check to make sure we are connected to the internet, if so commence API contact
+				if(Utilities.isOnline(ctx)){
+					int slideNum = APIContact.getSlideNumber("2", "test");
+					testPres.setCurrentSlide(slideNum);
+				}else
+					Log.d("NimpresClient","internet connection not present, api contact cancelled");
+				
 				updateSlide();
 			}
 
