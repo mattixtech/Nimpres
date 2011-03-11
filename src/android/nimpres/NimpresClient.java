@@ -207,7 +207,7 @@ public class NimpresClient extends Activity {
 		setContentView(R.layout.presentation_viewer);
 
 		
-		testDPS = new DPS("http://presentations.nimpres.com/cars_big.dps", "internet",
+		testDPS = new DPS("http://presentations.nimpres.com/presentation_demo.dps", "internet",
 				"", "", "dps_down", ctx);
 		testPres = testDPS.getDpsPres();
 
