@@ -111,31 +111,48 @@ public class DPS {
 		try {
 			/* Download the specified presentation off of the Internet */
 			/******************************************************/
+			
+			//TODO check to make sure there is a dps at the url
 			URL url = new URL(packageURL);
 			Log.d("DPSGet", "download begining");
 			Log.d("DPSGet", "download url:" + url);
 			Log.d("DPSGet", "downloaded file");
 			URLConnection ucon = url.openConnection();
 			InputStream is = ucon.getInputStream();
-			BufferedInputStream bis = new BufferedInputStream(is);
-			ByteArrayBuffer baf = new ByteArrayBuffer(50);
+			FileOutputStream fos = ctx.openFileOutput(fileName,Context.MODE_PRIVATE);
 			
-			/*Save downloaded file to disk*/
-			FileOutputStream fos = ctx.openFileOutput(fileName,
-					Context.MODE_PRIVATE);// new FileOutputStream(file);
+			//BufferedInputStream bis = new BufferedInputStream(is);
+			//ByteArrayBuffer baf = new ByteArrayBuffer(50);
 			
-			int current = 0;
-			while ((current = bis.read()) != -1) {
-				baf.append((byte) current);
+			/*Save downloaded file to disk*/			
+			byte buf[]=new byte[1024];
+		    int len;
+		    long byteCounter = 0;
+		    int mbCounter = 0;
+		    while((len=is.read(buf))>0){
+		    	fos.write(buf,0,len);
+		    	byteCounter++;
+		    	if(byteCounter % 1024 == 0)
+		    		Log.d("DPS","downloading...");
+		    		//Log.d("DPS","downloaded "+ (++mbCounter) +"MB of DPS file");
+		    	
+		    }
+		    fos.close();
+		    is.close();
+			
+			//int current = 0;
+			//while ((current = bis.read()) != -1) {
+			//	baf.append((byte) current);
+				
+				//TODO fix this to write the file to disk quicker...
 				//byte toWrite = (byte)current;
 				//fos.write(toWrite);
-			}
+			//}
 			
 			/*Save downloaded file to disk*/
-			//FileOutputStream fos = ctx.openFileOutput(fileName,
-			//		Context.MODE_PRIVATE);// new FileOutputStream(file);
-			fos.write(baf.toByteArray());
-			fos.close();
+
+			//fos.write(baf.toByteArray());
+			//fos.close();
 			/******************************************************/
 			
 			/*Unzip package to requested folder and delete original file*/
