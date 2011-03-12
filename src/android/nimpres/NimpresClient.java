@@ -68,10 +68,9 @@ public class NimpresClient extends Activity {
 		 */
 
 		// Set to main view
-		setContentView(R.layout.presentation_viewer);
+		setContentView(R.layout.presentation_viewer); //TODO call the main view from here and have UI elements to access the other views
 		// testSlideNum();
 		testPresentation();
-		/* If testing code please make a method below and call it here */
 		// testLoginAPI();
 		// testLANAdvertising();
 		// testLANListening();
@@ -79,7 +78,7 @@ public class NimpresClient extends Activity {
 		// testDPSHosting("tmpdps_down.dps", ctx);
 		// testLANAdvertising();
 		// testLANListening();
-		//testDPSDownload(ctx);
+		// testDPSDownload(ctx);
 		// testDPSHosting("tmpdps_down.dps",ctx);
 
 		// Exit the app after performing test
