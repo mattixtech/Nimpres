@@ -1,7 +1,7 @@
 /**
  * Project:			Nimpres Android Client
  * File name: 		TCPMessage.java
- * Date modified:	2011-02-04
+ * Date modified:	2011-03-12
  * Description:		TCP Message sending/receiving
  * 
  * License:			Copyright (c) 2010 (Matthew Brooks, Jordan Emmons, William Kong)

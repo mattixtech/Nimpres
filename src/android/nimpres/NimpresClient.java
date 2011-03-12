@@ -1,7 +1,7 @@
 /**
  * Project:			Nimpres Android Client
  * File name: 		NimpresClient.java
- * Date modified:	2011-03-06
+ * Date modified:	2011-03-012
  * Description:		Android entrypoint for Nimpres app
  * 
  * License:			Copyright (c) 2011 (Matthew Brooks, Jordan Emmons, William Kong)
@@ -35,6 +35,7 @@ import android.nimpres.client.lan.DPSServer;
 import android.nimpres.client.lan.LANAdvertiser;
 import android.nimpres.client.lan.LANListener;
 import android.nimpres.client.presentation.Presentation;
+import android.nimpres.client.settings.NimpresSettings;
 import android.nimpres.client.utilities.Utilities;
 import android.nimpres.client.web.APIContact;
 import android.os.Bundle;
@@ -69,7 +70,7 @@ public class NimpresClient extends Activity {
 		// Set to main view
 		setContentView(R.layout.presentation_viewer);
 		// testSlideNum();
-		testPresentation(ctx);
+		testPresentation();
 		/* If testing code please make a method below and call it here */
 		// testLoginAPI();
 		// testLANAdvertising();
@@ -89,6 +90,7 @@ public class NimpresClient extends Activity {
 		 */
 	}
 
+	//TODO move the UI methods out of the NimpresClient class
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
@@ -193,37 +195,34 @@ public class NimpresClient extends Activity {
 	 * Testing methods
 	 */
 
-	private Runnable mUpdateTask = new Runnable() {
+	/**
+	 * This task is responsible for updating the image displayed during viewing
+	 */
+	private Runnable viewerUpdateTask = new Runnable() {
 		public void run() {
-
-			if (!testPres.isPaused()) {
-				if(Utilities.isOnline(ctx)){
+			if (!testPres.isPaused()) { 		//Check to make sure the user has not paused the presentation
+				if(Utilities.isOnline(ctx)){ 	//Check to make sure that the device is connected to the network					
+					//TODO change to get the correct slide number for the current presentation rather then hard coded
 					int slideNum = APIContact.getSlideNumber("2", "test");
 					//Make sure slide was not negative (error code -1)
 					if(slideNum >= 0)
-						testPres.setCurrentSlide(slideNum);
+						testPres.setCurrentSlide(slideNum); //Update slide number of presentation
 				}
 				else
 					Log.d("NimpresClient","internet connection not present, api contact cancelled");				
 				updateSlide();
 			}
-
-			mHandler.postDelayed(this, 2000);
+			mHandler.postDelayed(this, NimpresSettings.API_PULL_DELAY); //Add this task to the queue again, calls itself over and over...
 		}
 	};
 
-	public void testPresentation(Context ctx) {
-
-		setContentView(R.layout.presentation_viewer);
-
-		
-		testDPS = new DPS("http://presentations.nimpres.com/presentation_demo.dps", "internet",
-				"", "", "dps_down", ctx);
+	public void testPresentation() {
+		setContentView(R.layout.presentation_viewer);		
+		testDPS = new DPS("http://presentations.nimpres.com/presentation_demo.dps", "internet","", "", "dps_down", ctx);
 		testPres = testDPS.getDpsPres();
-
 		updateSlide();
-		mHandler.removeCallbacks(mUpdateTask);
-		mHandler.postDelayed(mUpdateTask, 100);
+		mHandler.removeCallbacks(viewerUpdateTask);
+		mHandler.postDelayed(viewerUpdateTask, 100);
 	}
 
 	public void updateSlide() {
@@ -231,12 +230,10 @@ public class NimpresClient extends Activity {
 		TextView title = (TextView) findViewById(R.id.pvTitle);
 		TextView slideTitle = (TextView) findViewById(R.id.pvSlideTitle);
 		TextView slideNotes = (TextView) findViewById(R.id.pvNotes);
-
 		title.setText(testPres.getTitle());
 		slideTitle.setText(testPres.getCurrentSlideFile().getSlideTitle());
 		slideNotes.setText(testPres.getCurrentSlideFile().getSlideComments());
-		slide.setImageBitmap(BitmapFactory.decodeFile(testPres.getPath()
-				+ testPres.getCurrentSlideFile().getFileName()));
+		slide.setImageBitmap(BitmapFactory.decodeFile(testPres.getPath()+testPres.getCurrentSlideFile().getFileName()));
 	}
 
 	public static void testLoginAPI() {
@@ -246,7 +243,6 @@ public class NimpresClient extends Activity {
 	}
 
 	public static void testSlideNum() {
-
 		int slideNum = APIContact.getSlideNumber("2", "test");
 		Log.d("NimpresClient", "slide # " + slideNum);
 	}
@@ -269,7 +265,6 @@ public class NimpresClient extends Activity {
 	}
 
 	public static void testDPSDownload(Context ctx) {
-
 		DPS lanDPS = new DPS("192.168.1.4", "lan", "123", "pass",
 				"testing_dps", ctx);
 		// DPS testInternetDPS = new DPS("http://mattixtech.net/filez/test.dps",

@@ -1,7 +1,7 @@
 /**
  * Project:			Nimpres Android Client
  * File name: 		Utilities.java
- * Date modified:	2011-02-02
+ * Date modified:	2011-03-12
  * Description:		Provides utility methods for use accross the client
  * 
  * License:			Copyright (c) 2010 (Matthew Brooks, Jordan Emmons, William Kong)
@@ -43,8 +43,8 @@ import android.util.Log;
 public class Utilities {
 
 	/**
-	 * 
-	 * @return
+	 * This method gets the device's IP address
+	 * @return device's local IP address in dotted decimal as a String ex: "192.168.1.1"
 	 */
 	public static String getLocalIpAddress() {
 	    try {
@@ -64,7 +64,7 @@ public class Utilities {
 	}
 	
 	/**
-	 * 
+	 * This method verifies that the device is connected to a network
 	 * @return
 	 */
 	public static boolean isOnline(Context ctx) {
@@ -140,7 +140,7 @@ public class Utilities {
 	}
 	
 	/**
-	 * 
+	 * This method checks a location and determines if it is a valid download resource location on the internet
 	 * @param location
 	 * @return
 	 */

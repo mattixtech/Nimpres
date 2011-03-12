@@ -1,7 +1,7 @@
 /**
  * Project:			Nimpres Android Client
  * File name: 		ServerSocketListener.java
- * Date modified:	2011-02-03
+ * Date modified:	2011-03-12
  * Description:		Listens on a socket and adds requests to a receiver
  * 
  * License:			Copyright (c) 2011 (Matthew Brooks, Jordan Emmons, William Kong)
@@ -45,7 +45,6 @@ public class ServerSocketListener implements Runnable{
     }
 
     public void run(){
-
         //Attempt to listen on the server port
         try{            
         	Log.d("ServerSocketListener","trying to start up");
@@ -68,7 +67,7 @@ public class ServerSocketListener implements Runnable{
             	Log.d("ServerSocketListener","trying to receive");
                 if(receiver.isActive()){
                 	Log.d("ServerSocketListener","receiver was active");
-                    if(receiver.put(serverSocket.accept())){
+                    if(receiver.put(serverSocket.accept())){	//This is where the magic happens, listen on the serverSocket and hand it off to the receiver
                     	Log.d("ServerSocketListener","added request to receiver");
                     }else
                     	Log.d("ServerSocketListener","que is full, dropping connection...");
@@ -83,14 +82,25 @@ public class ServerSocketListener implements Runnable{
         System.exit(1);
     }
 
+    
+    /**
+     * 
+     */
     private void initMessage(){
     	Log.d("ServerSocketListener","now listening for transfer requests on port:"+NimpresSettings.SERVER_FILE_PORT);
     }
 
+    /**
+     * 
+     * @return
+     */
     public boolean isStopped(){
         return isStopped;
     }
 
+    /**
+     * 
+     */
     public void stop(){
         isStopped = true;
     }

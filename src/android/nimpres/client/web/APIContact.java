@@ -1,7 +1,7 @@
 /**
  * Project:			Nimpres Android Client
  * File name: 		APIContact.java
- * Date modified:	2011-03-06
+ * Date modified:	2011-03-12
  * Description:		Static methods for performing api calls to the webserver
  * 
  * License:			Copyright (c) 2011 (Matthew Brooks, Jordan Emmons, William Kong)
@@ -59,6 +59,11 @@ public class APIContact {
 		return NimpresSettings.API_BASE_URL + apiCall +".php";
 	}
 	
+	/**
+	 * 
+	 * @param result
+	 * @return
+	 */
 	private static boolean validateSlideNumResponse(String result){
 	   try  
 	   {  
@@ -233,6 +238,14 @@ public class APIContact {
 		return false;
 	}
 	
+	/**
+	 * 
+	 * @param login
+	 * @param password
+	 * @param fileName
+	 * @param pesentationTitle
+	 * @param passwordProtect
+	 */
 	public static void pushDPSToWeb(String login, String password, String fileName, String pesentationTitle, boolean passwordProtect){
 		
 		/*Posting file cod

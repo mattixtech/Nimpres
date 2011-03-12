@@ -1,7 +1,7 @@
 /**
  * Project:			Nimpres Android Client
  * File name: 		ConnectionReceiver.java
- * Date modified:	2011-02-03
+ * Date modified:	2011-03-12
  * Description:		Receives incoming file transfer requests
  * 
  * License:			Copyright (c) 2011 (Matthew Brooks, Jordan Emmons, William Kong)
@@ -41,12 +41,21 @@ public class ConnectionReceiver {
     public ConnectionReceiver(){
         this.socketQue = new ArrayBlockingQueue<Socket>(NimpresSettings.SERVER_QUE_SIZE);
     }
-
-    //Synchronize?
+    
+    /**
+     * Puts a socket into the queue
+     * @param s
+     * @return
+     */
     public boolean put(Socket s){
+    	//TODO I think this should probably be a synchronized method but it was causing problems so I removed the synchronized keyword
         return socketQue.offer(s);
     }
 
+    /**
+     * Gets a socket from the queue if there is one
+     * @return
+     */
     public synchronized Socket get(){
         try{
             return socketQue.poll(10, TimeUnit.MILLISECONDS);
@@ -55,20 +64,34 @@ public class ConnectionReceiver {
             return null;
         }
     }
-
+    
+    /**
+     * Destroys this queue and all connections currently in it
+     */
     public synchronized void destroy(){
         socketQue.clear();
         isDisabled = true;
     }
-
+    
+    /**
+     * Checks if this receiver is active
+     * @return
+     */
     public boolean isActive(){
         return !isDisabled;
     }
 
+    /**
+     * Checks if the receiver is disactivated
+     * @return
+     */
     public synchronized boolean isDisabled(){
         return isDisabled;
     }
-
+    
+    /**
+     * Enables the receiver
+     */
     public synchronized void enable(){
     	Log.d("ConnectionReceiver","Enabled");
         isDisabled = false;
