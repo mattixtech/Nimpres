@@ -1,7 +1,7 @@
 /**
  * Project:			Nimpres Android Client
  * File name: 		LANListener.java
- * Date modified:	2011-02-03
+ * Date modified:	2011-03-13
  * Description:		Listens for updates about a presentation on the LAN
  * 
  * License:			Copyright (c) 2010 (Matthew Brooks, Jordan Emmons, William Kong)
@@ -28,6 +28,7 @@ package android.nimpres.client.lan;
 
 public class LANListener implements Runnable{
 
+	//TODO this should listen for the messages sent from the LANAdvertiser
 	public void run(){
 		
 	}
