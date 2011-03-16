@@ -48,7 +48,7 @@ public class PresentationView extends Activity {
 		super.onCreate(created);
 		setContentView(R.layout.presentation_viewer);
 		NimpresObjects.currentDPS = new DPS(
-				"http://presentations.nimpres.com/presentation_demo.dps",
+				"http://presentations.nimpres.com/progress.dps",
 				"internet", "", "", "dps_down", ctx);
 		NimpresObjects.currentPresentation = NimpresObjects.currentDPS.getDpsPres();
 		updateSlide();
