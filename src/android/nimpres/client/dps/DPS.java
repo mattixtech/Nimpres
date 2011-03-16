@@ -1,7 +1,7 @@
 /**
  * Project:			Nimpres Android Client
  * File name: 		DPS.java
- * Date modified:	2011-03-06
+ * Date modified:	2011-03-16
  * Description:		This class defines a DPS package
  * 
  * License:			Copyright (c) 2011 (Matthew Brooks, Jordan Emmons, William Kong)
@@ -116,7 +116,7 @@ public class DPS {
 			URL url = new URL(packageURL);
 			Log.d("DPSGet", "download begining");
 			Log.d("DPSGet", "download url:" + url);
-			Log.d("DPSGet", "downloaded file");
+			
 			URLConnection ucon = url.openConnection();
 			InputStream is = ucon.getInputStream();
 			FileOutputStream fos = ctx.openFileOutput(fileName,Context.MODE_PRIVATE);
@@ -139,27 +139,14 @@ public class DPS {
 		    }
 		    fos.close();
 		    is.close();
-			
-			//int current = 0;
-			//while ((current = bis.read()) != -1) {
-			//	baf.append((byte) current);
-				
-				//TODO fix this to write the file to disk quicker...
-				//byte toWrite = (byte)current;
-				//fos.write(toWrite);
-			//}
-			
-			/*Save downloaded file to disk*/
-
-			//fos.write(baf.toByteArray());
-			//fos.close();
+		    Log.d("DPSGet", "downloaded file");
 			/******************************************************/
 			
 			/*Unzip package to requested folder and delete original file*/
 			ret = Utilities.unzip(fileName, folderToSave, ctx);
 
 		} catch (Exception e) {
-			Log.d("DPSGet", "Error: " + e);
+			Log.d("DPSGet", "Error: " + e.getMessage());
 		}
 		return ret;
 	}

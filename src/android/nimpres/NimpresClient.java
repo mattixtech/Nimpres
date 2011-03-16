@@ -27,7 +27,6 @@
 package android.nimpres;
 
 import java.io.IOException;
-import java.net.InetAddress;
 
 import android.app.Activity;
 import android.content.Context;
@@ -41,7 +40,6 @@ import android.nimpres.client.presentation.Presentation;
 import android.nimpres.client.settings.NimpresSettings;
 import android.nimpres.client.utilities.Utilities;
 import android.nimpres.client.web.APIContact;
-
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -105,15 +103,16 @@ public class NimpresClient extends Activity {
 		 */
 
 		// setup button listener
-		Button startButton = (Button) findViewById(R.id.mJoin);
-		startButton.setOnClickListener(new OnClickListener() {
-			// insert onClick here
-			@Override
-			public void onClick(View view) {
-				Intent launchview = new Intent(view.getContext(), PresentationView.class);
-				startActivity(launchview);
-			}
-		});
+		 Button startButton = (Button) findViewById(R.id.mJoin);
+			startButton.setOnClickListener(new OnClickListener() {
+				// insert onClick here
+				
+				@Override
+				public void onClick(View view) {
+					Intent launchview = new Intent(view.getContext(), PresentationView.class);
+					startActivity(launchview);
+				}
+			});
 	}
 
 /*
