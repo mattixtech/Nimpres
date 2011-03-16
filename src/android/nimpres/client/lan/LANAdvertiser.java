@@ -1,7 +1,7 @@
 /**
  * Project:			Nimpres Android Client
  * File name: 		LANAdvertiser.java
- * Date modified:	2011-02-02
+ * Date modified:	2011-03-13
  * Description:		Advertises available presentations on the local LAN
  * 
  * License:			Copyright (c) 2010 (Matthew Brooks, Jordan Emmons, William Kong)
@@ -32,65 +32,89 @@ import java.net.InetAddress;
 
 import android.nimpres.client.presentation.Presentation;
 import android.nimpres.client.settings.NimpresSettings;
-import android.os.SystemClock;
+import android.os.Handler;
 import android.util.Log;
 
 public class LANAdvertiser implements Runnable{
 
-	private Presentation Pres;
+	private Presentation pres;
+	private String broadcastAddress = null;
 	private boolean isStopped = false;
 	private DatagramSocket outputSocket;
     private DatagramPacket pkt;
+    private Handler mHandler = new Handler();
+    private byte[] outputBuff = null;
 	
-    public LANAdvertiser(Presentation Pres){
-    	this.Pres = Pres;
+    /**
+     * 
+     * @param pres
+     */
+    public LANAdvertiser(Presentation pres, String broadcastAddress){
+    	this.pres = pres;
+    	this.broadcastAddress = broadcastAddress;
     }
     
+    /**
+	 * This task is responsible for advertising the name of the hosted presentation to LAN peers
+	 */
+	private Runnable lanAdvertiseTask = new Runnable() {
+		public void run() {			
+			try{
+				if( ! isStopped()){
+					UDPMessage outPkt = new UDPMessage(NimpresSettings.MSG_PRESENTATION_STATUS, outputBuff, broadcastAddress, NimpresSettings.SERVER_PEER_PORT,true);
+                    Log.d("LANAdvertiser"," sent presentation status message to: "+broadcastAddress);               	                    
+	            }
+	        }catch(Exception e){
+	        	 Log.d("LANAdvertiser"," Exception: "+e.toString());
+	        }	        
+			mHandler.postDelayed(this, NimpresSettings.LAN_ADVERTISE_DELAY); //Add this task to the queue again, calls itself over and over...
+		}
+	};
+    
+	/**
+	 * 
+	 */
 	public void run(){
 		initMessage();
-		byte[] buff = new byte[1024];
-        buff = (NimpresSettings.MSG_PRESENTATION_STATUS+";"+Pres.getTitle()+";"+Pres.getCurrentSlide()).getBytes();
-        
-        long startTime = SystemClock.uptimeMillis();
-        long thisTime = 0;
-        
-        try{
-        	outputSocket = new DatagramSocket();
-        	pkt = new DatagramPacket(buff,buff.length,InetAddress.getByName(NimpresSettings.PEER_BROADCAST_ADDRESS),NimpresSettings.SERVER_PEER_PORT);
-        	while(!isStopped()){                
-                try{
-                    Thread.sleep(1);
-                }catch(Exception e){}
-                
-                thisTime = SystemClock.uptimeMillis();
-                if((thisTime-startTime) > (1000*NimpresSettings.HELLO_TIMER))
-                {
-                    outputSocket.send(pkt);
-                    Log.d("LANAdvertiser"," sent presentation status message");
-                    /*Loop through current list of all peers to make sure we have heard a HELLO from them recently*/
-                    /*for(int i = 0;i<GBManager.numPeers();i++){
-                        if((thisTime - GBManager.getPeerTime(GBManager.getPeerByIndex(i))) > 1000*GrabBoxProtocol.DEAD_TIMER){
-                            System.out.println("GrabBox removed peer due to timeout: "+GBManager.getPeerByIndex(i));
-                            GBManager.removePeer(GBManager.getPeerByIndex(i));                            
-                        }              }*/      
-                   
-                    startTime = SystemClock.uptimeMillis();
-                }
-            }
-        }catch(Exception e){
-        	 Log.d("LANAdvertiser"," Exception: "+e.toString());
-        }
+		outputBuff = (pres.getTitle()+NimpresSettings.STATUS_SEPERATOR+pres.getCurrentSlide()).getBytes();
+		mHandler.removeCallbacks(lanAdvertiseTask);
+		mHandler.postDelayed(lanAdvertiseTask, 100);        
 	}
 	
+	/**
+	 * 
+	 */
 	public static void initMessage(){
 		Log.d("LANAdvertiser","init");
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public boolean isStopped(){
         return isStopped;
     }
 	
+	/**
+	 * 
+	 */
 	public void stop(){
         isStopped = true;
     }
+
+	/**
+	 * @return the pres
+	 */
+	public Presentation getPres() {
+		return pres;
+	}
+
+	/**
+	 * @param pres the pres to set
+	 */
+	public void setPres(Presentation pres) {
+		this.pres = pres;
+	}
+	
 }

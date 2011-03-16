@@ -53,6 +53,7 @@ public class DPSReader {
 	public static Presentation makePresentation(String dpsPath){
 		Log.d("DPSReader","attempting to create presentation from: "+dpsPath);
 		Presentation presCreated = null;
+		//TODO create a default meta information if there is none?
 		File metaFile = new File(dpsPath +File.separator+NimpresSettings.METAFILE_NAME);
 		if(metaFile.exists()){
 			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();

@@ -1,7 +1,7 @@
 /**
  * Project:			Nimpres Android Client
  * File name: 		NimpresClient.java
- * Date modified:	2011-03-06
+ * Date modified:	2011-03-012
  * Description:		Android entrypoint for Nimpres app
  * 
  * License:			Copyright (c) 2011 (Matthew Brooks, Jordan Emmons, William Kong)
@@ -26,20 +26,32 @@
  */
 package android.nimpres;
 
+import java.io.IOException;
+import java.net.InetAddress;
+
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.nimpres.client.dps.DPS;
 import android.nimpres.client.lan.DPSServer;
 import android.nimpres.client.lan.LANAdvertiser;
 import android.nimpres.client.lan.LANListener;
 import android.nimpres.client.presentation.Presentation;
+import android.nimpres.client.settings.NimpresSettings;
+import android.nimpres.client.utilities.Utilities;
 import android.nimpres.client.web.APIContact;
+
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
-import android.view.*;
-import android.view.ContextMenu.ContextMenuInfo;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -47,34 +59,42 @@ public class NimpresClient extends Activity {
 
 	DPS testDPS = null;
 	Presentation testPres = null;
-
+	static Context ctx;
 	private Handler mHandler = new Handler();
 
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		// Set to main view
+		setContentView(R.layout.main); // TODO call the main view from here and
+		// have UI elements to access the other views
+		
 		// Use this object if you need to pass Context to something
-		Context ctx = this.getApplicationContext();
+		ctx = this.getApplicationContext();
 
 		/*
 		 * Testing Code Below
 		 */
 
+
 		// Set to main view
-		setContentView(R.layout.presentation_viewer);
+		//setContentView(R.layout.presentation_viewer); //TODO call the main view from here and have UI elements to access the other views
+
 		// testSlideNum();
-		testPresentation(ctx);
-		/* If testing code please make a method below and call it here */
+
+		// testPresentation();
+
+		//testPresentation();
+
 		// testLoginAPI();
-		// testLANAdvertising();
+		 testLANAdvertising();
 		// testLANListening();
 		// testDPSDownload(ctx);
 		// testDPSHosting("tmpdps_down.dps", ctx);
 		// testLANAdvertising();
 		// testLANListening();
-		//testDPSDownload(ctx);
+		// testDPSDownload(ctx);
 		// testDPSHosting("tmpdps_down.dps",ctx);
 
 		// Exit the app after performing test
@@ -83,8 +103,21 @@ public class NimpresClient extends Activity {
 		/*
 		 * End of testing code
 		 */
+
+		// setup button listener
+		Button startButton = (Button) findViewById(R.id.mJoin);
+		startButton.setOnClickListener(new OnClickListener() {
+			// insert onClick here
+			@Override
+			public void onClick(View view) {
+				Intent launchview = new Intent(view.getContext(), PresentationView.class);
+				startActivity(launchview);
+			}
+		});
 	}
 
+
+	// TODO move the UI methods out of the NimpresClient class
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
@@ -127,7 +160,7 @@ public class NimpresClient extends Activity {
 						testPres.nextSlide();
 						updateSlide();
 					} else // swiped down
-					{	//change to previous slide
+					{ // change to previous slide
 						testPres.previousSlide();
 						updateSlide();
 					}
@@ -137,7 +170,7 @@ public class NimpresClient extends Activity {
 						// change to next slide
 						testPres.nextSlide();
 						updateSlide();
-					} else { //swiped left
+					} else { // swiped left
 						// change to previous slide
 						testPres.previousSlide();
 						updateSlide();
@@ -189,31 +222,53 @@ public class NimpresClient extends Activity {
 	 * Testing methods
 	 */
 
-	private Runnable mUpdateTask = new Runnable() {
+	/**
+	 * This task is responsible for updating the image displayed during viewing
+	 */
+	private Runnable viewerUpdateTask = new Runnable() {
 		public void run() {
-
-			if (!testPres.isPaused()) {
-				int slideNum = APIContact.getSlideNumber("2", "test");
-				testPres.setCurrentSlide(slideNum);
+			if (!testPres.isPaused()) { // Check to make sure the user has not
+										// paused the presentation
+				if (Utilities.isOnline(ctx)) { // Check to make sure that the
+												// device is connected to the
+												// network
+					// TODO change to get the correct slide number for the
+					// current presentation rather then hard coded
+					int slideNum = APIContact.getSlideNumber("2", "test");
+					// Make sure slide was not negative (error code -1)
+					if (slideNum >= 0)
+						testPres.setCurrentSlide(slideNum); // Update slide
+															// number of
+															// presentation
+				} else
+					Log.d("NimpresClient",
+							"internet connection not present, api contact cancelled");
 				updateSlide();
 			}
-
-			mHandler.postDelayed(this, 2000);
+			mHandler.postDelayed(this, NimpresSettings.API_PULL_DELAY); // Add
+																		// this
+																		// task
+																		// to
+																		// the
+																		// queue
+																		// again,
+																		// calls
+																		// itself
+																		// over
+																		// and
+																		// over...
 		}
 	};
 
-	public void testPresentation(Context ctx) {
-
+	public void testPresentation() {
 		setContentView(R.layout.presentation_viewer);
-
-		// title.setText("b");
-		testDPS = new DPS("http://presentations.nimpres.com/progress.dps", "internet",
-				"", "", "dps_down", ctx);
+		testDPS = new DPS(
+				"http://presentations.nimpres.com/presentation_demo.dps",
+				"internet", "", "", "dps_down", ctx);
 		testPres = testDPS.getDpsPres();
-
 		updateSlide();
-		mHandler.removeCallbacks(mUpdateTask);
-		mHandler.postDelayed(mUpdateTask, 100);
+		mHandler.removeCallbacks(viewerUpdateTask);
+		mHandler.postDelayed(viewerUpdateTask, 100);
 	}
 
 	public void updateSlide() {
@@ -221,7 +276,6 @@ public class NimpresClient extends Activity {
 		TextView title = (TextView) findViewById(R.id.pvTitle);
 		TextView slideTitle = (TextView) findViewById(R.id.pvSlideTitle);
 		TextView slideNotes = (TextView) findViewById(R.id.pvNotes);
-
 		title.setText(testPres.getTitle());
 		slideTitle.setText(testPres.getCurrentSlideFile().getSlideTitle());
 		slideNotes.setText(testPres.getCurrentSlideFile().getSlideComments());
@@ -236,7 +290,6 @@ public class NimpresClient extends Activity {
 	}
 
 	public static void testSlideNum() {
-
 		int slideNum = APIContact.getSlideNumber("2", "test");
 		Log.d("NimpresClient", "slide # " + slideNum);
 	}
@@ -244,8 +297,15 @@ public class NimpresClient extends Activity {
 	public static void testLANAdvertising() {
 		Presentation Pres = new Presentation();
 		Pres.setTitle("Test");
-		Thread LANAdvert = new Thread(new LANAdvertiser(Pres));
-		LANAdvert.start();
+		Pres.setCurrentSlide(5);
+		Thread LANAdvert;
+		try {
+			LANAdvert = new Thread(new LANAdvertiser(Pres,Utilities.getBroadcastAddress(ctx)));
+			LANAdvert.start();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 	}
 
 	public static void testLANListening() {
@@ -259,7 +319,6 @@ public class NimpresClient extends Activity {
 	}
 
 	public static void testDPSDownload(Context ctx) {
-
 		DPS lanDPS = new DPS("192.168.1.4", "lan", "123", "pass",
 				"testing_dps", ctx);
 		// DPS testInternetDPS = new DPS("http://mattixtech.net/filez/test.dps",

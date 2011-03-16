@@ -1,7 +1,7 @@
 /**
  * Project:			Nimpres Android Client
  * File name: 		TCPMessage.java
- * Date modified:	2011-02-04
+ * Date modified:	2011-03-16
  * Description:		TCP Message sending/receiving
  * 
  * License:			Copyright (c) 2010 (Matthew Brooks, Jordan Emmons, William Kong)
@@ -87,10 +87,11 @@ public class TCPMessage {
 	            out.flush();
 	            Log.d("TCPMessage","Sent message: "+messageHead);
 	        }catch(Exception e){
-	            System.out.println("error"+e.getMessage());
+	        	Log.d("TCPMessage","error: "+e.getMessage());
 	            e.printStackTrace();
 	        }
-		}
+		}else
+			Log.d("TCPMessage","attempted to send empty message");
     }
 	
 	/**
@@ -107,7 +108,7 @@ public class TCPMessage {
             length = len;
             Log.d("TCPMessage","Received message: "+type);
         }catch(Exception e){
-            System.out.println("error"+e.getMessage());
+        	Log.d("TCPMessage","error: "+e.getMessage());
             e.printStackTrace();            
         }
     }

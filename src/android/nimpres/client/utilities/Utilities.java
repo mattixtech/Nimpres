@@ -1,7 +1,7 @@
 /**
  * Project:			Nimpres Android Client
  * File name: 		Utilities.java
- * Date modified:	2011-02-02
+ * Date modified:	2011-03-12
  * Description:		Provides utility methods for use accross the client
  * 
  * License:			Copyright (c) 2010 (Matthew Brooks, Jordan Emmons, William Kong)
@@ -28,6 +28,7 @@ package android.nimpres.client.utilities;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
@@ -35,11 +36,20 @@ import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+import android.app.Activity;
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.DhcpInfo;
+import android.net.NetworkInfo;
+import android.net.wifi.WifiManager;
 import android.util.Log;
 
 public class Utilities {
 
+	/**
+	 * This method gets the device's IP address
+	 * @return device's local IP address in dotted decimal as a String ex: "192.168.1.1"
+	 */
 	public static String getLocalIpAddress() {
 	    try {
 	        for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
@@ -55,6 +65,36 @@ public class Utilities {
 	        Log.e("Utilities", ex.toString());
 	    }
 	    return null;
+	}
+	
+	/**
+	 * Retrieve the appropriate broadcast address for this device
+	 * @return
+	 * @throws IOException
+	 */
+	public static String getBroadcastAddress(Context ctx) throws IOException {
+	    WifiManager wifi = (WifiManager) ctx.getSystemService(Context.WIFI_SERVICE);
+	    DhcpInfo dhcp = wifi.getDhcpInfo();
+	    //TODO handle null somehow
+
+	    int broadcast = (dhcp.ipAddress & dhcp.netmask) | ~dhcp.netmask;
+	    byte[] quads = new byte[4];
+	    for (int k = 0; k < 4; k++)
+	      quads[k] = (byte) ((broadcast >> k * 8) & 0xFF);
+	    return InetAddress.getByAddress(quads).getHostAddress();
+	}
+	
+	/**
+	 * This method verifies that the device is connected to a network
+	 * @return
+	 */
+	public static boolean isOnline(Context ctx) {
+	    ConnectivityManager cm = (ConnectivityManager) ctx.getSystemService(Context.CONNECTIVITY_SERVICE);
+	    NetworkInfo netInfo = cm.getActiveNetworkInfo();
+	    if (netInfo != null && netInfo.isConnected()) {
+	        return true;
+	    }
+	    return false;
 	}
 	
 	/**
@@ -121,7 +161,7 @@ public class Utilities {
 	}
 	
 	/**
-	 * 
+	 * This method checks a location and determines if it is a valid download resource location on the internet
 	 * @param location
 	 * @return
 	 */

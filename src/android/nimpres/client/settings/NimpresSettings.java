@@ -1,7 +1,7 @@
 /**
  * Project:			Nimpres Android Client
  * File name: 		NimpresSettings.java
- * Date modified:	2011-03-06
+ * Date modified:	2011-03-16
  * Description:		Static settings shared throughout app
  * 
  * License:			Copyright (c) 2011 (Matthew Brooks, Jordan Emmons, William Kong)
@@ -53,12 +53,14 @@ public class NimpresSettings {
      */
     public static final double HELLO_TIMER = 1; //Send hello every X seconds
     public static final double DEAD_TIMER = 5; //Wait X seconds before removing peer
+    public static final int API_PULL_DELAY = 1000; //Wait X miliseconds before performing another pull from the API
+    public static final int LAN_ADVERTISE_DELAY = 1000;
 	
 	/*
      * Ports
      */
-    public static final int SERVER_FILE_PORT = 3333;
-    public static final int SERVER_PEER_PORT = 2222;
+    public static final int SERVER_FILE_PORT = 40888;
+    public static final int SERVER_PEER_PORT = 40999;
 	
     
     /*
@@ -75,6 +77,7 @@ public class NimpresSettings {
 	/*
 	 * UDP
 	 */
+	public static final String STATUS_SEPERATOR = "_(>'')>_<(''<)_";
 	public static final String MSG_PRESENTATION_STATUS = "PS";
 	
 	/*

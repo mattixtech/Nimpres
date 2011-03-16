@@ -1,7 +1,7 @@
 /**
  * Project:			Nimpres Android Client
  * File name: 		DPSServer.java
- * Date modified:	2011-02-03
+ * Date modified:	2011-03-12
  * Description:		Serves a DPS file on the LAN
  * 
  * License:			Copyright (c) 2010 (Matthew Brooks, Jordan Emmons, William Kong)
@@ -26,15 +26,11 @@
  */
 package android.nimpres.client.lan;
 
-
-
-
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.net.Socket;
-
 import android.content.Context;
 import android.nimpres.client.settings.NimpresSettings;
 import android.util.Log;
@@ -122,7 +118,7 @@ public class DPSServer implements Runnable{
 	}
 	
 	/**
-	 * 
+	 * Opens the server socket for listening
 	 */
 	private void openServerSocket(){
         Thread socketListener = new Thread(new ServerSocketListener(receiver));
@@ -132,7 +128,7 @@ public class DPSServer implements Runnable{
     }
 	
 	/**
-	 * 
+	 * Displays the init message
 	 */
 	public static void initMessage(){
 		Log.d("DPSServer","init");
@@ -147,7 +143,7 @@ public class DPSServer implements Runnable{
     }
 	
 	/**
-	 * 
+	 * Stops the DPSServer from listening for connections
 	 */
 	public void stop(){
         isStopped = true;
