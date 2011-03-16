@@ -182,6 +182,35 @@ public class APIContact {
 	}
 	
 	/**
+	 * This method downloads the presentation to the user
+	 * @param id
+	 * @param password
+	 * @return byte buffer
+	 */
+	//TODO Set return to byte buffer 
+	public static byte[] downloadPresentation(String id, String password){
+		byte[] buffer = null;
+		byte[] fail = {-1};
+		String result = "";
+		List<NameValuePair> params = new ArrayList<NameValuePair>();
+		params.add(new BasicNameValuePair("id", id));
+		params.add(new BasicNameValuePair("password", password));
+		HttpEntity resEntity = apiPostRequest(NimpresSettings.API_DOWNLOAD_PRESENTATION,params);
+		try{
+			result = EntityUtils.toString(resEntity);
+			buffer = EntityUtils.toByteArray(resEntity);
+			Log.d("APIContact","post result:"+buffer);
+		}catch (Exception e) {
+	        e.printStackTrace();
+	    }
+		
+		if(!result.equals(NimpresSettings.API_RESPONSE_NEGATIVE))
+			return buffer;
+		else
+			return fail;
+	}
+	
+	/**
 	 * This method deletes a presentation from pres and pres_status based on id
 	 * @param id
 	 * @param password
@@ -240,6 +269,7 @@ public class APIContact {
 	 * @param over
 	 * @return
 	 */
+	//TODO Needs to send the actual file
 	public static boolean createPresentation(String user, String title, String password, String length, String slide_num, String status, String over){
 		String result = "";
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
