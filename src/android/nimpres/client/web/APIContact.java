@@ -187,7 +187,6 @@ public class APIContact {
 	 * @param password
 	 * @return byte buffer
 	 */
-	//TODO Set return to byte buffer 
 	public static byte[] downloadPresentation(String id, String password){
 		byte[] buffer = null;
 		byte[] fail = {-1};
