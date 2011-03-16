@@ -159,6 +159,30 @@ public class APIContact {
 	}
 	
 	/**
+	 * This method deletes a presentation from pres and pres_status based on id
+	 * @param id
+	 * @param password
+	 * @return true if sucessfully deleted, false otherwise
+	 */
+	public static boolean deletePresentation(String id, String password){
+		String result = "";
+		List<NameValuePair> params = new ArrayList<NameValuePair>();
+		params.add(new BasicNameValuePair("id", id));
+		params.add(new BasicNameValuePair("password", password));
+		HttpEntity resEntity = apiPostRequest(NimpresSettings.API_DELETE_PRESENTATION,params);
+		try{
+			result = EntityUtils.toString(resEntity);
+			Log.d("APIContact","post result:"+result);
+		}catch (Exception e) {
+	        e.printStackTrace();
+	    }
+		
+		if(result.equals(NimpresSettings.API_RESPONSE_POSITIVE))
+			return true;
+		return false;
+	}
+	
+	/**
 	 * This method sets the current slide number for the DPS identified by id
 	 * @param id
 	 * @param password
@@ -183,7 +207,7 @@ public class APIContact {
 	}
 	
 	/**
-	 * This method creates a presentation entry in the database
+	 * This method creates a presentation entry in the pres and pres_status tables
 	 * @param user
 	 * @param title
 	 * @param password
@@ -204,6 +228,28 @@ public class APIContact {
 		params.add(new BasicNameValuePair("status", status));
 		params.add(new BasicNameValuePair("over", over));
 		HttpEntity resEntity = apiPostRequest(NimpresSettings.API_CREATE_PRESENTATION,params);
+		try{
+			result = EntityUtils.toString(resEntity);
+			Log.d("APIContact","post result:"+result);
+		}catch (Exception e) {
+	        e.printStackTrace();
+	    }
+		if(result.equals(NimpresSettings.API_RESPONSE_POSITIVE))
+			return true;
+		return false;
+	}
+	
+	/**
+	 * This method lists the presentations in the tables based on a username
+	 * @param user
+	 * @return echos of xml code
+	 */
+	//TODO Return statement needs to be revised for XML output
+	public static boolean listPresentations(String user){
+		String result = "";
+		List<NameValuePair> params = new ArrayList<NameValuePair>();
+		params.add(new BasicNameValuePair("user", user));
+        HttpEntity resEntity = apiPostRequest(NimpresSettings.API_LIST_PRESENTATIONS,params);
 		try{
 			result = EntityUtils.toString(resEntity);
 			Log.d("APIContact","post result:"+result);

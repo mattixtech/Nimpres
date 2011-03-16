@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<presentations>
+	<user>WinTest</user>
+		<presentation number="1">
+			<title>Cars</title>
+			<created>1296269077</created>
+			<length>12</length>
+			<size>1024Bytes</size>
+			<slide_num>1</slide_num>
+			<updated_time>1296269092</updated_time>
+			<status>inprogress</status>
+			<over>0</over>
+		</presentation>
+		<presentation number="2">
+			<title>Cars2</title>
+			<created>1296269077</created>
+			<length>12</length>
+			<size>1024Bytes</size>
+			<slide_num>1</slide_num>
+			<updated_time>1296269092</updated_time>
+			<status>inactive</status>
+			<over>0</over>
+		</presentation>
+		<presentation number="3">
+			<title>Cars3</title>
+			<created>1296269077</created>
+			<length>12</length>
+			<size>1024Bytes</size>
+			<slide_num>1</slide_num>
+			<updated_time>1296269092</updated_time>
+			<status>inactive</status>
+			<over>0</over>
+		</presentation>
+</presentations>

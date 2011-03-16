@@ -17,11 +17,8 @@
 		public $updated_time = "";
 		public $over = "";
 		
-		
 		function __construct(){
 		}
-		
-		
 		
 	}
 

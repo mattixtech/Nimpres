@@ -9,7 +9,6 @@
 		
 		function __construct(){
 		}
-		
 	}
 
 ?>
