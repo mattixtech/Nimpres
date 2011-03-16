@@ -40,6 +40,7 @@ public class NimpresSettings {
 	public static final String API_CREATE_PRESENTATION = "create_presentation"; 	//boolean response
 	public static final String API_DELETE_PRESENTATION = "delete_presentation"; 	//boolean response
 	public static final String API_LIST_PRESENTATIONS = "list_presentations"; 		//xml response
+	public static final String API_DOWNLOAD_PRESENTATION = "download_presentation"; //byte buffer response
 	
 	/*
 	 * API Message
