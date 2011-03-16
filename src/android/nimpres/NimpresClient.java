@@ -83,13 +83,13 @@ public class NimpresClient extends Activity {
 
 		// testSlideNum();
 
-		// testPresentation();
+		 //testPresentation();
 
 		//testPresentation();
 
 		// testLoginAPI();
 		// testLANAdvertising();
-		 testLANListening();
+		// testLANListening();
 		// testDPSDownload(ctx);
 		// testDPSHosting("tmpdps_down.dps", ctx);
 		// testLANAdvertising();
@@ -116,7 +116,7 @@ public class NimpresClient extends Activity {
 		});
 	}
 
-
+/*
 	// TODO move the UI methods out of the NimpresClient class
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -217,71 +217,11 @@ public class NimpresClient extends Activity {
 			return super.onOptionsItemSelected(item);
 		}
 	}
-
+*/
 	/*
 	 * Testing methods
 	 */
 
-	/**
-	 * This task is responsible for updating the image displayed during viewing
-	 */
-	private Runnable viewerUpdateTask = new Runnable() {
-		public void run() {
-			if (!testPres.isPaused()) { // Check to make sure the user has not
-										// paused the presentation
-				if (Utilities.isOnline(ctx)) { // Check to make sure that the
-												// device is connected to the
-												// network
-					// TODO change to get the correct slide number for the
-					// current presentation rather then hard coded
-					int slideNum = APIContact.getSlideNumber("2", "test");
-					// Make sure slide was not negative (error code -1)
-					if (slideNum >= 0)
-						testPres.setCurrentSlide(slideNum); // Update slide
-															// number of
-															// presentation
-				} else
-					Log.d("NimpresClient",
-							"internet connection not present, api contact cancelled");
-				updateSlide();
-			}
-			mHandler.postDelayed(this, NimpresSettings.API_PULL_DELAY); // Add
-																		// this
-																		// task
-																		// to
-																		// the
-																		// queue
-																		// again,
-																		// calls
-																		// itself
-																		// over
-																		// and
-																		// over...
-		}
-	};
-
-	public void testPresentation() {
-		setContentView(R.layout.presentation_viewer);
-		testDPS = new DPS(
-				"http://presentations.nimpres.com/presentation_demo.dps",
-				"internet", "", "", "dps_down", ctx);
-		testPres = testDPS.getDpsPres();
-		updateSlide();
-		mHandler.removeCallbacks(viewerUpdateTask);
-		mHandler.postDelayed(viewerUpdateTask, 100);
-	}
-
-	public void updateSlide() {
-		ImageView slide = (ImageView) findViewById(R.id.pvSlide);
-		TextView title = (TextView) findViewById(R.id.pvTitle);
-		TextView slideTitle = (TextView) findViewById(R.id.pvSlideTitle);
-		TextView slideNotes = (TextView) findViewById(R.id.pvNotes);
-		title.setText(testPres.getTitle());
-		slideTitle.setText(testPres.getCurrentSlideFile().getSlideTitle());
-		slideNotes.setText(testPres.getCurrentSlideFile().getSlideComments());
-		slide.setImageBitmap(BitmapFactory.decodeFile(testPres.getPath()
-				+ testPres.getCurrentSlideFile().getFileName()));
-	}
 
 	public static void testLoginAPI() {
 		// Test login API
