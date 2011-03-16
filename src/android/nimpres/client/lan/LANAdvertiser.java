@@ -53,7 +53,7 @@ public class LANAdvertiser implements Runnable{
     }
     
     /**
-	 * This task is responsible for advertising the name of the hosted presentaiton to LAN peers
+	 * This task is responsible for advertising the name of the hosted presentation to LAN peers
 	 */
 	private Runnable lanAdvertiseTask = new Runnable() {
 		public void run() {			
