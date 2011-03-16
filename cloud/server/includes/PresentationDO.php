@@ -6,6 +6,26 @@ require_once('./includes/init.php');
 
 	class PresentationDO {
 		
+		public static function getByUser($user = '')
+		{
+			if (!empty($user)){
+				$mydb = new MySQLDatabase(DATABASE_ADDR,DATABASE_NAME,DATABASE_USER,DATABASE_PASSWORD);
+				if(GLOBAL_DEBUGGING)
+					$mydb -> debug_on();
+				$sql = "SELECT * FROM pres WHERE user = '$user'";
+				$pres_rows = $mydb->run_unsafe_query($sql);
+
+				$found_presentations = array();
+				while ($rows = $mydb->get_array($pres_rows))
+				{
+					$newPresDTO = new PresentationDTO;
+					$pid = $rows['pid'];
+					array_push($found_presentations, self::getByPID($pid));
+				}
+				return $found_presentations;
+			}
+		}
+		
 		public static function getByPID($pid = '')
 		{
 			if (!empty($pid)){
@@ -30,24 +50,24 @@ require_once('./includes/init.php');
 				$newPresDTO = new PresentationDTO;
 				
 				//Populate the new PresentationDTO with values from the pres table
-				$newPresDTO-> pid = $pres_row['pid'];
-				$newPresDTO-> user = $pres_row['user'];
-				$newPresDTO-> title = $pres_row['title'];
-				$newPresDTO-> pres_pass = $pres_row['pres_pass'];
-				$newPresDTO-> created = $pres_row['created'];
-				$newPresDTO-> size = $pres_row['size'];
-				$newPresDTO-> length = $pres_row['length'];
-				$newPresDTO-> filename = $pres_row['filename'];
+				$newPresDTO->pid = $pres_row['pid'];
+				$newPresDTO->user = $pres_row['user'];
+				$newPresDTO->title = $pres_row['title'];
+				$newPresDTO->pres_pass = $pres_row['pres_pass'];
+				$newPresDTO->created = $pres_row['created'];
+				$newPresDTO->size = $pres_row['size'];
+				$newPresDTO->length = $pres_row['length'];
+				$newPresDTO->filename = $pres_row['filename'];
 				
 				//Continue populating PresentationDTO with values from the pres_status table
-				$newPresDTO-> slide_num = $pres_status_row['slide_num'];
-				$newPresDTO-> status = $pres_status_row['status'];
-				$newPresDTO-> updated_time = $pres_status_row['updated_time'];
-				$newPresDTO-> pres_pass = $pres_row['pres_pass'];
+				$newPresDTO->slide_num = $pres_status_row['slide_num'];
+				$newPresDTO->status = $pres_status_row['status'];
+				$newPresDTO->updated_time = $pres_status_row['updated_time'];
+				$newPresDTO->pres_pass = $pres_row['pres_pass'];
+				$newPresDTO->over = $pres_status_row['over'];
 
 				return $newPresDTO;
 			}
-			
 		}
 		
 		public static function updatePres($newPresDTO = '')
@@ -73,7 +93,7 @@ require_once('./includes/init.php');
 			}
 		}
 		
-			public static function insertPres($newPresDTO = '')
+		public static function insertPres($newPresDTO = '')
 		{
 			ini_set('display_errors',1);
 			error_reporting(E_ALL|E_STRICT);
@@ -90,12 +110,10 @@ require_once('./includes/init.php');
 				$pid = $mydb->get_last_id();
 				$sql = "INSERT INTO pres_status (pid, slide_num, status, over) VALUE ('$pid', '$newPresDTO->slide_num', '$newPresDTO->status', '$newPresDTO->over')";
 				$mydb->run_unsafe_query($sql);
-
-				return TRUE;
+				return $pid;
 			}
-			
 			else{
-				return FALSE;
+				return -1;
 			}
 		}
 		
@@ -122,5 +140,4 @@ require_once('./includes/init.php');
 				return FALSE;
 		}
 	}
-
 ?>
