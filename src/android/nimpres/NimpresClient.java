@@ -26,6 +26,9 @@
  */
 package android.nimpres;
 
+import java.io.IOException;
+import java.net.InetAddress;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -56,7 +59,7 @@ public class NimpresClient extends Activity {
 
 	DPS testDPS = null;
 	Presentation testPres = null;
-	Context ctx;
+	static Context ctx;
 	private Handler mHandler = new Handler();
 
 	/** Called when the activity is first created. */
@@ -75,11 +78,18 @@ public class NimpresClient extends Activity {
 		 */
 
 
+		// Set to main view
+		//setContentView(R.layout.presentation_viewer); //TODO call the main view from here and have UI elements to access the other views
+
 		// testSlideNum();
+
 		// testPresentation();
+
+		//testPresentation();
+
 		// testLoginAPI();
 		// testLANAdvertising();
-		// testLANListening();
+		 testLANListening();
 		// testDPSDownload(ctx);
 		// testDPSHosting("tmpdps_down.dps", ctx);
 		// testLANAdvertising();
@@ -287,8 +297,15 @@ public class NimpresClient extends Activity {
 	public static void testLANAdvertising() {
 		Presentation Pres = new Presentation();
 		Pres.setTitle("Test");
-		Thread LANAdvert = new Thread(new LANAdvertiser(Pres));
-		LANAdvert.start();
+		Pres.setCurrentSlide(5);
+		Thread LANAdvert;
+		try {
+			LANAdvert = new Thread(new LANAdvertiser(Pres,Utilities.getBroadcastAddress(ctx)));
+			LANAdvert.start();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 	}
 
 	public static void testLANListening() {

@@ -1,7 +1,7 @@
 /**
  * Project:			Nimpres Android Client
  * File name: 		NimpresSettings.java
- * Date modified:	2011-03-13
+ * Date modified:	2011-03-16
  * Description:		Static settings shared throughout app
  * 
  * License:			Copyright (c) 2011 (Matthew Brooks, Jordan Emmons, William Kong)
@@ -59,8 +59,8 @@ public class NimpresSettings {
 	/*
      * Ports
      */
-    public static final int SERVER_FILE_PORT = 3333;
-    public static final int SERVER_PEER_PORT = 2222;
+    public static final int SERVER_FILE_PORT = 40888;
+    public static final int SERVER_PEER_PORT = 40999;
 	
     
     /*
@@ -77,6 +77,7 @@ public class NimpresSettings {
 	/*
 	 * UDP
 	 */
+	public static final String STATUS_SEPERATOR = "_(>'')>_<(''<)_";
 	public static final String MSG_PRESENTATION_STATUS = "PS";
 	
 	/*

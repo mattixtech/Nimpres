@@ -26,10 +26,81 @@
  */
 package android.nimpres.client.lan;
 
-public class LANListener implements Runnable{
+import java.util.ArrayList;
 
-	//TODO this should listen for the messages sent from the LANAdvertiser
-	public void run(){
+import android.nimpres.client.settings.NimpresSettings;
+import android.util.Log;
+
+public class LANListener implements Runnable{
+	
+	ArrayList<PeerStatus> advertisingPeers = new ArrayList<PeerStatus>();	//stores the list of the LAN IP Addresses of all advertising peers
+	boolean isStopped = false;
+	
+    /**
+     * 
+     */
+	public LANListener(){
 		
+	}	
+	
+	/**
+	 * Continues checking for advertisements until told to stop
+	 */
+	public void run(){
+		initMessage();
+		while( ! isStopped()){
+			try{
+				Log.d("LANListener","attempting to receive peer status update: "); 
+				UDPMessage inPkt = new UDPMessage(NimpresSettings.SERVER_PEER_PORT,1024);
+				
+				//TODO remove this old code
+				/*inputSocket = new DatagramSocket(NimpresSettings.SERVER_PEER_PORT);
+				inputBuff = new byte[1024];
+				pkt = new DatagramPacket(inputBuff,1024);
+				inputSocket.receive(pkt);*/
+				//InetAddress senderAddress = pkt.getAddress();
+				
+				if(inPkt.getType().equals(NimpresSettings.MSG_PRESENTATION_STATUS)){
+					PeerStatus recvStatus = new PeerStatus(inPkt);
+	                Log.d("LANListener","received message from peer: "+inPkt.getRemoteIP());	                
+	                for(int i=0;i<advertisingPeers.size();i++)
+	                	if(advertisingPeers.get(i).getPeerIP().equals(inPkt.getRemoteIP()))
+	                		advertisingPeers.remove(i); //check list and remove peer status if already in, so we can update it
+	                advertisingPeers.add(recvStatus); //add peer to list	                	
+				}else
+					Log.d("LANListener","received improper message: "+inPkt.getType()); 
+	        }catch(Exception e){
+	        	 Log.d("LANListener"," Exception: "+e.toString());
+	        }
+		}      
+	}
+	
+	/**
+	 * 
+	 */
+	public static void initMessage(){
+		Log.d("LANListener","init");
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public boolean isStopped(){
+        return isStopped;
+    }
+	
+	/**
+	 * Stops execution of the LANListener
+	 */
+	public void stop(){
+        isStopped = true;
+    }
+
+	/**
+	 * @return the advertisingPeers
+	 */
+	public ArrayList<PeerStatus> getAdvertisingPeers() {
+		return advertisingPeers;
 	}
 }
