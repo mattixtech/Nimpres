@@ -50,6 +50,7 @@ public class LANListener implements Runnable{
 		initMessage();
 		while( ! isStopped()){
 			try{
+				Log.d("LANListener","attempting to receive peer status update: "); 
 				UDPMessage inPkt = new UDPMessage(NimpresSettings.SERVER_PEER_PORT,1024);
 				
 				//TODO remove this old code

@@ -26,6 +26,9 @@
  */
 package android.nimpres;
 
+import java.io.IOException;
+import java.net.InetAddress;
+
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.BitmapFactory;
@@ -52,7 +55,7 @@ public class NimpresClient extends Activity {
 
 	DPS testDPS = null;
 	Presentation testPres = null;
-	Context ctx;
+	static Context ctx;
 	private Handler mHandler = new Handler();
 
 	/** Called when the activity is first created. */
@@ -250,8 +253,14 @@ public class NimpresClient extends Activity {
 		Presentation Pres = new Presentation();
 		Pres.setTitle("Test");
 		Pres.setCurrentSlide(5);
-		Thread LANAdvert = new Thread(new LANAdvertiser(Pres));
-		LANAdvert.start();
+		Thread LANAdvert;
+		try {
+			LANAdvert = new Thread(new LANAdvertiser(Pres,Utilities.getBroadcastAddress(ctx)));
+			LANAdvert.start();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 	}
 
 	public static void testLANListening() {

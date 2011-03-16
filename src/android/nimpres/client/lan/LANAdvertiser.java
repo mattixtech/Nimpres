@@ -38,6 +38,7 @@ import android.util.Log;
 public class LANAdvertiser implements Runnable{
 
 	private Presentation pres;
+	private String broadcastAddress = null;
 	private boolean isStopped = false;
 	private DatagramSocket outputSocket;
     private DatagramPacket pkt;
@@ -48,8 +49,9 @@ public class LANAdvertiser implements Runnable{
      * 
      * @param pres
      */
-    public LANAdvertiser(Presentation pres){
+    public LANAdvertiser(Presentation pres, String broadcastAddress){
     	this.pres = pres;
+    	this.broadcastAddress = broadcastAddress;
     }
     
     /**
@@ -59,8 +61,8 @@ public class LANAdvertiser implements Runnable{
 		public void run() {			
 			try{
 				if( ! isStopped()){
-					UDPMessage outPkt = new UDPMessage(NimpresSettings.MSG_PRESENTATION_STATUS, outputBuff, NimpresSettings.PEER_BROADCAST_ADDRESS, NimpresSettings.SERVER_PEER_PORT);
-                    Log.d("LANAdvertiser"," sent presentation status message");               	                    
+					UDPMessage outPkt = new UDPMessage(NimpresSettings.MSG_PRESENTATION_STATUS, outputBuff, broadcastAddress, NimpresSettings.SERVER_PEER_PORT,true);
+                    Log.d("LANAdvertiser"," sent presentation status message to: "+broadcastAddress);               	                    
 	            }
 	        }catch(Exception e){
 	        	 Log.d("LANAdvertiser"," Exception: "+e.toString());

@@ -29,6 +29,8 @@ package android.nimpres.client.lan;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+
+import android.nimpres.client.utilities.Utilities;
 import android.util.Log;
 
 public class UDPMessage {
@@ -36,6 +38,7 @@ public class UDPMessage {
 	private String type = "";
 	private int length = 0;
 	InetAddress remoteIP = null;
+	boolean broadcast = false;
 	
 	/**
 	 * Default empty constructor
@@ -67,6 +70,20 @@ public class UDPMessage {
 		sendMessage(ip,port);
 	}
 	
+	/**
+	 * Create UDPMessage and send right away as broadcast
+	 * @param type
+	 * @param data
+	 * @param ip
+	 * @param port
+	 * @param brodcastMessage
+	 */
+	public UDPMessage(String type, byte[] data, String ip, int port, boolean brodcastMessage){
+		this(type,data);
+		setBroadcast(brodcastMessage);
+		sendMessage(ip,port);
+	}
+	
 
 	/**
 	 * Get a new UDPMessage
@@ -90,6 +107,10 @@ public class UDPMessage {
 	        	InetAddress ipAddress = InetAddress.getByName(ip);
 	        	DatagramSocket outputSocket = new DatagramSocket();
         		DatagramPacket pkt = new DatagramPacket(data,data.length,ipAddress,port);
+        		if(isBroadcast()){
+        			outputSocket.setBroadcast(true);
+        			outputSocket.setReuseAddress(true);
+        		}
                 outputSocket.send(pkt);
 	            Log.d("UDPMessage","Sent message: "+messageHead);
 	        }catch(Exception e){
@@ -107,7 +128,8 @@ public class UDPMessage {
 	 */
 	public void getMessage(int port, int size){
 		try{
-			DatagramSocket inputSocket = new DatagramSocket(port);
+			DatagramSocket inputSocket = new DatagramSocket(port,InetAddress.getByName(Utilities.getLocalIpAddress()));
+			inputSocket.setReuseAddress(true);
 			byte[] inputBuff = new byte[size];
 			DatagramPacket pkt = new DatagramPacket(inputBuff,size);			
 			inputSocket.receive(pkt);
@@ -220,5 +242,21 @@ public class UDPMessage {
 	 */
 	public void setRemoteIP(InetAddress remoteIP) {
 		this.remoteIP = remoteIP;
+	}
+
+
+	/**
+	 * @return the broadcast
+	 */
+	public boolean isBroadcast() {
+		return broadcast;
+	}
+
+
+	/**
+	 * @param isBroadcast the isBroadcast to set
+	 */
+	public void setBroadcast(boolean broadcast) {
+		this.broadcast = broadcast;
 	}
 }

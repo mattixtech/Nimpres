@@ -59,8 +59,8 @@ public class NimpresSettings {
 	/*
      * Ports
      */
-    public static final int SERVER_FILE_PORT = 3333;
-    public static final int SERVER_PEER_PORT = 2222;
+    public static final int SERVER_FILE_PORT = 40888;
+    public static final int SERVER_PEER_PORT = 40999;
 	
     
     /*
