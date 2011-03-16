@@ -58,10 +58,8 @@ public class LANAdvertiser implements Runnable{
 	private Runnable lanAdvertiseTask = new Runnable() {
 		public void run() {			
 			try{
-				if( ! isStopped()){   
-					outputSocket = new DatagramSocket();
-	        		pkt = new DatagramPacket(outputBuff,outputBuff.length,InetAddress.getByName(NimpresSettings.PEER_BROADCAST_ADDRESS),NimpresSettings.SERVER_PEER_PORT);
-	                outputSocket.send(pkt);
+				if( ! isStopped()){
+					UDPMessage outPkt = new UDPMessage(NimpresSettings.MSG_PRESENTATION_STATUS, outputBuff, NimpresSettings.PEER_BROADCAST_ADDRESS, NimpresSettings.SERVER_PEER_PORT);
                     Log.d("LANAdvertiser"," sent presentation status message");               	                    
 	            }
 	        }catch(Exception e){
@@ -76,7 +74,7 @@ public class LANAdvertiser implements Runnable{
 	 */
 	public void run(){
 		initMessage();
-		outputBuff = (NimpresSettings.MSG_PRESENTATION_STATUS+";"+pres.getTitle()+";"+pres.getCurrentSlide()).getBytes();
+		outputBuff = (pres.getTitle()+NimpresSettings.STATUS_SEPERATOR+pres.getCurrentSlide()).getBytes();
 		mHandler.removeCallbacks(lanAdvertiseTask);
 		mHandler.postDelayed(lanAdvertiseTask, 100);        
 	}

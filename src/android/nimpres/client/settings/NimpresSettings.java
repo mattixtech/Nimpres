@@ -1,7 +1,7 @@
 /**
  * Project:			Nimpres Android Client
  * File name: 		NimpresSettings.java
- * Date modified:	2011-03-13
+ * Date modified:	2011-03-16
  * Description:		Static settings shared throughout app
  * 
  * License:			Copyright (c) 2011 (Matthew Brooks, Jordan Emmons, William Kong)
@@ -77,6 +77,7 @@ public class NimpresSettings {
 	/*
 	 * UDP
 	 */
+	public static final String STATUS_SEPERATOR = "_(>'')>_<(''<)_";
 	public static final String MSG_PRESENTATION_STATUS = "PS";
 	
 	/*
