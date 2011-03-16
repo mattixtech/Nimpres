@@ -75,8 +75,8 @@ public class NimpresClient extends Activity {
 		// testSlideNum();
 		//testPresentation();
 		// testLoginAPI();
-		// testLANAdvertising();
-		 testLANListening();
+		 testLANAdvertising();
+		// testLANListening();
 		// testDPSDownload(ctx);
 		// testDPSHosting("tmpdps_down.dps", ctx);
 		// testLANAdvertising();
