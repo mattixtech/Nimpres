@@ -76,7 +76,7 @@ public class NimpresClient extends Activity {
 		// testLANListening();
 		// testDPSDownload(ctx);
 		// testDPSHosting("tmpdps_down.dps",ctx);
-
+		testCreate();
 
 		// this.finish();
 
@@ -145,7 +145,7 @@ public class NimpresClient extends Activity {
 		Log.d("NimpresClient", "DPS fully created");
 		Log.d("NimpresClient", "DPS presentation title:"
 				+ lanDPS.getDpsPres().getTitle());
-		Log.d("NimpresClient", "DPS path:" + lanDPS.getDpsPath());
+		//Log.d("NimpresClient", "DPS path:" + lanDPS.getDpsPath());
 		/*
 		 * String folder =
 		 * DPSGet.DownloadFromURL("http://mattixtech.net/filez/cars.dps",
@@ -155,5 +155,13 @@ public class NimpresClient extends Activity {
 		 * Log.d("NimpresClient"
 		 * ,"DPS presentation title:"+testDPS.getDpsPres().getTitle());
 		 */
+	}
+	
+	public static void testCreate()
+	{
+		if(APIContact.createPresentation("matt", "mattspassword", "MattTesting", "test", "1", "presentation_demo.dps"))
+			Log.d("NimpresClient","presentation created successfully");
+		else
+			Log.d("NimpresClient","presentation creation failed");
 	}
 }

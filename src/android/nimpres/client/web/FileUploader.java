@@ -36,7 +36,7 @@ import android.nimpres.NimpresObjects;
 import android.nimpres.client.settings.NimpresSettings;
 import android.util.Log;
 
-public class FileUploader implements Runnable{
+public class FileUploader {
 
 	private URL connectURL;
 	private FileInputStream fileInputStream = null;
@@ -45,18 +45,14 @@ public class FileUploader implements Runnable{
 	public FileUploader(String urlString, String fileName ){
 		try{
 			connectURL = new URL(urlString);
+			Log.i("FileUploader","creating upload request to: "+urlString);
 			this.fileInputStream = NimpresObjects.ctx.openFileInput(fileName);
 		}catch(Exception e){
 			Log.d("FileUploader","Error: "+e.getMessage());
 		}
-	}
+	}	
 	
-	public void run(){
-		sendRequest();
-	}
-	
-	
-	private void sendRequest(){
+	public String upload(){
 		String exsistingFileName = "NimpresFile.uploaded";
 		String lineEnd = "\r\n";
 		String twoHyphens = "--";
@@ -67,6 +63,7 @@ public class FileUploader implements Runnable{
 			conn.setDoInput(true);
 			conn.setDoOutput(true);
 			conn.setUseCaches(false);	
+			Log.i("FileUploader","starting post");
 			// Use a post method.
 			conn.setRequestMethod("POST");	
 			conn.setRequestProperty("Connection", "Keep-Alive");	
@@ -91,8 +88,6 @@ public class FileUploader implements Runnable{
 				bytesRead = fileInputStream.read(buffer, 0, bufferSize);
 			}
 
-			// send multipart form data necesssary after file data...
-
 			dos.writeBytes(lineEnd);
 			dos.writeBytes(twoHyphens + boundary + twoHyphens + lineEnd);
 			
@@ -115,14 +110,7 @@ public class FileUploader implements Runnable{
 		}catch(Exception e){
 			Log.d("FileUploader","Error: "+e.getMessage());
 		}
-	}
-
-	/**
-	 * @return the responseMessage
-	 */
-	public String getResponseMessage() {
+		
 		return responseMessage;
 	}
-
-
 }

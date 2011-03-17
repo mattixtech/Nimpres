@@ -276,12 +276,12 @@ public class APIContact {
 		String queryUrl = url+queryString;
 		
 		FileUploader upFile = new FileUploader(queryUrl, fileName);
-		Thread uploader = new Thread(upFile);
-		uploader.start();
+		String response = upFile.upload();
 		
-		String response = upFile.getResponseMessage();
-		
-		return true;
+		if(response.equals(NimpresSettings.API_RESPONSE_POSITIVE))
+			return true;
+		else		
+			return false;
 	}
 	
 	/**

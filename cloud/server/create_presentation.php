@@ -42,7 +42,7 @@ $over = $_GET['over'];
 
 //TODO check the user/password of the uploader first for security
 
-if (!empty($user) && !empty($title) && !empty($length) && !empty($slide_num) && !empty($status))
+if (!empty($user) && !empty($title) && !empty($length) && is_numeric($slide_num) && !empty($status))
 {
 	$id = PresentationBO::createPres($user, $title, $pres_pass, $length, $slide_num, $status, $over);
 	if ($id >= 0){
@@ -56,13 +56,12 @@ if (!empty($user) && !empty($title) && !empty($length) && !empty($slide_num) && 
 		} 
 		else
 		{
-		    echo 'FAIL';
+		    echo 'FAILFILE';
 		}	
 	}
 	else
-		echo 'FAIL';
-}
-else 
-	echo 'FAIL';
+		echo 'FAILCREATE';
+}else 
+	echo 'FAILEMPTY';
 
 ?>
