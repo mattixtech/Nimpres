@@ -122,16 +122,24 @@ public class DPS {
 		if(Utilities.isOnline(ctx)){
 			try {
 				Log.d("DPSGet", "download begining from api");
-				byte[] downloadedDPS = APIContact.downloadPresentation(String.valueOf(id), password);
+				Log.d("DPSGet","id:"+id+" password:"+password);
+				InputStream is = APIContact.downloadPresentation(String.valueOf(id), password);
 				FileOutputStream fos = ctx.openFileOutput(fileName,Context.MODE_PRIVATE);
-
-				if(downloadedDPS != null){
-					fos.write(downloadedDPS);
-					Log.d("DPSGet", "dps downloaded complete");
-				}
-				else
-					Log.d("DPSGet", "downloaded dps was empty");				
-				fos.close();				 				
+				
+				/*Save downloaded file to disk*/			
+				byte buf[]=new byte[1024];
+			    int len;
+			    long byteCounter = 0;
+			    while((len=is.read(buf))>0){
+			    	fos.write(buf,0,len);
+			    	byteCounter++;
+			    	if(byteCounter % 1024 == 0)
+			    		Log.d("DPS","downloading...");
+			    		//Log.d("DPS","downloaded "+ (++mbCounter) +"MB of DPS file");			    	
+			    }
+			    fos.close();
+			    is.close();
+			    Log.d("DPSGet", "downloaded file");			    			 				
 				ret = Utilities.unzip(fileName, folderToSave, ctx); //Unzip package to requested folder and delete original file	
 			} catch (Exception e) {
 				Log.d("DPSGet", "Error: " + e.getMessage());
