@@ -30,13 +30,17 @@ ini_set('display_errors',1);
 error_reporting(E_ALL|E_STRICT);
 require_once('./includes/init.php');
 
-$user = $_POST['user'];
-$title = $_POST['title'];
-$pres_pass = $_POST['password'];
-$length = $_POST['length'];
-$slide_num = $_POST['slide_num'];
-$status = $_POST['status'];
-$over = $_POST['over'];
+$user = $_GET['user'];
+$password = $_GET['password'];
+$title = $_GET['title'];
+$pres_pass = $_GET['pres_password'];
+$length = $_GET['length'];
+$slide_num = $_GET['slide_num'];
+$status = $_GET['status'];
+$over = $_GET['over'];
+
+
+//TODO check the user/password of the uploader first for security
 
 if (!empty($user) && !empty($title) && !empty($length) && !empty($slide_num) && !empty($status))
 {
