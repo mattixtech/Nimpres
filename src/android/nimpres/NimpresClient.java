@@ -31,34 +31,23 @@ import java.io.IOException;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.nimpres.client.dps.DPS;
 import android.nimpres.client.lan.DPSServer;
 import android.nimpres.client.lan.LANAdvertiser;
 import android.nimpres.client.lan.LANListener;
 import android.nimpres.client.presentation.Presentation;
-import android.nimpres.client.settings.NimpresSettings;
 import android.nimpres.client.utilities.Utilities;
 import android.nimpres.client.web.APIContact;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 public class NimpresClient extends Activity {
 
 	DPS testDPS = null;
 	Presentation testPres = null;
-	static Context ctx;
-	private Handler mHandler = new Handler();
 
 	/** Called when the activity is first created. */
 	@Override
@@ -69,22 +58,15 @@ public class NimpresClient extends Activity {
 		// have UI elements to access the other views
 		
 		// Use this object if you need to pass Context to something
-		ctx = this.getApplicationContext();
-
+		NimpresObjects.ctx = this.getApplicationContext();
 		/*
 		 * Testing Code Below
 		 */
 
-
-		// Set to main view
 		//setContentView(R.layout.presentation_viewer); //TODO call the main view from here and have UI elements to access the other views
-
 		// testSlideNum();
-
-		 //testPresentation();
-
 		//testPresentation();
-
+		//testPresentation();
 		// testLoginAPI();
 		// testLANAdvertising();
 		// testLANListening();
@@ -95,7 +77,7 @@ public class NimpresClient extends Activity {
 		// testDPSDownload(ctx);
 		// testDPSHosting("tmpdps_down.dps",ctx);
 
-		// Exit the app after performing test
+
 		// this.finish();
 
 		/*
@@ -104,119 +86,17 @@ public class NimpresClient extends Activity {
 
 		// setup button listener
 		 Button startButton = (Button) findViewById(R.id.mJoin);
-			startButton.setOnClickListener(new OnClickListener() {
-				// insert onClick here
-				
-				@Override
-				public void onClick(View view) {
-					Intent launchview = new Intent(view.getContext(), PresentationView.class);
-					startActivity(launchview);
-				}
-			});
-	}
-
-/*
-	// TODO move the UI methods out of the NimpresClient class
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.pv_menu, menu);
-		return true;
-	}
-
-	private float initialX = 0;
-	private float initialY = 0;
-	private float deltaX = 0;
-	private float deltaY = 0;
-
-	@Override
-	public boolean onTouchEvent(MotionEvent event) {
-		// This avoids touchscreen events flooding the main thread
-
-		synchronized (event) {
-			try {
-				// Waits 16ms.
-				event.wait(16);
-
-				// when user touches the screen
-				if (event.getAction() == MotionEvent.ACTION_DOWN) {
-					// reset deltaX and deltaY
-					deltaX = deltaY = 0;
-
-					// get initial positions
-					initialX = event.getRawX();
-					initialY = event.getRawY();
-				}
-
-				// when screen is released
-				if (event.getAction() == MotionEvent.ACTION_UP) {
-					deltaX = event.getRawX() - initialX;
-					deltaY = event.getRawY() - initialY;
-
-					// swiped up
-					if (deltaY < 0) {
-						// change to next slide
-						testPres.nextSlide();
-						updateSlide();
-					} else // swiped down
-					{ // change to previous slide
-						testPres.previousSlide();
-						updateSlide();
-					}
-
-					// swiped right
-					if (deltaX > 0) {
-						// change to next slide
-						testPres.nextSlide();
-						updateSlide();
-					} else { // swiped left
-						// change to previous slide
-						testPres.previousSlide();
-						updateSlide();
-					}
-
-					return true;
-				}
+		 startButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				Intent launchview = new Intent(view.getContext(),
+						PresentationView.class);
+				startActivity(launchview);
 			}
-
-			catch (InterruptedException e) {
-				return true;
-			}
-		}
-		return true;
+		});
 	}
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle item selection
-		switch (item.getItemId()) {
-		case R.id.pvmBack:
-			testPres.previousSlide();
-			updateSlide();
-			return true;
-		case R.id.pvmNext:
-			testPres.nextSlide();
-			updateSlide();
-			return true;
-		case R.id.pvmLeave:
-			testPres.setPaused(true);
-			setContentView(R.layout.end_presentation);
-			return true;
-		case R.id.pvmPause:
-			testPres.setPaused(true);
-			return true;
-		case R.id.pvmResume:
-			testPres.setPaused(false);
-			return true;
-		case R.id.pvmJump:
-			testPres.setPaused(true);
-			// prompt for slide number
-			return true;
-		default:
-			return super.onOptionsItemSelected(item);
-		}
-	}
-*/
+
 	/*
 	 * Testing methods
 	 */
@@ -239,7 +119,7 @@ public class NimpresClient extends Activity {
 		Pres.setCurrentSlide(5);
 		Thread LANAdvert;
 		try {
-			LANAdvert = new Thread(new LANAdvertiser(Pres,Utilities.getBroadcastAddress(ctx)));
+			LANAdvert = new Thread(new LANAdvertiser(Pres,Utilities.getBroadcastAddress(NimpresObjects.ctx)));
 			LANAdvert.start();
 		} catch (IOException e) {
 			e.printStackTrace();

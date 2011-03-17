@@ -137,7 +137,10 @@ public class Presentation {
 	}
 
 	public Slide getCurrentSlideFile(){
-		return slideFiles[currentSlide];
+		if(numSlides > 0)
+			return slideFiles[currentSlide];
+		else
+			return new Slide(); //TODO we should probably create an error dps package and preload it, showing an error image here
 	}
 	
 	public void nextSlide(){

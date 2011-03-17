@@ -39,21 +39,25 @@ import android.widget.TextView;
 
 public class PresentationView extends Activity {
 
-	static Context ctx;
 	private Handler mHandler = new Handler();
-
+	private Menu controlMenu = null;
 
 	@Override
 	public void onCreate(Bundle created) {
 		super.onCreate(created);
 		setContentView(R.layout.presentation_viewer);
+		
+		//TODO we should show a loading screen before we do this download and then return to this screen after download is done
 		NimpresObjects.currentDPS = new DPS(
-				"http://presentations.nimpres.com/progress.dps",
-				"internet", "", "", "dps_down", ctx);
+				"http://presentations.nimpres.com/presentation_demo.dps",
+				"internet", "", "", "dps-downloaded-from-internet", NimpresObjects.ctx);
 		NimpresObjects.currentPresentation = NimpresObjects.currentDPS.getDpsPres();
-		updateSlide();
-		mHandler.removeCallbacks(viewerUpdateTask);
-		mHandler.postDelayed(viewerUpdateTask, 100);
+		if(NimpresObjects.currentPresentation.getNumSlides()>0)
+		{
+			mHandler.removeCallbacks(viewerUpdateTask);
+			mHandler.postDelayed(viewerUpdateTask, 1);
+		}
+		
 		// setup button listener
 
 		// Button leaveButton = (Button) findViewById(R.id.pvmLeave);
@@ -72,6 +76,9 @@ public class PresentationView extends Activity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.pv_menu, menu);
+		this.controlMenu = menu;
+		controlMenu.removeItem(R.id.pvmPause);
+		resumeUI();
 		return true;
 	}
 
@@ -136,33 +143,63 @@ public class PresentationView extends Activity {
 		}
 		return true;
 	}
+	
+	//TODO this menu hiding code is preventing the icons from showing up....
+	
+	public void resumeUI(){	
+		//Perform an update request to the api immediatly and then change the menu
+		mHandler.removeCallbacks(viewerUpdateTask);
+		mHandler.postDelayed(viewerUpdateTask, 1);
+		controlMenu.add(0,R.id.pvmPause,0,"Pause");
+		controlMenu.removeItem(R.id.pvmBack);
+		controlMenu.removeItem(R.id.pvmNext);
+		controlMenu.removeItem(R.id.pvmResume);
+		controlMenu.removeItem(R.id.pvmJump);
+	}
+	
+	public void pauseUI(){
+
+		controlMenu.removeItem(R.id.pvmPause);
+		controlMenu.add(0,R.id.pvmBack,0,"Back");
+		controlMenu.add(0,R.id.pvmNext,0,"Next");
+		controlMenu.add(0,R.id.pvmResume,0,"Resume");
+		controlMenu.add(0,R.id.pvmJump,0,"Jump");
+	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle item selection
 		switch (item.getItemId()) {
 		case R.id.pvmBack:
-			NimpresObjects.currentPresentation.previousSlide();
-			updateSlide();
-			return true;
+			if(NimpresObjects.currentPresentation.isPaused()){
+				NimpresObjects.currentPresentation.previousSlide();
+				updateSlide();
+			}
+			return true;			
 		case R.id.pvmNext:
-			NimpresObjects.currentPresentation.nextSlide();
-			updateSlide();
+			if(NimpresObjects.currentPresentation.isPaused()){
+				NimpresObjects.currentPresentation.nextSlide();
+				updateSlide();
+			}
 			return true;
 		case R.id.pvmLeave:
-			// NimpresObjects.currentPresentation.setPaused(true);
+			NimpresObjects.currentPresentation.setPaused(true);
 			// setContentView(R.layout.end_presentation);
 			leave();
 			return true;
 		case R.id.pvmPause:
+			pauseUI();
 			NimpresObjects.currentPresentation.setPaused(true);
 			return true;
 		case R.id.pvmResume:
+			resumeUI();
 			NimpresObjects.currentPresentation.setPaused(false);
 			return true;
 		case R.id.pvmJump:
-			NimpresObjects.currentPresentation.setPaused(true);
-			// prompt for slide number
+			if(NimpresObjects.currentPresentation.isPaused()){
+				NimpresObjects.currentPresentation.setPaused(true);
+				//TODO prompt for slide number
+			}
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
@@ -196,7 +233,7 @@ public class PresentationView extends Activity {
 		public void run() {
 			if (!NimpresObjects.currentPresentation.isPaused()) { // Check to make sure the user has not
 										// paused the presentation
-				if (Utilities.isOnline(ctx)) { // Check to make sure that the
+				if (Utilities.isOnline(NimpresObjects.ctx)) { // Check to make sure that the
 												// device is connected to the
 												// network
 					// TODO change to get the correct slide number for the

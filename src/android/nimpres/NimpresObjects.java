@@ -27,10 +27,12 @@
 
 package android.nimpres;
 
+import android.content.Context;
 import android.nimpres.client.dps.DPS;
 import android.nimpres.client.presentation.Presentation;
 
 public class NimpresObjects {
 	public static DPS currentDPS;
 	public static Presentation currentPresentation;
+	public static Context ctx;
 }
