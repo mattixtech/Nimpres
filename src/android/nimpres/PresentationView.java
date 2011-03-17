@@ -48,9 +48,10 @@ public class PresentationView extends Activity {
 		setContentView(R.layout.presentation_viewer);
 		
 		//TODO we should show a loading screen before we do this download and then return to this screen after download is done
-		NimpresObjects.currentDPS = new DPS(
+		/*NimpresObjects.currentDPS = new DPS(
 				"http://presentations.nimpres.com/presentation_demo.dps",
-				"internet", "", "", "dps-downloaded-from-internet", NimpresObjects.ctx);
+				"internet", "", "", "dps-downloaded-from-internet", NimpresObjects.ctx);*/
+		NimpresObjects.currentDPS = new DPS("api","internet","21","test","downloaded",NimpresObjects.ctx);
 		NimpresObjects.currentPresentation = NimpresObjects.currentDPS.getDpsPres();
 		if(NimpresObjects.currentPresentation.getNumSlides()>0)
 		{
@@ -77,7 +78,7 @@ public class PresentationView extends Activity {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.pv_menu, menu);
 		this.controlMenu = menu;
-		controlMenu.removeItem(R.id.pvmPause);
+		//controlMenu.removeItem(R.id.pvmPause);
 		resumeUI();
 		return true;
 	}
@@ -144,26 +145,33 @@ public class PresentationView extends Activity {
 		return true;
 	}
 	
-	//TODO this menu hiding code is preventing the icons from showing up....
 	
 	public void resumeUI(){	
 		//Perform an update request to the api immediatly and then change the menu
 		mHandler.removeCallbacks(viewerUpdateTask);
 		mHandler.postDelayed(viewerUpdateTask, 1);
-		controlMenu.add(0,R.id.pvmPause,0,"Pause");
-		controlMenu.removeItem(R.id.pvmBack);
-		controlMenu.removeItem(R.id.pvmNext);
-		controlMenu.removeItem(R.id.pvmResume);
-		controlMenu.removeItem(R.id.pvmJump);
+		controlMenu.getItem(0).setTitle("Pause");
+		controlMenu.getItem(2).setEnabled(false);
+		controlMenu.getItem(3).setEnabled(false);
+		controlMenu.getItem(4).setEnabled(false);
 	}
 	
 	public void pauseUI(){
-
-		controlMenu.removeItem(R.id.pvmPause);
-		controlMenu.add(0,R.id.pvmBack,0,"Back");
-		controlMenu.add(0,R.id.pvmNext,0,"Next");
-		controlMenu.add(0,R.id.pvmResume,0,"Resume");
-		controlMenu.add(0,R.id.pvmJump,0,"Jump");
+		controlMenu.getItem(0).setTitle("Resume");
+		controlMenu.getItem(2).setEnabled(true);
+		controlMenu.getItem(3).setEnabled(true);
+		controlMenu.getItem(4).setEnabled(true);
+	}
+	
+	public void pauseButton(){
+		boolean isPaused = NimpresObjects.currentPresentation.isPaused();		
+		if(isPaused){
+			NimpresObjects.currentPresentation.setPaused(false);
+			resumeUI();
+		}else{
+			NimpresObjects.currentPresentation.setPaused(true);
+			pauseUI();
+		}
 	}
 
 	@Override
@@ -188,13 +196,12 @@ public class PresentationView extends Activity {
 			leave();
 			return true;
 		case R.id.pvmPause:
-			pauseUI();
-			NimpresObjects.currentPresentation.setPaused(true);
+			pauseButton();			
 			return true;
-		case R.id.pvmResume:
+		/*case R.id.pvmResume:
 			resumeUI();
 			NimpresObjects.currentPresentation.setPaused(false);
-			return true;
+			return true;*/
 		case R.id.pvmJump:
 			if(NimpresObjects.currentPresentation.isPaused()){
 				NimpresObjects.currentPresentation.setPaused(true);

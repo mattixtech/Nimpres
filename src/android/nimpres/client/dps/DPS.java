@@ -1,7 +1,7 @@
 /**
  * Project:			Nimpres Android Client
  * File name: 		DPS.java
- * Date modified:	2011-03-16
+ * Date modified:	2011-03-17
  * Description:		This class defines a DPS package
  * 
  * License:			Copyright (c) 2011 (Matthew Brooks, Jordan Emmons, William Kong)
@@ -43,6 +43,7 @@ import android.nimpres.client.lan.TCPMessage;
 import android.nimpres.client.presentation.Presentation;
 import android.nimpres.client.settings.NimpresSettings;
 import android.nimpres.client.utilities.Utilities;
+import android.nimpres.client.web.APIContact;
 import android.os.Environment;
 import android.util.Log;
 
@@ -85,7 +86,11 @@ public class DPS {
 		
 		if(remoteType.equalsIgnoreCase("internet")){
 			this.remoteType = "internet";
-			dpsPath = downloadFromURL(dpsLocation+"?id="+this.dpsID+"&password="+this.dpsPassword, "tmp"+desiredFolderName+".dps", desiredFolderName, ctx);
+			//String downloadURL = NimpresSettings.API_BASE_URL+NimpresSettings.API_DOWNLOAD_PRESENTATION+NimpresSettings.API_EXTENSION+"?";
+			//downloadURL+=
+			//dpsPath = downloadFromURL(dpsLocation+"?id="+this.dpsID+"&password="+this.dpsPassword, "tmp"+desiredFolderName+".dps", desiredFolderName, ctx);
+			
+			dpsPath = downloadFromAPI(Integer.parseInt(dpsID),dpsPassword,NimpresSettings.API_DOWNLOAD_PREFIX+desiredFolderName,desiredFolderName,ctx);
 			
 			//FIXME this error check should probabl be more graceful
 			if(dpsPath != "__EMPTY__")
@@ -104,6 +109,40 @@ public class DPS {
 	}
 	
 	/**
+	 * Download a dps package using the NimpresAPI
+	 * @param id
+	 * @param password
+	 * @param fileName
+	 * @param folderToSave
+	 * @param ctx
+	 * @return
+	 */
+	public static String downloadFromAPI(int id, String password, String fileName, String folderToSave, Context ctx){
+		String ret="__EMPTY__";
+		if(Utilities.isOnline(ctx)){
+			try {
+				Log.d("DPSGet", "download begining from api");
+				byte[] downloadedDPS = APIContact.downloadPresentation(String.valueOf(id), password);
+				FileOutputStream fos = ctx.openFileOutput(fileName,Context.MODE_PRIVATE);
+
+				if(downloadedDPS != null){
+					fos.write(downloadedDPS);
+					Log.d("DPSGet", "dps downloaded complete");
+				}
+				else
+					Log.d("DPSGet", "downloaded dps was empty");				
+				fos.close();				 				
+				ret = Utilities.unzip(fileName, folderToSave, ctx); //Unzip package to requested folder and delete original file	
+			} catch (Exception e) {
+				Log.d("DPSGet", "Error: " + e.getMessage());
+			}
+		}else{
+			Log.d("DPSGet", "Error: device is not online");
+		}
+		return ret;
+	}
+	
+	/**
 	 * Download a dps package off of the Internet and extract it to the desired folder.
 	 * @param packageURL
 	 * @param fileName
@@ -113,6 +152,13 @@ public class DPS {
 	 */
 	private static String downloadFromURL(String packageURL, String fileName,
 			String folderToSave, Context ctx) {
+		
+		/**
+		 * This is now a legacy method we probably won't be using it
+		 * since all downloads should go through the API
+		 * but it might still be usefull for testing
+		 */
+		
 		String ret="__EMPTY__";
 		if(Utilities.isOnline(ctx)){
 			try {

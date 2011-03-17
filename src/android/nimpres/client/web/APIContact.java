@@ -1,7 +1,7 @@
 /**
  * Project:			Nimpres Android Client
  * File name: 		APIContact.java
- * Date modified:	2011-03-12
+ * Date modified:	2011-03-17
  * Description:		Static methods for performing api calls to the webserver
  * 
  * License:			Copyright (c) 2011 (Matthew Brooks, Jordan Emmons, William Kong)
@@ -35,6 +35,7 @@ import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.BufferedHttpEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
@@ -56,7 +57,7 @@ public class APIContact {
 	 * @return the full URL of the requested api call
 	 */
 	public static String getAPIAddress(String apiCall){
-		return NimpresSettings.API_BASE_URL + apiCall +".php";
+		return NimpresSettings.API_BASE_URL + apiCall +NimpresSettings.API_EXTENSION;
 	}
 	
 	/**
@@ -195,9 +196,11 @@ public class APIContact {
 		params.add(new BasicNameValuePair("id", id));
 		params.add(new BasicNameValuePair("password", password));
 		HttpEntity resEntity = apiPostRequest(NimpresSettings.API_DOWNLOAD_PRESENTATION,params);
+		
 		try{
-			result = EntityUtils.toString(resEntity);
-			buffer = EntityUtils.toByteArray(resEntity);
+			BufferedHttpEntity buffEnt = new BufferedHttpEntity(resEntity); //Added for file download
+			//result = EntityUtils.toString(resEntity);
+			buffer = EntityUtils.toByteArray(buffEnt);
 			Log.d("APIContact","post result:"+buffer);
 		}catch (Exception e) {
 	        e.printStackTrace();
