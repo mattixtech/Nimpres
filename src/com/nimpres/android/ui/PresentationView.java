@@ -57,9 +57,6 @@ public class PresentationView extends Activity {
 		setContentView(R.layout.presentation_viewer);
 		
 		//TODO we should show a loading screen before we do this download and then return to this screen after download is done
-		/*NimpresObjects.currentDPS = new DPS(
-				"http://presentations.nimpres.com/presentation_demo.dps",
-				"internet", "", "", "dps-downloaded-from-internet", NimpresObjects.ctx);*/
 		
 		
 		NimpresObjects.currentDPS = new DPS("api","internet","99","test","downloaded",NimpresObjects.ctx);

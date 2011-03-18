@@ -67,9 +67,11 @@ public class NimpresClient extends Activity {
 		 */
 
 		//setContentView(R.layout.presentation_viewer); //TODO call the main view from here and have UI elements to access the other views
+		testListing();
 		// testSlideNum();
-		//testPresentation();
-		//testPresentation();
+		// testUpdateSlide();
+		// testPresentation();
+		// testPresentation();
 		// testLoginAPI();
 		// testLANAdvertising();
 		// testLANListening();
@@ -79,7 +81,7 @@ public class NimpresClient extends Activity {
 		// testLANListening();
 		// testDPSDownload(ctx);
 		// testDPSHosting("tmpdps_down.dps",ctx);
-		//testCreate();
+		// testCreate();
 
 		// this.finish();
 
@@ -106,14 +108,20 @@ public class NimpresClient extends Activity {
 
 
 	public static void testLoginAPI() {
-		// Test login API
 		APIContact.validateLogin("Jordan", "testing");
-
 	}
 
+	public static void testUpdateSlide(){
+		APIContact.updateSlideNumber("win", "testing1", "25", "test", "1337");
+	}
+	
 	public static void testSlideNum() {
-		int slideNum = APIContact.getSlideNumber("2", "test");
+		int slideNum = APIContact.getSlideNumber("25", "test");
 		Log.d("NimpresClient", "slide # " + slideNum);
+	}
+	
+	public static void testListing(){
+		APIContact.listPresentations("win", "testing1", "win");
 	}
 
 	public static void testLANAdvertising() {
@@ -141,28 +149,14 @@ public class NimpresClient extends Activity {
 	}
 
 	public static void testDPSDownload(Context ctx) {
-		DPS lanDPS = new DPS("192.168.1.4", "lan", "123", "pass",
-				"testing_dps", ctx);
-		// DPS testInternetDPS = new DPS("http://mattixtech.net/filez/test.dps",
-		// "internet", "", "", "dps_download", ctx);
+		DPS lanDPS = new DPS("192.168.1.4", "lan", "123", "pass","testing_dps", ctx);
 		Log.d("NimpresClient", "DPS fully created");
-		Log.d("NimpresClient", "DPS presentation title:"
-				+ lanDPS.getDpsPres().getTitle());
-		//Log.d("NimpresClient", "DPS path:" + lanDPS.getDpsPath());
-		/*
-		 * String folder =
-		 * DPSGet.DownloadFromURL("http://mattixtech.net/filez/cars.dps",
-		 * "cars.dps", "testing_dps", ctx);
-		 * Log.d("NimpresClient","downloaded dps to:"+folder); DPS testDPS = new
-		 * DPS(folder); Log.d("NimpresClient","DPS fully created");
-		 * Log.d("NimpresClient"
-		 * ,"DPS presentation title:"+testDPS.getDpsPres().getTitle());
-		 */
+		Log.d("NimpresClient", "DPS presentation title:"+ lanDPS.getDpsPres().getTitle());
 	}
 	
 	public static void testCreate()
 	{
-		if(APIContact.createPresentation("matt", "mattspassword", "MattTesting", "test", "1", "presentation_demo.dps"))
+		if(APIContact.createPresentation("win", "testing1", "MattTesting", "test", "1", "will.dps"))
 			Log.d("NimpresClient","presentation created successfully");
 		else
 			Log.d("NimpresClient","presentation creation failed");
