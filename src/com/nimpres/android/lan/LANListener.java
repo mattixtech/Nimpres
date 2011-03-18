@@ -24,11 +24,12 @@
 					OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 					THE SOFTWARE.
  */
-package android.nimpres.client.lan;
+package com.nimpres.android.lan;
 
 import java.util.ArrayList;
 
-import android.nimpres.client.settings.NimpresSettings;
+import com.nimpres.android.settings.NimpresSettings;
+
 import android.util.Log;
 
 public class LANListener implements Runnable{
@@ -52,14 +53,6 @@ public class LANListener implements Runnable{
 			try{
 				Log.d("LANListener","attempting to receive peer status update: "); 
 				UDPMessage inPkt = new UDPMessage(NimpresSettings.SERVER_PEER_PORT,1024);
-				
-				//TODO remove this old code
-				/*inputSocket = new DatagramSocket(NimpresSettings.SERVER_PEER_PORT);
-				inputBuff = new byte[1024];
-				pkt = new DatagramPacket(inputBuff,1024);
-				inputSocket.receive(pkt);*/
-				//InetAddress senderAddress = pkt.getAddress();
-				
 				if(inPkt.getType().equals(NimpresSettings.MSG_PRESENTATION_STATUS)){
 					PeerStatus recvStatus = new PeerStatus(inPkt);
 	                Log.d("LANListener","received message from peer: "+inPkt.getRemoteIP());	                

@@ -1,7 +1,7 @@
 /**
  * Project:			Nimpres Android Client
  * File name: 		Slide.java
- * Date modified:	2011-02-02
+ * Date modified:	2011-03-16
  * Description:		Represents a slide in a presentation
  * 
  * License:			Copyright (c) 2011 (Matthew Brooks, Jordan Emmons, William Kong)
@@ -24,7 +24,7 @@
 					OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 					THE SOFTWARE.
  */
-package android.nimpres.client.presentation;
+package com.nimpres.android.presentation;
 
 public class Slide {
 	private String fileName = "";
@@ -32,7 +32,18 @@ public class Slide {
 	private String slideComments = "";
 	private String slideTitle = "";
 	
+	/**
+	 * 
+	 */
+	public Slide(){}
 	
+	/**
+	 * 
+	 * @param fileName
+	 * @param slideNumber
+	 * @param slideComments
+	 * @param slideTitle
+	 */
 	public Slide(String fileName, int slideNumber, String slideComments, String slideTitle){
 		this.fileName = fileName;
 		this.slideNumber = slideNumber;

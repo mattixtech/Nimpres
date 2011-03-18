@@ -1,7 +1,7 @@
 /**
  * Project:			Nimpres Android Client
  * File name: 		DPS.java
- * Date modified:	2011-03-06
+ * Date modified:	2011-03-17
  * Description:		This class defines a DPS package
  * 
  * License:			Copyright (c) 2011 (Matthew Brooks, Jordan Emmons, William Kong)
@@ -24,9 +24,8 @@
 					OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 					THE SOFTWARE.
  */
-package android.nimpres.client.dps;
+package com.nimpres.android.dps;
 
-import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
@@ -35,19 +34,18 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.net.URL;
-import java.net.URLConnection;
+import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 
-import org.apache.http.util.ByteArrayBuffer;
-
 import android.content.Context;
-import android.nimpres.client.lan.TCPMessage;
-import android.nimpres.client.presentation.Presentation;
-import android.nimpres.client.settings.NimpresSettings;
-import android.nimpres.client.utilities.Utilities;
 import android.os.Environment;
 import android.util.Log;
+
+import com.nimpres.android.lan.TCPMessage;
+import com.nimpres.android.presentation.Presentation;
+import com.nimpres.android.settings.NimpresSettings;
+import com.nimpres.android.utilities.Utilities;
+import com.nimpres.android.web.APIContact;
 
 /*This class represents a fully extracted and read DSP presentation package*/
 
@@ -65,7 +63,11 @@ public class DPS {
 	 * @param dpsFolder
 	 */
 	public DPS(String dpsPath, String desiredFolderName, Context ctx){
-		this.dpsPath = downloadFromSD(dpsPath, desiredFolderName, ctx);
+		try {
+			this.dpsPath = downloadFromSD(dpsPath, desiredFolderName, ctx);
+		} catch (Exception e) {
+			Log.d("DPS","Error: "+e.getMessage());
+		}
 		dpsOrigin = "device";
 		dpsPres = DPSReader.makePresentation(dpsPath);
 	}
@@ -81,88 +83,92 @@ public class DPS {
 	 */
 	public DPS(String dpsLocation, String remoteType, String dpsID, String dpsPassword, String desiredFolderName, Context ctx){
 		isRemote = true;
-		dpsOrigin = dpsLocation;		
-		
+		dpsOrigin = dpsLocation;			
 		this.dpsID = dpsID;
 		this.dpsPassword = dpsPassword;
-		
-		if(remoteType.equalsIgnoreCase("internet")){
-			this.remoteType = "internet";
-			dpsPath = downloadFromURL(dpsLocation+"?id="+this.dpsID+"&password="+this.dpsPassword, "tmp"+desiredFolderName+".dps", desiredFolderName, ctx);
-			dpsPres = DPSReader.makePresentation(dpsPath);
-		}else if(remoteType.equalsIgnoreCase("lan")){
-			this.remoteType = "lan";
-			dpsPath = downloadFromLAN(dpsLocation, dpsID, dpsPassword, desiredFolderName, ctx);
-			dpsPres = DPSReader.makePresentation(dpsPath);
-		}
+		if(Utilities.isOnline(ctx)){
+			if(remoteType.equalsIgnoreCase("internet")){
+				this.remoteType = "internet";
+				try {
+					dpsPath = downloadFromAPI(Integer.parseInt(dpsID),dpsPassword,NimpresSettings.API_DOWNLOAD_PREFIX+desiredFolderName,desiredFolderName,ctx);
+				} catch (Exception e) {
+					Log.d("DPS","Error: "+e.getMessage());
+				}
+			}else if(remoteType.equalsIgnoreCase("lan")){
+				this.remoteType = "lan";
+				try {
+					dpsPath = downloadFromLAN(dpsLocation, Integer.parseInt(dpsID), dpsPassword, desiredFolderName, ctx);
+				} catch (Exception e) {
+					Log.d("DPS","Error: "+e.getMessage());
+				}				
+			}
+			if( ! dpsPath.equals("")){
+				dpsPres = DPSReader.makePresentation(dpsPath);
+			}else{
+				Log.d("DPS","no dps file could be found");
+			}
+		}else
+			Log.d("DPS","Error: device is offline");
 	}
 	
 	/**
-	 * Download a dps package off of the Internet and extract it to the desired folder.
-	 * @param packageURL
+	 * Download a dps package using the NimpresAPI
+	 * @param id
+	 * @param password
 	 * @param fileName
 	 * @param folderToSave
 	 * @param ctx
-	 * @return the folder name of the extracted dps
+	 * @return
+	 * @throws Exception 
 	 */
-	private static String downloadFromURL(String packageURL, String fileName,
-			String folderToSave, Context ctx) {
-		String ret="";
-		try {
-			/* Download the specified presentation off of the Internet */
-			/******************************************************/
-			
-			//TODO check to make sure there is a dps at the url
-			URL url = new URL(packageURL);
-			Log.d("DPSGet", "download begining");
-			Log.d("DPSGet", "download url:" + url);
-			Log.d("DPSGet", "downloaded file");
-			URLConnection ucon = url.openConnection();
-			InputStream is = ucon.getInputStream();
-			FileOutputStream fos = ctx.openFileOutput(fileName,Context.MODE_PRIVATE);
-			
-			//BufferedInputStream bis = new BufferedInputStream(is);
-			//ByteArrayBuffer baf = new ByteArrayBuffer(50);
-			
-			/*Save downloaded file to disk*/			
-			byte buf[]=new byte[1024];
-		    int len;
-		    long byteCounter = 0;
-		    int mbCounter = 0;
-		    while((len=is.read(buf))>0){
-		    	fos.write(buf,0,len);
-		    	byteCounter++;
-		    	if(byteCounter % 1024 == 0)
-		    		Log.d("DPS","downloading...");
-		    		//Log.d("DPS","downloaded "+ (++mbCounter) +"MB of DPS file");
-		    	
-		    }
-		    fos.close();
-		    is.close();
-			
-			//int current = 0;
-			//while ((current = bis.read()) != -1) {
-			//	baf.append((byte) current);
-				
-				//TODO fix this to write the file to disk quicker...
-				//byte toWrite = (byte)current;
-				//fos.write(toWrite);
-			//}
-			
-			/*Save downloaded file to disk*/
-
-			//fos.write(baf.toByteArray());
-			//fos.close();
-			/******************************************************/
-			
-			/*Unzip package to requested folder and delete original file*/
-			ret = Utilities.unzip(fileName, folderToSave, ctx);
-
-		} catch (Exception e) {
-			Log.d("DPSGet", "Error: " + e);
+	public static String downloadFromAPI(int id, String password, String fileName, String folderToSave, Context ctx) throws Exception{
+		String ret = null;
+		//ByteBuffer downloadedResponse = ByteBuffer.allocate(NimpresSettings.MAX_PRESENTATION_SIZE);
+		if(Utilities.isOnline(ctx)){
+			try {
+				Log.d("DPSGet", "download begining from api");
+				Log.d("DPSGet","id:"+id+" password:"+password);
+				InputStream is = APIContact.downloadPresentation(String.valueOf(id), password);
+				if(is != null){
+					FileOutputStream fos = ctx.openFileOutput(fileName,Context.MODE_PRIVATE);
+					
+					/*Save downloaded file to disk*/			
+					byte buf[]=new byte[1024];
+				    int len;
+				    long byteCounter = 0;
+				    long downloadedCounter = 0;
+				    long mbCounter = 0;
+				    
+				    while((len=is.read(buf))>0){
+				    	fos.write(buf,0,len);
+				    	byteCounter += len;
+				    	downloadedCounter += len;
+				    	if(downloadedCounter > 1024*1024){
+				    		Log.d("DPS","downloaded "+ ++mbCounter +" MB");
+				    		downloadedCounter = 0;
+				    	}		    	
+				    }
+				    fos.close();
+				    is.close();
+				    Log.d("DPSGet", "downloaded file");			    			 				
+					ret = Utilities.unzip(fileName, folderToSave, ctx); //Unzip package to requested folder and delete original file
+				}else{
+					Log.d("DPSGet", "unable to download dps file");
+				}
+			} catch (Exception e) {
+				Log.d("DPSGet", "Error: " + e.getMessage());
+			}
+		}else{
+			Log.d("DPSGet", "Error: device is not online");
 		}
-		return ret;
+		if(ret == null){
+			throw new Exception("unable to download");
+		}else{
+			return ret;
+		}
 	}
+	
+	
 	
 	/**
 	 * Copy a dps package off of the SD card and extract it to the desired location
@@ -170,11 +176,12 @@ public class DPS {
 	 * @param folderToSave
 	 * @param ctx
 	 * @return
+	 * @throws Exception 
 	 */
 	private static String downloadFromSD(String fileName, String folderToSave,
-			Context ctx) {
+			Context ctx) throws Exception {
 		
-		String ret="";
+		String ret = null;
 		try {
 
 			/* Download the specified Presentation off of the SD Card */
@@ -203,7 +210,11 @@ public class DPS {
 		} catch (Exception e) {
 			Log.d("DPSGet", "Error: " + e);
 		}		
-		return ret;
+		if(ret == null){
+			throw new Exception("unable to download");
+		}else{
+			return ret;
+		}
 	}
 	
 	/**
@@ -214,67 +225,73 @@ public class DPS {
 	 * @param folderToSave
 	 * @param ctx
 	 * @return 
+	 * @throws Exception 
 	 */
-	private static String downloadFromLAN(String ipAddress, String dpsID, String dpsPassword, String folderToSave, Context ctx){
-		String ret = "";
+	private static String downloadFromLAN(String ipAddress, int dpsID, String dpsPassword, String folderToSave, Context ctx) throws Exception{
+		String ret = null;
 		Socket connectionToLANPeer = null;
-		try{
-			//Open socket connection to peer
-			Log.d("DPS","attempting to connect to peer:"+ipAddress);
-			connectionToLANPeer = new Socket(InetAddress.getByName(ipAddress.trim()),NimpresSettings.SERVER_FILE_PORT);
-			
-			if(connectionToLANPeer.isConnected()){//Check if socket is connected
-				Log.d("DPS","connected to peer");
-				DataOutputStream out = new DataOutputStream(connectionToLANPeer.getOutputStream());
-				DataInputStream in = new DataInputStream(connectionToLANPeer.getInputStream());
+		if(Utilities.isOnline(ctx)){
+			try{
+				//Open socket connection to peer
+				Log.d("DPS","attempting to connect to peer:"+ipAddress);
+				connectionToLANPeer = new Socket(InetAddress.getByName(ipAddress.trim()),NimpresSettings.SERVER_FILE_PORT);
 				
-				//Create and send the TCP request message
-				String msgReq = dpsID + "__" + dpsPassword;//Format the request message				
-				TCPMessage outMsg = new TCPMessage(NimpresSettings.MSG_REQUEST_FILE_TRANSFER,msgReq.getBytes(),out);
-
-				Log.d("DPS","sent message to peer:"+msgReq);
-				
-				//Receive the response message
-				TCPMessage inMsg = new TCPMessage(in);
-				Log.d("DPS","received response from peer: "+inMsg);
-				//Check the type of the response message
-				if(inMsg.getType().equals(NimpresSettings.MSG_RESPONSE_FILE_TRANSFER)){
-					//Server responded with the file
-					Log.d("DPS","peer transfered file");
+				if(connectionToLANPeer.isConnected()){//Check if socket is connected
+					Log.d("DPS","connected to peer");
+					DataOutputStream out = new DataOutputStream(connectionToLANPeer.getOutputStream());
+					DataInputStream in = new DataInputStream(connectionToLANPeer.getInputStream());
 					
-					//Store the data portion of the received message
-					byte[] receivedFile = inMsg.getData();
+					//Create and send the TCP request message
+					String msgReq = dpsID + "__" + dpsPassword;//Format the request message				
+					TCPMessage outMsg = new TCPMessage(NimpresSettings.MSG_REQUEST_FILE_TRANSFER,msgReq.getBytes(),out);
+	
+					Log.d("DPS","sent message to peer:"+msgReq);
 					
-					//Attempt to write the received dps file to disk and then extract it					
-					FileOutputStream fos = ctx.openFileOutput(dpsID, Context.MODE_WORLD_READABLE);
-					fos.write(receivedFile);
-					fos.close();
-					File wroteFile = new File(ctx.getFilesDir()+File.separator+dpsID);
-					if(wroteFile.exists())
-						Log.d("DPS","file wrote successfully");
-					else
-						Log.d("DPS","file not wrote");
-					
-					
-					Log.d("DPS","just wrote to disk: "+ctx.getFilesDir()+File.separator+dpsID);
-					ret = Utilities.unzip(dpsID, folderToSave, ctx);
-					Log.d("DPS","extracted file to:"+ret);
-				}else if(inMsg.getType().equals(NimpresSettings.MSG_RESPONSE_INVALID_REQ)){
-					//Server denied transfer due to invalid id/password
-					Log.d("DPS","peer denied transfer");
-					ret = "__invalid";				
+					//Receive the response message
+					TCPMessage inMsg = new TCPMessage(in);
+					Log.d("DPS","received response from peer: "+inMsg);
+					//Check the type of the response message
+					if(inMsg.getType().equals(NimpresSettings.MSG_RESPONSE_FILE_TRANSFER)){
+						//Server responded with the file
+						Log.d("DPS","peer transfered file");
+						
+						//Store the data portion of the received message
+						byte[] receivedFile = inMsg.getData();
+						
+						//Attempt to write the received dps file to disk and then extract it					
+						FileOutputStream fos = ctx.openFileOutput(String.valueOf(dpsID), Context.MODE_WORLD_READABLE);
+						fos.write(receivedFile);
+						fos.close();
+						File wroteFile = new File(ctx.getFilesDir()+File.separator+dpsID);
+						if(wroteFile.exists())
+							Log.d("DPS","file wrote successfully");
+						else
+							Log.d("DPS","file not wrote");
+						
+						
+						Log.d("DPS","just wrote to disk: "+ctx.getFilesDir()+File.separator+dpsID);
+						ret = Utilities.unzip(String.valueOf(dpsID), folderToSave, ctx);
+						Log.d("DPS","extracted file to:"+ret);
+					}else if(inMsg.getType().equals(NimpresSettings.MSG_RESPONSE_INVALID_REQ)){
+						//Server denied transfer due to invalid id/password
+						Log.d("DPS","peer denied transfer");			
+					}else{
+						//Something else went wrong
+						Log.d("DPS","dps transfer failed");					}
 				}else{
-					//Something else went wrong
-					Log.d("DPS","dps transfer failed");
-					ret = "__error";
+					Log.d("DPS","could not connect to peer:"+ipAddress);
 				}
-			}else{
-				Log.d("DPS","could not connect to peer:"+ipAddress);
+			}catch(Exception e){
+				Log.d("DPS","Exception:"+e.getMessage());
 			}
-		}catch(Exception e){
-			Log.d("DPS","Exception:"+e.getMessage());
+		}else{
+			Log.d("DPSGet", "Error: device is not online");
 		}
-		return ret;
+		if(ret == null){
+			throw new Exception("unable to download");
+		}else{
+			return ret;
+		}
 	}
 
 	/**

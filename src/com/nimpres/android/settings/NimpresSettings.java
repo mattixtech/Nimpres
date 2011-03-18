@@ -1,7 +1,7 @@
 /**
  * Project:			Nimpres Android Client
  * File name: 		NimpresSettings.java
- * Date modified:	2011-03-16
+ * Date modified:	2011-03-17
  * Description:		Static settings shared throughout app
  * 
  * License:			Copyright (c) 2011 (Matthew Brooks, Jordan Emmons, William Kong)
@@ -24,7 +24,7 @@
 					OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 					THE SOFTWARE.
  */
-package android.nimpres.client.settings;
+package com.nimpres.android.settings;
 
 public class NimpresSettings {
 	
@@ -33,6 +33,7 @@ public class NimpresSettings {
 	 */
 	
 	public static final String API_BASE_URL = "http://api.nimpres.com/";
+	public static final String API_EXTENSION = ".php";
 	public static final String API_LOGIN = "login"; 								//boolean response
 	public static final String API_PRESENTATION_CURRENT_SLIDE = "get_slide_num"; 	//integer response
 	public static final String API_PRESENTATION_UPDATE_SLIDE = "update_slide_num"; 	//boolean response
@@ -54,7 +55,7 @@ public class NimpresSettings {
      */
     public static final double HELLO_TIMER = 1; //Send hello every X seconds
     public static final double DEAD_TIMER = 5; //Wait X seconds before removing peer
-    public static final int API_PULL_DELAY = 1000; //Wait X miliseconds before performing another pull from the API
+    public static final int API_PULL_DELAY = 4000; //Wait X miliseconds before performing another pull from the API
     public static final int LAN_ADVERTISE_DELAY = 1000;
 	
 	/*
@@ -70,6 +71,8 @@ public class NimpresSettings {
     public static final String METAFILE_NAME = "meta-inf.xml";
 	public static final String PEER_BROADCAST_ADDRESS = "255.255.255.255";
 	public static final int SERVER_QUE_SIZE = 32;
+	public static final String API_DOWNLOAD_PREFIX = "tmp_api-download_";
+	public static final int MAX_PRESENTATION_SIZE = 1024*1024*100; //in bytes
 	
 	/*
      * Messages

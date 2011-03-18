@@ -1,18 +1,48 @@
 <?php
+/**
+ * Project:			Nimpres Server API
+ * File name: 		create_presentation.php
+ * Date modified:	2011-03-17
+ * Description:		This class defines a DPS package
+ * 
+ * License:			Copyright (c) 2011 (Matthew Brooks, Jordan Emmons, William Kong)
+					
+					Permission is hereby granted, free of charge, to any person obtaining a copy
+					of this software and associated documentation files (the "Software"), to deal
+					in the Software without restriction, including without limitation the rights
+					to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+					copies of the Software, and to permit persons to whom the Software is
+					furnished to do so, subject to the following conditions:
+					
+					The above copyright notice and this permission notice shall be included in
+					all copies or substantial portions of the Software.
+					
+					THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+					IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+					FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+					AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+					LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+					OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+					THE SOFTWARE.
+ */
 
 ini_set('display_errors',1);
 error_reporting(E_ALL|E_STRICT);
 require_once('./includes/init.php');
 
-$user = $_POST['user'];
-$title = $_POST['title'];
-$pres_pass = $_POST['password'];
-$length = $_POST['length'];
-$slide_num = $_POST['slide_num'];
-$status = $_POST['status'];
-$over = $_POST['over'];
+$user = $_GET['user'];
+$password = $_GET['password'];
+$title = $_GET['title'];
+$pres_pass = $_GET['pres_password'];
+$length = $_GET['length'];
+$slide_num = $_GET['slide_num'];
+$status = $_GET['status'];
+$over = $_GET['over'];
 
-if (!empty($user) && !empty($title) && !empty($length) && !empty($slide_num) && !empty($status))
+
+//TODO check the user/password of the uploader first for security
+
+if (!empty($user) && !empty($title) && !empty($length) && is_numeric($slide_num) && !empty($status))
 {
 	$id = PresentationBO::createPres($user, $title, $pres_pass, $length, $slide_num, $status, $over);
 	if ($id >= 0){
@@ -37,13 +67,12 @@ if (!empty($user) && !empty($title) && !empty($length) && !empty($slide_num) && 
 		} 
 		else
 		{
-		    echo 'FAIL';
+		    echo 'FAILFILE';
 		}	
 	}
 	else
-		echo 'FAIL';
-}
-else 
-	echo 'FAIL';
+		echo 'FAILCREATE';
+}else 
+	echo 'FAILEMPTY';
 
 ?>

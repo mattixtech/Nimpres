@@ -24,7 +24,7 @@
 					OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 					THE SOFTWARE.
  */
-package android.nimpres.client.dps;
+package com.nimpres.android.dps;
 
 import java.io.File;
 
@@ -36,9 +36,10 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import android.nimpres.client.presentation.Presentation;
-import android.nimpres.client.presentation.Slide;
-import android.nimpres.client.settings.NimpresSettings;
+import com.nimpres.android.presentation.Presentation;
+import com.nimpres.android.presentation.Slide;
+import com.nimpres.android.settings.NimpresSettings;
+
 import android.util.Log;
 
 /*This class offers methods to read a DSP file once it has been extracted*/
@@ -51,10 +52,17 @@ public class DPSReader {
 	 * @return
 	 */
 	public static Presentation makePresentation(String dpsPath){
-		Log.d("DPSReader","attempting to create presentation from: "+dpsPath);
+		File metaFile;
 		Presentation presCreated = null;
 		//TODO create a default meta information if there is none?
-		File metaFile = new File(dpsPath +File.separator+NimpresSettings.METAFILE_NAME);
+		if( ! dpsPath.equals("")){
+			metaFile = new File(dpsPath +File.separator+NimpresSettings.METAFILE_NAME);
+			Log.d("DPSReader","attempting to create presentation from: "+metaFile);
+		}else{
+			return null;
+		}
+		
+		
 		if(metaFile.exists()){
 			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 			

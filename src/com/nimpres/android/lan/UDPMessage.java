@@ -24,13 +24,14 @@
 					OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 					THE SOFTWARE.
  */
-package android.nimpres.client.lan;
+package com.nimpres.android.lan;
 
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 
-import android.nimpres.client.utilities.Utilities;
+import com.nimpres.android.utilities.Utilities;
+
 import android.util.Log;
 
 public class UDPMessage {
@@ -128,7 +129,8 @@ public class UDPMessage {
 	 */
 	public void getMessage(int port, int size){
 		try{
-			DatagramSocket inputSocket = new DatagramSocket(port,InetAddress.getByName(Utilities.getLocalIpAddress()));
+			//DatagramSocket inputSocket = new DatagramSocket(port,InetAddress.getByName(Utilities.getLocalIpAddress()));
+			DatagramSocket inputSocket = new DatagramSocket(port);
 			inputSocket.setReuseAddress(true);
 			byte[] inputBuff = new byte[size];
 			DatagramPacket pkt = new DatagramPacket(inputBuff,size);			

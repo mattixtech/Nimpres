@@ -24,7 +24,7 @@
 					OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 					THE SOFTWARE.
  */
-package android.nimpres.client.presentation;
+package com.nimpres.android.presentation;
 
 public class Presentation {
 	private String title = "";
@@ -137,7 +137,10 @@ public class Presentation {
 	}
 
 	public Slide getCurrentSlideFile(){
-		return slideFiles[currentSlide];
+		if(numSlides > 0)
+			return slideFiles[currentSlide];
+		else
+			return new Slide(); //TODO we should probably create an error dps package and preload it, showing an error image here
 	}
 	
 	public void nextSlide(){

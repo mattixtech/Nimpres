@@ -1,7 +1,7 @@
 /**
  * Project:			Nimpres Android Client
  * File name: 		APIContact.java
- * Date modified:	2011-03-12
+ * Date modified:	2011-03-17
  * Description:		Static methods for performing api calls to the webserver
  * 
  * License:			Copyright (c) 2011 (Matthew Brooks, Jordan Emmons, William Kong)
@@ -24,8 +24,9 @@
 					OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 					THE SOFTWARE.
  */
-package android.nimpres.client.web;
+package com.nimpres.android.web;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,12 +36,14 @@ import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.BufferedHttpEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 
-import android.nimpres.client.settings.NimpresSettings;
+import com.nimpres.android.settings.NimpresSettings;
+
 import android.util.Log;
 
 /**
@@ -56,7 +59,7 @@ public class APIContact {
 	 * @return the full URL of the requested api call
 	 */
 	public static String getAPIAddress(String apiCall){
-		return NimpresSettings.API_BASE_URL + apiCall +".php";
+		return NimpresSettings.API_BASE_URL + apiCall +NimpresSettings.API_EXTENSION;
 	}
 	
 	/**
@@ -88,8 +91,8 @@ public class APIContact {
 	 * @param postParams
 	 * @return the result in an HttpEntity object
 	 */
-	public static HttpEntity apiPostRequest(String apiAddress,List<NameValuePair> postParams){
-		HttpEntity resEntity = null;
+	public static BufferedHttpEntity apiPostRequest(String apiAddress,List<NameValuePair> postParams){
+		BufferedHttpEntity resEntity = null;
 		try {
 			HttpClient client = new DefaultHttpClient();  
 	        //Set address for API call
@@ -98,9 +101,9 @@ public class APIContact {
 	        UrlEncodedFormEntity ent = new UrlEncodedFormEntity(postParams,HTTP.UTF_8);
 	        post.setEntity(ent);
 	        //Send post and store result
-	        Log.d("APIContact","performing post to:"+apiAddress);
+	        Log.d("APIContact","Contacting API - api-method:"+apiAddress+", api-query: "+postParams);
             HttpResponse responsePOST = client.execute(post);  
-            resEntity = responsePOST.getEntity();
+            resEntity = new BufferedHttpEntity(responsePOST.getEntity());
             if (resEntity != null) { 
             	return resEntity;
             }
@@ -109,6 +112,9 @@ public class APIContact {
 	    }
 		return null;
 	}
+	
+	
+	
 	
 	/**
 	 * This method creates a user with a login/password combination
@@ -182,31 +188,35 @@ public class APIContact {
 	}
 	
 	/**
-	 * This method downloads the presentation to the user
+	 * Downloads the presentation dps file
 	 * @param id
 	 * @param password
-	 * @return byte buffer
+	 * @return
 	 */
-	public static byte[] downloadPresentation(String id, String password){
-		byte[] buffer = null;
-		byte[] fail = {-1};
-		String result = "";
+	public static InputStream downloadPresentation(String id, String password){
+		InputStream downloadedDps = null;
+		String response = "";
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
 		params.add(new BasicNameValuePair("id", id));
 		params.add(new BasicNameValuePair("password", password));
-		HttpEntity resEntity = apiPostRequest(NimpresSettings.API_DOWNLOAD_PRESENTATION,params);
+		HttpEntity resEntity = apiPostRequest(NimpresSettings.API_DOWNLOAD_PRESENTATION,params);		
 		try{
-			result = EntityUtils.toString(resEntity);
-			buffer = EntityUtils.toByteArray(resEntity);
-			Log.d("APIContact","post result:"+buffer);
+			BufferedHttpEntity buffEnt = new BufferedHttpEntity(resEntity); //Added for file download
+			downloadedDps = buffEnt.getContent();
+			response = new String(EntityUtils.toString(buffEnt).trim());
+			Log.d("APIContact","post result:"+response);
 		}catch (Exception e) {
 	        e.printStackTrace();
-	    }
+	    }	
 		
-		if(!result.equals(NimpresSettings.API_RESPONSE_NEGATIVE))
-			return buffer;
-		else
-			return fail;
+		if( ! response.equals(NimpresSettings.API_RESPONSE_NEGATIVE) && response != ""){
+			Log.d("APIContact","api download success");
+			return downloadedDps;
+		}
+		else{
+			Log.d("APIContact","api download failed");
+			return null;
+		}
 	}
 	
 	/**
@@ -226,8 +236,7 @@ public class APIContact {
 			Log.d("APIContact","post result:"+result);
 		}catch (Exception e) {
 	        e.printStackTrace();
-	    }
-		
+	    }		
 		if(result.equals(NimpresSettings.API_RESPONSE_POSITIVE))
 			return true;
 		return false;
@@ -267,28 +276,21 @@ public class APIContact {
 	 * @param status
 	 * @param over
 	 * @return
-	 */
-	//TODO Needs to send the actual file
-	public static boolean createPresentation(String user, String title, String password, String length, String slide_num, String status, String over){
-		String result = "";
-		List<NameValuePair> params = new ArrayList<NameValuePair>();
-		params.add(new BasicNameValuePair("user", user));
-		params.add(new BasicNameValuePair("title", title));
-		params.add(new BasicNameValuePair("password", password));
-		params.add(new BasicNameValuePair("length", length));
-		params.add(new BasicNameValuePair("slide_num", slide_num));
-		params.add(new BasicNameValuePair("status", status));
-		params.add(new BasicNameValuePair("over", over));
-		HttpEntity resEntity = apiPostRequest(NimpresSettings.API_CREATE_PRESENTATION,params);
-		try{
-			result = EntityUtils.toString(resEntity);
-			Log.d("APIContact","post result:"+result);
-		}catch (Exception e) {
-	        e.printStackTrace();
-	    }
-		if(result.equals(NimpresSettings.API_RESPONSE_POSITIVE))
+	 */	
+	public static boolean createPresentation(String user, String password, String title, String pres_password, String length, String fileName){
+
+		String queryString = "?title="+title+"&user="+user+"&password="+password+"&pres_password="+pres_password+"&length="+length+"&slide_num=0&status=new&over=0";
+		String url = NimpresSettings.API_BASE_URL + NimpresSettings.API_CREATE_PRESENTATION + NimpresSettings.API_EXTENSION;
+		
+		String queryUrl = url+queryString;
+		
+		FileUploader upFile = new FileUploader(queryUrl, fileName);
+		String response = upFile.upload();
+		
+		if(response.equals(NimpresSettings.API_RESPONSE_POSITIVE))
 			return true;
-		return false;
+		else		
+			return false;
 	}
 	
 	/**
@@ -311,36 +313,5 @@ public class APIContact {
 		if(result.equals(NimpresSettings.API_RESPONSE_POSITIVE))
 			return true;
 		return false;
-	}
-	
-	/**
-	 * 
-	 * @param login
-	 * @param password
-	 * @param fileName
-	 * @param pesentationTitle
-	 * @param passwordProtect
-	 */
-	public static void pushDPSToWeb(String login, String password, String fileName, String pesentationTitle, boolean passwordProtect){
-		
-		/*Posting file cod
-		 	File file = new File("path/to/your/file.txt");
-			try {
-			         HttpClient client = new DefaultHttpClient();  
-			         String postURL = "http://someposturl.com";
-			         HttpPost post = new HttpPost(postURL); 
-			     FileBody bin = new FileBody(file);
-			     MultipartEntity reqEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);  
-			     reqEntity.addPart("myFile", bin);
-			     post.setEntity(reqEntity);  
-			     HttpResponse response = client.execute(post);  
-			     HttpEntity resEntity = response.getEntity();  
-			     if (resEntity != null) {    
-			               Log.i("RESPONSE",EntityUtils.toString(resEntity));
-			         }
-			} catch (Exception e) {
-			    e.printStackTrace();
-			}
-		 */
 	}
 }
