@@ -38,8 +38,8 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.nio.channels.FileChannel;
 
-import com.android.nimpres.lan.TCPMessage;
 import com.nimpes.android.settings.NimpresSettings;
+import com.nimpres.android.lan.TCPMessage;
 import com.nimpres.android.presentation.Presentation;
 import com.nimpres.android.utilities.Utilities;
 import com.nimpres.android.web.APIContact;

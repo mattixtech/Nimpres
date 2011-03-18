@@ -28,10 +28,10 @@ package com.nimpres.android;
 
 import java.io.IOException;
 
-import com.android.nimpres.lan.DPSServer;
-import com.android.nimpres.lan.LANAdvertiser;
-import com.android.nimpres.lan.LANListener;
 import com.nimpres.android.dps.DPS;
+import com.nimpres.android.lan.DPSServer;
+import com.nimpres.android.lan.LANAdvertiser;
+import com.nimpres.android.lan.LANListener;
 import com.nimpres.android.presentation.Presentation;
 import com.nimpres.android.utilities.Utilities;
 import com.nimpres.android.web.APIContact;
