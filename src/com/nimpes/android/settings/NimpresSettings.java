@@ -24,7 +24,7 @@
 					OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 					THE SOFTWARE.
  */
-package android.nimpres.client.settings;
+package com.nimpes.android.settings;
 
 public class NimpresSettings {
 	

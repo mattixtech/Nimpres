@@ -24,7 +24,7 @@
 					OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 					THE SOFTWARE.
  */
-package android.nimpres.client.dps;
+package com.nimpres.android.dps;
 
 import java.io.File;
 
@@ -36,9 +36,10 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import android.nimpres.client.presentation.Presentation;
-import android.nimpres.client.presentation.Slide;
-import android.nimpres.client.settings.NimpresSettings;
+import com.nimpes.android.settings.NimpresSettings;
+import com.nimpres.android.presentation.Presentation;
+import com.nimpres.android.presentation.Slide;
+
 import android.util.Log;
 
 /*This class offers methods to read a DSP file once it has been extracted*/

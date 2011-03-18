@@ -24,13 +24,14 @@
 					OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 					THE SOFTWARE.
  */
-package android.nimpres.client.lan;
+package com.android.nimpres.lan;
 
 import java.net.InetAddress;
 import java.net.ServerSocket;
 
-import android.nimpres.client.settings.NimpresSettings;
-import android.nimpres.client.utilities.Utilities;
+import com.nimpes.android.settings.NimpresSettings;
+import com.nimpres.android.utilities.Utilities;
+
 import android.util.Log;
 
 public class ServerSocketListener implements Runnable{

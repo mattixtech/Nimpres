@@ -24,7 +24,7 @@
 					OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 					THE SOFTWARE.
  */
-package android.nimpres.client.web;
+package com.nimpres.android.web;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -42,7 +42,8 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 
-import android.nimpres.client.settings.NimpresSettings;
+import com.nimpes.android.settings.NimpresSettings;
+
 import android.util.Log;
 
 /**

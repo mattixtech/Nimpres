@@ -24,11 +24,12 @@
 					OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 					THE SOFTWARE.
  */
-package android.nimpres.client.lan;
+package com.android.nimpres.lan;
 
 import java.util.ArrayList;
 
-import android.nimpres.client.settings.NimpresSettings;
+import com.nimpes.android.settings.NimpresSettings;
+
 import android.util.Log;
 
 public class LANListener implements Runnable{

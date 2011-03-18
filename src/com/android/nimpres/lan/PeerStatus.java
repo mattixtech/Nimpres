@@ -24,11 +24,12 @@
 					OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 					THE SOFTWARE.
  */
-package android.nimpres.client.lan;
+package com.android.nimpres.lan;
 
 import java.net.InetAddress;
 
-import android.nimpres.client.settings.NimpresSettings;
+import com.nimpes.android.settings.NimpresSettings;
+
 
 public class PeerStatus {
 	InetAddress peerIP = null;

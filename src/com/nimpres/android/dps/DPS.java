@@ -24,7 +24,7 @@
 					OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 					THE SOFTWARE.
  */
-package android.nimpres.client.dps;
+package com.nimpres.android.dps;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -38,12 +38,13 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.nio.channels.FileChannel;
 
+import com.android.nimpres.lan.TCPMessage;
+import com.nimpes.android.settings.NimpresSettings;
+import com.nimpres.android.presentation.Presentation;
+import com.nimpres.android.utilities.Utilities;
+import com.nimpres.android.web.APIContact;
+
 import android.content.Context;
-import android.nimpres.client.lan.TCPMessage;
-import android.nimpres.client.presentation.Presentation;
-import android.nimpres.client.settings.NimpresSettings;
-import android.nimpres.client.utilities.Utilities;
-import android.nimpres.client.web.APIContact;
 import android.os.Environment;
 import android.util.Log;
 

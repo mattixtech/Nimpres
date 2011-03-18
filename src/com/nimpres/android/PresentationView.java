@@ -1,4 +1,14 @@
-package android.nimpres;
+package com.nimpres.android;
+
+import com.android.nimpres.lan.DPSServer;
+import com.android.nimpres.lan.LANAdvertiser;
+import com.android.nimpres.lan.LANListener;
+import com.nimpes.android.settings.NimpresSettings;
+import com.nimpres.android.NimpresClient;
+import com.nimpres.android.dps.DPS;
+import com.nimpres.android.presentation.Presentation;
+import com.nimpres.android.utilities.Utilities;
+import com.nimpres.android.web.APIContact;
 
 import android.app.Activity;
 import android.nimpres.R;
@@ -10,19 +20,10 @@ import android.view.View;
 import android.widget.*;
 import android.view.View.OnClickListener;
 import android.content.Intent;
-import android.nimpres.NimpresClient;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
-import android.nimpres.client.dps.DPS;
-import android.nimpres.client.lan.DPSServer;
-import android.nimpres.client.lan.LANAdvertiser;
-import android.nimpres.client.lan.LANListener;
-import android.nimpres.client.presentation.Presentation;
-import android.nimpres.client.settings.NimpresSettings;
-import android.nimpres.client.utilities.Utilities;
-import android.nimpres.client.web.APIContact;
 
 import android.os.Bundle;
 import android.os.Handler;

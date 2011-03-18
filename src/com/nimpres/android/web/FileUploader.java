@@ -24,7 +24,7 @@
 					OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 					THE SOFTWARE.
  */
-package android.nimpres.client.web;
+package com.nimpres.android.web;
 
 import java.io.DataOutputStream;
 import java.io.FileInputStream;
@@ -32,8 +32,9 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import android.nimpres.NimpresObjects;
-import android.nimpres.client.settings.NimpresSettings;
+import com.nimpes.android.settings.NimpresSettings;
+import com.nimpres.android.NimpresObjects;
+
 import android.util.Log;
 
 public class FileUploader {

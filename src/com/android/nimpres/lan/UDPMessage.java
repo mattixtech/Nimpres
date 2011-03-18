@@ -24,13 +24,14 @@
 					OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 					THE SOFTWARE.
  */
-package android.nimpres.client.lan;
+package com.android.nimpres.lan;
 
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 
-import android.nimpres.client.utilities.Utilities;
+import com.nimpres.android.utilities.Utilities;
+
 import android.util.Log;
 
 public class UDPMessage {

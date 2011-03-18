@@ -25,11 +25,12 @@
 					THE SOFTWARE.
  */
 
-package android.nimpres;
+package com.nimpres.android;
+
+import com.nimpres.android.dps.DPS;
+import com.nimpres.android.presentation.Presentation;
 
 import android.content.Context;
-import android.nimpres.client.dps.DPS;
-import android.nimpres.client.presentation.Presentation;
 
 public class NimpresObjects {
 	public static DPS currentDPS;

@@ -24,14 +24,15 @@
 					OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 					THE SOFTWARE.
  */
-package android.nimpres.client.lan;
+package com.android.nimpres.lan;
 
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 
-import android.nimpres.client.presentation.Presentation;
-import android.nimpres.client.settings.NimpresSettings;
+import com.nimpes.android.settings.NimpresSettings;
+import com.nimpres.android.presentation.Presentation;
+
 import android.os.Handler;
 import android.util.Log;
 

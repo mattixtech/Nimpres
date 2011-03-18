@@ -24,20 +24,22 @@
 					OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 					THE SOFTWARE.
  */
-package android.nimpres;
+package com.nimpres.android;
 
 import java.io.IOException;
+
+import com.android.nimpres.lan.DPSServer;
+import com.android.nimpres.lan.LANAdvertiser;
+import com.android.nimpres.lan.LANListener;
+import com.nimpres.android.dps.DPS;
+import com.nimpres.android.presentation.Presentation;
+import com.nimpres.android.utilities.Utilities;
+import com.nimpres.android.web.APIContact;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.nimpres.client.dps.DPS;
-import android.nimpres.client.lan.DPSServer;
-import android.nimpres.client.lan.LANAdvertiser;
-import android.nimpres.client.lan.LANListener;
-import android.nimpres.client.presentation.Presentation;
-import android.nimpres.client.utilities.Utilities;
-import android.nimpres.client.web.APIContact;
+import android.nimpres.R;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
