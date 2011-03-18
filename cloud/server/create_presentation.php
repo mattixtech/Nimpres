@@ -35,7 +35,7 @@ $password = $_GET['user_password'];
 $title = $_GET['title'];
 $pres_pass = $_GET['pres_password'];
 $length = $_GET['length'];
-$slide_num = 1;
+$slide_num = 0;
 $status = 'available';
 $over = 0;
 

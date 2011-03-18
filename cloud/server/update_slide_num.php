@@ -32,12 +32,13 @@ error_reporting(E_ALL|E_STRICT);
 require_once('./includes/init.php');
 
 //TODO change to POST
-$user = $_GET['user_id'];
-$password = $_GET['user_password'];
-$pid = $_GET['pres_id'];
-$pres_pass = $_GET['pres_password'];
-$slide_num = $_GET['slide_num'];
+$user = $_POST['user_id'];
+$password = $_POST['user_password'];
+$pid = $_POST['pres_id'];
+$pres_pass = $_POST['pres_password'];
+$slide_num = $_POST['slide_num'];
 
+//TODO check to see if slide num is less than or equal to the length
 if (!empty($pid) && is_numeric($pid) && is_numeric($slide_num) && $slide_num >= 0 && $pres_pass === PresentationBO::getPresPass($pid) && PresentationBO::verifyOwner($pid, $user, $password)){
 	if(PresentationBO::updateSlideNum($pid, $slide_num))
 		echo 'OK';

@@ -31,9 +31,11 @@ error_reporting(E_ALL|E_STRICT);
 require_once('./includes/init.php');
 
 //TODO change to POST
-$user = $_GET['user_id'];
+$userLocal = $_POST['user_id'];
+$password = $_POST['user_password'];
+$user = $_POST['user_search'];
 
-if (!empty($user))
+if (!empty($user) && !empty($userLocal) && !empty($password) && userBO::validateLogin($userLocal, $password))
 {
 	$xmlPresList = PresentationBO::listPres($user);
 	echo '<?xml version="1.0"?>';

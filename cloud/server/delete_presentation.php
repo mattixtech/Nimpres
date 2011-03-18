@@ -37,6 +37,7 @@ $password = $_GET['user_password'];
 $pid = $_GET['pres_id'];
 $pres_pass = $_GET['pres_password'];
 
+//TODO delete the file and folder
 if (!empty($pid) && $pres_pass === PresentationBO::getPresPass($pid) && PresentationBO::verifyOwner($pid, $user, $password))
 {
 	if(PresentationBO::deletePres($pid))
