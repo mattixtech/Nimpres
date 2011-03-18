@@ -22,6 +22,17 @@ if (!empty($user) && !empty($title) && !empty($length) && !empty($slide_num) && 
 		
 		if(move_uploaded_file($_FILES['uploadedfile']['tmp_name'], $target_path)) 
 		{
+			//TODO make folder called 1 for example and extract slides and metafile to this folder
+			/*
+			 *  $zip = new ZipArchive;
+				if ($zip->open('test.zip') === TRUE) {
+				    $zip->extractTo('/my/destination/dir/');
+				    $zip->close();
+				    echo 'ok';
+				} else {
+				    echo 'failed';
+				}
+			 */
 		    echo 'OK';
 		} 
 		else
