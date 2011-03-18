@@ -29,7 +29,7 @@ package com.nimpres.android.lan;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 
-import com.nimpes.android.settings.NimpresSettings;
+import com.nimpres.android.settings.NimpresSettings;
 import com.nimpres.android.utilities.Utilities;
 
 import android.util.Log;

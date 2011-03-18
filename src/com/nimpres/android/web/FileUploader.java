@@ -32,8 +32,8 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import com.nimpes.android.settings.NimpresSettings;
 import com.nimpres.android.NimpresObjects;
+import com.nimpres.android.settings.NimpresSettings;
 
 import android.util.Log;
 

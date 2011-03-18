@@ -32,7 +32,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.net.Socket;
 
-import com.nimpes.android.settings.NimpresSettings;
+import com.nimpres.android.settings.NimpresSettings;
 
 import android.content.Context;
 import android.util.Log;

@@ -1,12 +1,12 @@
 package com.nimpres.android;
 
-import com.nimpes.android.settings.NimpresSettings;
 import com.nimpres.android.NimpresClient;
 import com.nimpres.android.dps.DPS;
 import com.nimpres.android.lan.DPSServer;
 import com.nimpres.android.lan.LANAdvertiser;
 import com.nimpres.android.lan.LANListener;
 import com.nimpres.android.presentation.Presentation;
+import com.nimpres.android.settings.NimpresSettings;
 import com.nimpres.android.utilities.Utilities;
 import com.nimpres.android.web.APIContact;
 

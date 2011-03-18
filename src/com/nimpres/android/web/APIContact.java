@@ -42,7 +42,7 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 
-import com.nimpes.android.settings.NimpresSettings;
+import com.nimpres.android.settings.NimpresSettings;
 
 import android.util.Log;
 

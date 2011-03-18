@@ -31,7 +31,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
 
-import com.nimpes.android.settings.NimpresSettings;
+import com.nimpres.android.settings.NimpresSettings;
 
 import android.util.Log;
 

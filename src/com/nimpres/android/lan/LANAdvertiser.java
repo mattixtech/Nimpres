@@ -30,8 +30,8 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 
-import com.nimpes.android.settings.NimpresSettings;
 import com.nimpres.android.presentation.Presentation;
+import com.nimpres.android.settings.NimpresSettings;
 
 import android.os.Handler;
 import android.util.Log;

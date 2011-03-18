@@ -28,7 +28,7 @@ package com.nimpres.android.lan;
 
 import java.net.InetAddress;
 
-import com.nimpes.android.settings.NimpresSettings;
+import com.nimpres.android.settings.NimpresSettings;
 
 
 public class PeerStatus {

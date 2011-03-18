@@ -36,9 +36,9 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import com.nimpes.android.settings.NimpresSettings;
 import com.nimpres.android.presentation.Presentation;
 import com.nimpres.android.presentation.Slide;
+import com.nimpres.android.settings.NimpresSettings;
 
 import android.util.Log;
 

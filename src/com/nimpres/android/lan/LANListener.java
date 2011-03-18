@@ -28,7 +28,7 @@ package com.nimpres.android.lan;
 
 import java.util.ArrayList;
 
-import com.nimpes.android.settings.NimpresSettings;
+import com.nimpres.android.settings.NimpresSettings;
 
 import android.util.Log;
 
