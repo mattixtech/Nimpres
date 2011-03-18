@@ -1,7 +1,7 @@
 /**
  * Project:			Nimpres Android Client
  * File name: 		APIContact.java
- * Date modified:	2011-03-17
+ * Date modified:	2011-03-18
  * Description:		Static methods for performing api calls to the webserver
  * 
  * License:			Copyright (c) 2011 (Matthew Brooks, Jordan Emmons, William Kong)
@@ -104,6 +104,8 @@ public class APIContact {
 	        Log.d("APIContact","Contacting API - api-method:"+apiAddress+", api-query: "+postParams);
             HttpResponse responsePOST = client.execute(post);  
             resEntity = new BufferedHttpEntity(responsePOST.getEntity());
+            String result = EntityUtils.toString(resEntity);
+            Log.d("APIContact","post result: "+result);
             if (resEntity != null) { 
             	return resEntity;
             }
@@ -130,7 +132,6 @@ public class APIContact {
         HttpEntity resEntity = apiPostRequest(NimpresSettings.API_CREATE_ACCOUNT,params);
 		try{
 			result = EntityUtils.toString(resEntity);
-			Log.d("APIContact","post result:"+result);
 		}catch (Exception e) {
 	        e.printStackTrace();
 	    }
@@ -153,7 +154,6 @@ public class APIContact {
         HttpEntity resEntity = apiPostRequest(NimpresSettings.API_LOGIN,params);
 		try{
 			result = EntityUtils.toString(resEntity);
-			Log.d("APIContact","post result:"+result);
 		}catch (Exception e) {
 	        e.printStackTrace();
 	    }
@@ -168,15 +168,15 @@ public class APIContact {
 	 * @param password
 	 * @return
 	 */
-	public static int getSlideNumber(String id, String password){
+	public static int getSlideNumber(String presID, String presPass){
 		String result = "";
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
-		params.add(new BasicNameValuePair("id", id));
-		params.add(new BasicNameValuePair("password", password));
+		params.add(new BasicNameValuePair("pres_id", presID));
+		params.add(new BasicNameValuePair("pres_password", presPass));
 		HttpEntity resEntity = apiPostRequest(NimpresSettings.API_PRESENTATION_CURRENT_SLIDE,params);
 		try{
 			result = EntityUtils.toString(resEntity);
-			Log.d("APIContact","post result:"+result);
+			
 		}catch (Exception e) {
 	        e.printStackTrace();
 	    }
@@ -193,18 +193,17 @@ public class APIContact {
 	 * @param password
 	 * @return
 	 */
-	public static InputStream downloadPresentation(String id, String password){
+	public static InputStream downloadPresentation(String presID, String presPass){
 		InputStream downloadedDps = null;
 		String response = "";
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
-		params.add(new BasicNameValuePair("id", id));
-		params.add(new BasicNameValuePair("password", password));
+		params.add(new BasicNameValuePair("pres_id", presID));
+		params.add(new BasicNameValuePair("pres_password", presPass));
 		HttpEntity resEntity = apiPostRequest(NimpresSettings.API_DOWNLOAD_PRESENTATION,params);		
 		try{
 			BufferedHttpEntity buffEnt = new BufferedHttpEntity(resEntity); //Added for file download
 			downloadedDps = buffEnt.getContent();
 			response = new String(EntityUtils.toString(buffEnt).trim());
-			Log.d("APIContact","post result:"+response);
 		}catch (Exception e) {
 	        e.printStackTrace();
 	    }	
@@ -225,15 +224,16 @@ public class APIContact {
 	 * @param password
 	 * @return true if sucessfully deleted, false otherwise
 	 */
-	public static boolean deletePresentation(String id, String password){
+	public static boolean deletePresentation(String userID, String userPass, String presID, String presPass){
 		String result = "";
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
-		params.add(new BasicNameValuePair("id", id));
-		params.add(new BasicNameValuePair("password", password));
+		params.add(new BasicNameValuePair("user_id", userID));
+		params.add(new BasicNameValuePair("user_password", userPass));
+		params.add(new BasicNameValuePair("pres_id", presID));
+		params.add(new BasicNameValuePair("pres_password", presPass));
 		HttpEntity resEntity = apiPostRequest(NimpresSettings.API_DELETE_PRESENTATION,params);
 		try{
 			result = EntityUtils.toString(resEntity);
-			Log.d("APIContact","post result:"+result);
 		}catch (Exception e) {
 	        e.printStackTrace();
 	    }		
@@ -248,16 +248,17 @@ public class APIContact {
 	 * @param password
 	 * @return
 	 */
-	public static boolean updateSlideNumber(String id, String password, String slide_num){
+	public static boolean updateSlideNumber(String userID, String userPass, String presID, String presPass, String slide_num){
 		String result = "";
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
-		params.add(new BasicNameValuePair("id", id));
-		params.add(new BasicNameValuePair("password", password));
+		params.add(new BasicNameValuePair("user_id", userID));
+		params.add(new BasicNameValuePair("user_password", userPass));
+		params.add(new BasicNameValuePair("pres_id", presID));
+		params.add(new BasicNameValuePair("pres_password", presPass));
 		params.add(new BasicNameValuePair("slide_num", slide_num));
 		HttpEntity resEntity = apiPostRequest(NimpresSettings.API_PRESENTATION_UPDATE_SLIDE,params);
 		try{
 			result = EntityUtils.toString(resEntity);
-			Log.d("APIContact","post result:"+result);
 		}catch (Exception e) {
 	        e.printStackTrace();
 	    }
@@ -277,16 +278,14 @@ public class APIContact {
 	 * @param over
 	 * @return
 	 */	
-	public static boolean createPresentation(String user, String password, String title, String pres_password, String length, String fileName){
+	public static boolean createPresentation(String userID, String userPass, String title, String presPass, String length, String fileName){
 
-		String queryString = "?title="+title+"&user="+user+"&password="+password+"&pres_password="+pres_password+"&length="+length+"&slide_num=0&status=new&over=0";
+		String queryString = "?title="+title+"&user_id="+userID+"&user_password="+userPass+"&pres_password="+presPass+"&length="+length;
 		String url = NimpresSettings.API_BASE_URL + NimpresSettings.API_CREATE_PRESENTATION + NimpresSettings.API_EXTENSION;
-		
 		String queryUrl = url+queryString;
-		
 		FileUploader upFile = new FileUploader(queryUrl, fileName);
 		String response = upFile.upload();
-		
+		Log.d("APIContact","FileUploader's response: "+response);
 		if(response.equals(NimpresSettings.API_RESPONSE_POSITIVE))
 			return true;
 		else		
@@ -299,14 +298,15 @@ public class APIContact {
 	 * @return echos of xml code
 	 */
 	//TODO Return statement needs to be revised for XML output
-	public static boolean listPresentations(String user){
+	public static boolean listPresentations(String userID, String userPass, String userSearch){
 		String result = "";
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
-		params.add(new BasicNameValuePair("user", user));
+		params.add(new BasicNameValuePair("user_id", userID));
+		params.add(new BasicNameValuePair("user_password", userPass));
+		params.add(new BasicNameValuePair("user_search", userSearch));
         HttpEntity resEntity = apiPostRequest(NimpresSettings.API_LIST_PRESENTATIONS,params);
 		try{
 			result = EntityUtils.toString(resEntity);
-			Log.d("APIContact","post result:"+result);
 		}catch (Exception e) {
 	        e.printStackTrace();
 	    }
