@@ -97,6 +97,12 @@
 			return $newPresDTO->slide_num;
 		}
 		
+		public static function getOwner($pid)
+		{
+			$newPresDTO = PresentationDO::getByPID($pid);
+			return $newPresDTO->user;
+		}
+		
 		public static function getPresPass($pid)
 		{
 
@@ -113,6 +119,18 @@
 			if (PresentationDO::updatePres($newPresDTO))
 				return TRUE;
 			else
+				return FALSE;
+		}
+
+		public static function verifyOwner($pid, $user, $password)
+		{
+			$existingPresDTO = PresentationDO::getByPID($pid);
+			if ($existingPresDTO->user===$user)
+				if(UserBO::validateLogin($user, $password))
+					return TRUE;
+				else 
+					return FALSE;
+			else 
 				return FALSE;
 		}
 		

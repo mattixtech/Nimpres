@@ -3,7 +3,7 @@
  * Project:			Nimpres Server API
  * File name: 		create_presentation.php
  * Date modified:	2011-03-17
- * Description:		This class defines a DPS package
+ * Description:		This class creates a presentation entry in pres and pres_status tables
  * 
  * License:			Copyright (c) 2011 (Matthew Brooks, Jordan Emmons, William Kong)
 					
@@ -30,19 +30,19 @@ ini_set('display_errors',1);
 error_reporting(E_ALL|E_STRICT);
 require_once('./includes/init.php');
 
-$user = $_GET['user'];
-$password = $_GET['password'];
+$user = $_GET['user_id'];
+$password = $_GET['user_password'];
 $title = $_GET['title'];
 $pres_pass = $_GET['pres_password'];
 $length = $_GET['length'];
-$slide_num = $_GET['slide_num'];
-$status = $_GET['status'];
-$over = $_GET['over'];
+$slide_num = 1;
+$status = 'available';
+$over = 0;
 
 
 //TODO check the user/password of the uploader first for security
 
-if (!empty($user) && !empty($title) && !empty($length) && is_numeric($slide_num) && !empty($status))
+if (!empty($user) && !empty($password) && !empty($title) && !empty($length) && is_numeric($slide_num) && !empty($status) && userBO::validateLogin($user, $password))
 {
 	$id = PresentationBO::createPres($user, $title, $pres_pass, $length, $slide_num, $status, $over);
 	if ($id >= 0){
@@ -66,9 +66,7 @@ if (!empty($user) && !empty($title) && !empty($length) && is_numeric($slide_num)
 		    echo 'OK';
 		} 
 		else
-		{
 		    echo 'FAILFILE';
-		}	
 	}
 	else
 		echo 'FAILCREATE';

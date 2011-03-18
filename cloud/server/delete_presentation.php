@@ -3,7 +3,8 @@
  * Project:			Nimpres Server API
  * File name: 		delete_presentation.php
  * Date modified:	2011-03-17
- * Description:		
+ * Description:		Verifies the request is from the owner of the presentation, then deletes the presentation
+ * 					from both pres and pres_status
  * 
  * License:			Copyright (c) 2011 (Matthew Brooks, Jordan Emmons, William Kong)
 					
@@ -31,11 +32,12 @@ error_reporting(E_ALL|E_STRICT);
 require_once('./includes/init.php');
 
 //TODO change to POST
-$pid = $_GET['id'];
-$pres_pass = $_GET['password'];
+$user = $_GET['user_id'];
+$password = $_GET['user_password'];
+$pid = $_GET['pres_id'];
+$pres_pass = $_GET['pres_password'];
 
-
-if (!empty($pid) && $pres_pass === PresentationBO::getPresPass($pid))
+if (!empty($pid) && $pres_pass === PresentationBO::getPresPass($pid) && PresentationBO::verifyOwner($pid, $user, $password))
 {
 	if(PresentationBO::deletePres($pid))
 		echo 'OK';

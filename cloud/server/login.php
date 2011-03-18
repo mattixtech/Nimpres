@@ -3,7 +3,7 @@
  * Project:			Nimpres Server API
  * File name: 		login.php
  * Date modified:	2011-03-17
- * Description:		
+ * Description:		Verifies username and password against entries in the login table
  * 
  * License:			Copyright (c) 2011 (Matthew Brooks, Jordan Emmons, William Kong)
 					
@@ -32,8 +32,8 @@ require_once('./includes/init.php');
 
 //retrieve username and password from POST sent to the page
 //TODO change to POST
-$login = $_GET['login'];
-$password = $_GET['password'];
+$login = $_GET['user_id'];
+$password = $_GET['user_password'];
 
 if(!empty($login) && !empty($password)){
 	if (UserBO::validateLogin($login,$password))

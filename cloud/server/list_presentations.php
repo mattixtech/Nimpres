@@ -3,7 +3,7 @@
  * Project:			Nimpres Server API
  * File name: 		list_presentations.php
  * Date modified:	2011-03-17
- * Description:		
+ * Description:		Generate an XML list of presentations belonging to a specified user
  * 
  * License:			Copyright (c) 2011 (Matthew Brooks, Jordan Emmons, William Kong)
 					
@@ -31,7 +31,7 @@ error_reporting(E_ALL|E_STRICT);
 require_once('./includes/init.php');
 
 //TODO change to POST
-$user = $_GET['user'];
+$user = $_GET['user_id'];
 
 if (!empty($user))
 {

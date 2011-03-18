@@ -3,7 +3,7 @@
  * Project:			Nimpres Server API
  * File name: 		get_slide_num.php
  * Date modified:	2011-03-17
- * Description:		
+ * Description:		Retrieves the current slide number of a presentation identified by the pid
  * 
  * License:			Copyright (c) 2011 (Matthew Brooks, Jordan Emmons, William Kong)
 					
@@ -30,8 +30,8 @@ ini_set('display_errors',1);
 error_reporting(E_ALL|E_STRICT);
 require_once('./includes/init.php');
 
-$pid = $_POST['id'];
-$pres_pass = $_POST['password'];
+$pid = $_POST['pres_id'];
+$pres_pass = $_POST['pres_password'];
 
 if (!empty($pid) && !empty($pres_pass) && $pres_pass === PresentationBO::getPresPass($pid)){
 		echo PresentationBO::getSlideNum($pid);

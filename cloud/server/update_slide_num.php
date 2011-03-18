@@ -3,7 +3,8 @@
  * Project:			Nimpres Server API
  * File name: 		update_slide_num.php
  * Date modified:	2011-03-17
- * Description:		
+ * Description:		Verifies the request is coming from the owner, then updates the slide_num field in 
+ * 					pres_status with the current slide number
  * 
  * License:			Copyright (c) 2011 (Matthew Brooks, Jordan Emmons, William Kong)
 					
@@ -31,11 +32,13 @@ error_reporting(E_ALL|E_STRICT);
 require_once('./includes/init.php');
 
 //TODO change to POST
-$pid = $_GET['id'];
+$user = $_GET['user_id'];
+$password = $_GET['user_password'];
+$pid = $_GET['pres_id'];
+$pres_pass = $_GET['pres_password'];
 $slide_num = $_GET['slide_num'];
-$pres_pass = $_GET['password'];
 
-if (!empty($pid) && is_numeric($pid) && is_numeric($slide_num) && $slide_num >= 0 && $pres_pass === PresentationBO::getPresPass($pid)){
+if (!empty($pid) && is_numeric($pid) && is_numeric($slide_num) && $slide_num >= 0 && $pres_pass === PresentationBO::getPresPass($pid) && PresentationBO::verifyOwner($pid, $user, $password)){
 	if(PresentationBO::updateSlideNum($pid, $slide_num))
 		echo 'OK';
 	else

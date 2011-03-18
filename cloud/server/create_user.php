@@ -3,7 +3,7 @@
  * Project:			Nimpres Server API
  * File name: 		create_user.php
  * Date modified:	2011-03-17
- * Description:		
+ * Description:		Checks for the existence of the username, and if not already taken, will generate a new user in the login table
  * 
  * License:			Copyright (c) 2011 (Matthew Brooks, Jordan Emmons, William Kong)
 					
@@ -33,8 +33,8 @@ require_once('./includes/init.php');
 
 //retrieve username and password from POST sent to the page
 //TODO change to POST
-$login = $_GET['login'];
-$password = $_GET['password'];
+$login = $_GET['user_id'];
+$password = $_GET['user_password'];
 echo 'test';
 
 if(!empty($login) && !empty($password)){

@@ -51,14 +51,15 @@ require_once('./includes/init.php');
 			$newUserDTO = UserDO::getUserById($id);
 			
 			if ($newUserDTO->password === $password){
-				UserDO::clearFails($newUserDTO);
+				//UserDO::clearFails($newUserDTO);
 				return TRUE;
 			}
 			else{
-				UserDO::incrementFails($newUserDTO);
+				//UserDO::incrementFails($newUserDTO);
 				return FALSE;
 			}
-				
+			
+			
 		}
 	
 	}
