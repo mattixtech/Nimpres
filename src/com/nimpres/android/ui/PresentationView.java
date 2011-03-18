@@ -61,11 +61,10 @@ public class PresentationView extends Activity {
 				"http://presentations.nimpres.com/presentation_demo.dps",
 				"internet", "", "", "dps-downloaded-from-internet", NimpresObjects.ctx);*/
 		
-		if( ! NimpresObjects.currentlyViewing){
-			NimpresObjects.currentDPS = new DPS("api","internet","50","test","downloaded",NimpresObjects.ctx);
-			NimpresObjects.currentPresentation = NimpresObjects.currentDPS.getDpsPres();
-			NimpresObjects.currentlyViewing = true;
-		}
+		
+		NimpresObjects.currentDPS = new DPS("api","internet","21","test","downloaded",NimpresObjects.ctx);
+		NimpresObjects.currentPresentation = NimpresObjects.currentDPS.getDpsPres();
+		NimpresObjects.currentlyViewing = true;
 		
 		if(NimpresObjects.currentPresentation.getNumSlides()>0)
 		{
@@ -85,7 +84,14 @@ public class PresentationView extends Activity {
 		// }
 		// });
 	}
-
+	
+	/**
+	 * 
+	 */
+	public void onConfigurationChanged(){
+		
+	}
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
@@ -139,11 +145,11 @@ public class PresentationView extends Activity {
 					// swiped right
 					if (deltaX > 0) {
 						// change to next slide
-						NimpresObjects.currentPresentation.nextSlide();
+						NimpresObjects.currentPresentation.previousSlide();
 						updateSlide();
 					} else { // swiped left
 						// change to previous slide
-						NimpresObjects.currentPresentation.previousSlide();
+						NimpresObjects.currentPresentation.nextSlide();
 						updateSlide();
 					}
 
