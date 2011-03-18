@@ -26,32 +26,9 @@
  */
 package com.nimpres.android.ui;
 
-import com.nimpres.android.NimpresClient;
-import com.nimpres.android.NimpresObjects;
-import com.nimpres.android.dps.DPS;
-import com.nimpres.android.lan.DPSServer;
-import com.nimpres.android.lan.LANAdvertiser;
-import com.nimpres.android.lan.LANListener;
-import com.nimpres.android.presentation.Presentation;
-import com.nimpres.android.settings.NimpresSettings;
-import com.nimpres.android.utilities.Utilities;
-import com.nimpres.android.web.APIContact;
-
 import android.app.Activity;
-import android.nimpres.R;
-import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.*;
-import android.view.View.OnClickListener;
-import android.content.Intent;
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
-
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -59,11 +36,15 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.nimpres.R;
+import com.nimpres.android.NimpresObjects;
+import com.nimpres.android.dps.DPS;
+import com.nimpres.android.settings.NimpresSettings;
+import com.nimpres.android.utilities.Utilities;
+import com.nimpres.android.web.APIContact;
 
 public class PresentationView extends Activity {
 

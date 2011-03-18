@@ -28,6 +28,16 @@ package com.nimpres.android;
 
 import java.io.IOException;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+
+import com.nimpres.R;
 import com.nimpres.android.dps.DPS;
 import com.nimpres.android.lan.DPSServer;
 import com.nimpres.android.lan.LANAdvertiser;
@@ -36,16 +46,6 @@ import com.nimpres.android.presentation.Presentation;
 import com.nimpres.android.ui.PresentationView;
 import com.nimpres.android.utilities.Utilities;
 import com.nimpres.android.web.APIContact;
-
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.nimpres.R;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
 
 public class NimpresClient extends Activity {
 
@@ -79,7 +79,7 @@ public class NimpresClient extends Activity {
 		// testLANListening();
 		// testDPSDownload(ctx);
 		// testDPSHosting("tmpdps_down.dps",ctx);
-		testCreate();
+		//testCreate();
 
 		// this.finish();
 
