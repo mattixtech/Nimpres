@@ -62,7 +62,7 @@ public class PresentationView extends Activity {
 				"internet", "", "", "dps-downloaded-from-internet", NimpresObjects.ctx);*/
 		
 		
-		NimpresObjects.currentDPS = new DPS("api","internet","21","test","downloaded",NimpresObjects.ctx);
+		NimpresObjects.currentDPS = new DPS("api","internet","99","test","downloaded",NimpresObjects.ctx);
 		NimpresObjects.currentPresentation = NimpresObjects.currentDPS.getDpsPres();
 		NimpresObjects.currentlyViewing = true;
 		

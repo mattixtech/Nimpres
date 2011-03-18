@@ -85,24 +85,30 @@ public class DPS {
 		isRemote = true;
 		dpsOrigin = dpsLocation;			
 		this.dpsID = dpsID;
-		this.dpsPassword = dpsPassword;		
-		if(remoteType.equalsIgnoreCase("internet")){
-			this.remoteType = "internet";
-			try {
-				dpsPath = downloadFromAPI(Integer.parseInt(dpsID),dpsPassword,NimpresSettings.API_DOWNLOAD_PREFIX+desiredFolderName,desiredFolderName,ctx);
-			} catch (Exception e) {
-				Log.d("DPS","Error: "+e.getMessage());
+		this.dpsPassword = dpsPassword;
+		if(Utilities.isOnline(ctx)){
+			if(remoteType.equalsIgnoreCase("internet")){
+				this.remoteType = "internet";
+				try {
+					dpsPath = downloadFromAPI(Integer.parseInt(dpsID),dpsPassword,NimpresSettings.API_DOWNLOAD_PREFIX+desiredFolderName,desiredFolderName,ctx);
+				} catch (Exception e) {
+					Log.d("DPS","Error: "+e.getMessage());
+				}
+			}else if(remoteType.equalsIgnoreCase("lan")){
+				this.remoteType = "lan";
+				try {
+					dpsPath = downloadFromLAN(dpsLocation, Integer.parseInt(dpsID), dpsPassword, desiredFolderName, ctx);
+				} catch (Exception e) {
+					Log.d("DPS","Error: "+e.getMessage());
+				}				
 			}
-			dpsPres = DPSReader.makePresentation(dpsPath);
-		}else if(remoteType.equalsIgnoreCase("lan")){
-			this.remoteType = "lan";
-			try {
-				dpsPath = downloadFromLAN(dpsLocation, Integer.parseInt(dpsID), dpsPassword, desiredFolderName, ctx);
-			} catch (Exception e) {
-				Log.d("DPS","Error: "+e.getMessage());
+			if( ! dpsPath.equals("")){
+				dpsPres = DPSReader.makePresentation(dpsPath);
+			}else{
+				Log.d("DPS","no dps file could be found");
 			}
-			dpsPres = DPSReader.makePresentation(dpsPath);
-		}
+		}else
+			Log.d("DPS","Error: device is offline");
 	}
 	
 	/**

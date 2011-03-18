@@ -203,15 +203,20 @@ public class APIContact {
 		try{
 			BufferedHttpEntity buffEnt = new BufferedHttpEntity(resEntity); //Added for file download
 			downloadedDps = buffEnt.getContent();
-			response = EntityUtils.toString(buffEnt);
-			Log.d("APIContact","post result:"+downloadedDps);
+			response = new String(EntityUtils.toString(buffEnt).trim());
+			Log.d("APIContact","post result:"+response);
 		}catch (Exception e) {
 	        e.printStackTrace();
 	    }	
-		if(response != NimpresSettings.API_RESPONSE_NEGATIVE && response != "")
+		
+		if( ! response.equals(NimpresSettings.API_RESPONSE_NEGATIVE) && response != ""){
+			Log.d("APIContact","api download success");
 			return downloadedDps;
-		else
+		}
+		else{
+			Log.d("APIContact","api download failed");
 			return null;
+		}
 	}
 	
 	/**
