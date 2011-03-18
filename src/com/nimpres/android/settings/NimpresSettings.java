@@ -72,6 +72,7 @@ public class NimpresSettings {
 	public static final String PEER_BROADCAST_ADDRESS = "255.255.255.255";
 	public static final int SERVER_QUE_SIZE = 32;
 	public static final String API_DOWNLOAD_PREFIX = "tmp_api-download_";
+	public static final int MAX_PRESENTATION_SIZE = 1024*1024*100; //in bytes
 	
 	/*
      * Messages

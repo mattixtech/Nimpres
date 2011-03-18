@@ -36,4 +36,5 @@ public class NimpresObjects {
 	public static DPS currentDPS;
 	public static Presentation currentPresentation;
 	public static Context ctx;
+	public static boolean currentlyViewing = false;
 }

@@ -53,14 +53,6 @@ public class LANListener implements Runnable{
 			try{
 				Log.d("LANListener","attempting to receive peer status update: "); 
 				UDPMessage inPkt = new UDPMessage(NimpresSettings.SERVER_PEER_PORT,1024);
-				
-				//TODO remove this old code
-				/*inputSocket = new DatagramSocket(NimpresSettings.SERVER_PEER_PORT);
-				inputBuff = new byte[1024];
-				pkt = new DatagramPacket(inputBuff,1024);
-				inputSocket.receive(pkt);*/
-				//InetAddress senderAddress = pkt.getAddress();
-				
 				if(inPkt.getType().equals(NimpresSettings.MSG_PRESENTATION_STATUS)){
 					PeerStatus recvStatus = new PeerStatus(inPkt);
 	                Log.d("LANListener","received message from peer: "+inPkt.getRemoteIP());	                

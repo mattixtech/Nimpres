@@ -60,8 +60,13 @@ public class PresentationView extends Activity {
 		/*NimpresObjects.currentDPS = new DPS(
 				"http://presentations.nimpres.com/presentation_demo.dps",
 				"internet", "", "", "dps-downloaded-from-internet", NimpresObjects.ctx);*/
-		NimpresObjects.currentDPS = new DPS("api","internet","21","test","downloaded",NimpresObjects.ctx);
-		NimpresObjects.currentPresentation = NimpresObjects.currentDPS.getDpsPres();
+		
+		if( ! NimpresObjects.currentlyViewing){
+			NimpresObjects.currentDPS = new DPS("api","internet","50","test","downloaded",NimpresObjects.ctx);
+			NimpresObjects.currentPresentation = NimpresObjects.currentDPS.getDpsPres();
+			NimpresObjects.currentlyViewing = true;
+		}
+		
 		if(NimpresObjects.currentPresentation.getNumSlides()>0)
 		{
 			mHandler.removeCallbacks(viewerUpdateTask);
@@ -81,7 +86,6 @@ public class PresentationView extends Activity {
 		// });
 	}
 
-	// TODO move the UI methods out of the NimpresClient class
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();

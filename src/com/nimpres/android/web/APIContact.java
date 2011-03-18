@@ -195,6 +195,7 @@ public class APIContact {
 	 */
 	public static InputStream downloadPresentation(String id, String password){
 		InputStream downloadedDps = null;
+		String response = "";
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
 		params.add(new BasicNameValuePair("id", id));
 		params.add(new BasicNameValuePair("password", password));
@@ -202,13 +203,15 @@ public class APIContact {
 		try{
 			BufferedHttpEntity buffEnt = new BufferedHttpEntity(resEntity); //Added for file download
 			downloadedDps = buffEnt.getContent();
-			//result = EntityUtils.toString(resEntity);
-			//buffer = EntityUtils.toByteArray(buffEnt);
+			response = EntityUtils.toString(buffEnt);
 			Log.d("APIContact","post result:"+downloadedDps);
 		}catch (Exception e) {
 	        e.printStackTrace();
-	    }		
-		return downloadedDps;
+	    }	
+		if(response != NimpresSettings.API_RESPONSE_NEGATIVE && response != "")
+			return downloadedDps;
+		else
+			return null;
 	}
 	
 	/**
