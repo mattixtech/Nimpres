@@ -1,7 +1,7 @@
 /**
  * Project:			Nimpres Android Client
  * File name: 		NimpresClient.java
- * Date modified:	2011-03-012
+ * Date modified:	2011-03-18
  * Description:		Android entrypoint for Nimpres app
  * 
  * License:			Copyright (c) 2011 (Matthew Brooks, Jordan Emmons, William Kong)
@@ -33,6 +33,7 @@ import com.nimpres.android.lan.DPSServer;
 import com.nimpres.android.lan.LANAdvertiser;
 import com.nimpres.android.lan.LANListener;
 import com.nimpres.android.presentation.Presentation;
+import com.nimpres.android.ui.PresentationView;
 import com.nimpres.android.utilities.Utilities;
 import com.nimpres.android.web.APIContact;
 
