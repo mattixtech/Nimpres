@@ -129,7 +129,8 @@ public class UDPMessage {
 	 */
 	public void getMessage(int port, int size){
 		try{
-			DatagramSocket inputSocket = new DatagramSocket(port,InetAddress.getByName(Utilities.getLocalIpAddress()));
+			//DatagramSocket inputSocket = new DatagramSocket(port,InetAddress.getByName(Utilities.getLocalIpAddress()));
+			DatagramSocket inputSocket = new DatagramSocket(port);
 			inputSocket.setReuseAddress(true);
 			byte[] inputBuff = new byte[size];
 			DatagramPacket pkt = new DatagramPacket(inputBuff,size);			
