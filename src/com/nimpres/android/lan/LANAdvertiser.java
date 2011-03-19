@@ -83,7 +83,7 @@ public class LANAdvertiser implements Runnable{
 		PeerStatus advStatus = null;
 		try {
 			advStatus = new PeerStatus(InetAddress.getByName(Utilities.getLocalIpAddress()),
-					pres.getTitle(),pres.getCurrentSlide(),NimpresObjects.presenterName,NimpresObjects.hostedPresentationID);
+					pres.getTitle(),pres.getCurrentSlide(),NimpresObjects.presenterName,pres.getPresentationID());
 		} catch (UnknownHostException e) {
 			
 			e.printStackTrace();

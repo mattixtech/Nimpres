@@ -73,7 +73,8 @@ public class NimpresSettings {
 	public static final int SERVER_QUE_SIZE = 32;
 	public static final String API_DOWNLOAD_PREFIX = "tmp_api-download_";
 	public static final int MAX_PRESENTATION_SIZE = 1024*1024*100; //in bytes
-	
+	public static final String UPDATE_SOURCE_INTERNET = "internet";
+	public static final String UPDATE_SOURCE_LAN = "lan";
 	/*
      * Messages
      */

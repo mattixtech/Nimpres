@@ -27,10 +27,13 @@
 
 package com.nimpres.android;
 
-import com.nimpres.android.dps.DPS;
-import com.nimpres.android.presentation.Presentation;
+import java.util.ArrayList;
 
 import android.content.Context;
+
+import com.nimpres.android.dps.DPS;
+import com.nimpres.android.lan.PeerStatus;
+import com.nimpres.android.presentation.Presentation;
 
 public class NimpresObjects {
 	public static DPS currentDPS;
@@ -38,5 +41,6 @@ public class NimpresObjects {
 	public static Context ctx;
 	public static boolean currentlyViewing = false;
 	public static String presenterName = "matt";	//TODO this should be loaded from local config
-	public static int hostedPresentationID = 1; //TODO this should be retrieved from the webapi or generated dynamically when sharing via LAN
+	public static String updateSource = "";	//This will be either "lan" or "internet"
+	public static ArrayList<PeerStatus> peerPresentations = new ArrayList<PeerStatus>();
 }

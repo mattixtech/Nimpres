@@ -35,6 +35,7 @@ public class Presentation {
 	private int currentSlide = 0;
 	private Slide[] slideFiles;
 	private boolean paused = false;
+	private int presentationID = 0;
 	
 	/**
 	 * @return the owner
@@ -165,6 +166,20 @@ public class Presentation {
 	 */
 	public void setPaused(boolean paused) {
 		this.paused = paused;
+	}
+
+	/**
+	 * @return the presentationID
+	 */
+	public int getPresentationID() {
+		return presentationID;
+	}
+
+	/**
+	 * @param presentationID the presentationID to set
+	 */
+	public void setPresentationID(int presentationID) {
+		this.presentationID = presentationID;
 	}
 
 }

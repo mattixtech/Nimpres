@@ -28,20 +28,21 @@ package com.nimpres.android.lan;
 
 import java.util.ArrayList;
 
+import com.nimpres.android.NimpresObjects;
 import com.nimpres.android.settings.NimpresSettings;
 
 import android.util.Log;
 
 public class LANListener implements Runnable{
 	
-	ArrayList<PeerStatus> advertisingPeers = new ArrayList<PeerStatus>();	//stores the list of the LAN IP Addresses of all advertising peers
+	ArrayList<PeerStatus> advertisingPeers; 	//stores the list of the LAN IP Addresses of all advertising peers
 	boolean isStopped = false;
 	
     /**
      * 
      */
 	public LANListener(){
-		
+		advertisingPeers = NimpresObjects.peerPresentations;
 	}	
 	
 	/**
@@ -56,10 +57,15 @@ public class LANListener implements Runnable{
 				if(inPkt.getType().equals(NimpresSettings.MSG_PRESENTATION_STATUS)){
 					PeerStatus recvStatus = new PeerStatus(inPkt);
 	                Log.d("LANListener","received message from peer: "+inPkt.getRemoteIP()+", id: "+recvStatus.getPresentationID()
-	                		+", presenter:"+recvStatus.getPresenterName()+", title:"+recvStatus.getPresenterName());	                
-	                for(int i=0;i<advertisingPeers.size();i++)
+	                		+", presenter:"+recvStatus.getPresenterName()+", title:"+recvStatus.getPresenterName()+", current slide:"+recvStatus.getSlideNumber());	                
+	                
+	                if(recvStatus.getPresentationID() == NimpresObjects.currentPresentation.getPresentationID() && ! NimpresObjects.currentPresentation.isPaused()) //This id matches the one being viewed so we will update its slide
+	                	NimpresObjects.currentPresentation.setCurrentSlide(recvStatus.getSlideNumber());
+	                
+	                for(int i=0;i<advertisingPeers.size();i++){
 	                	if(advertisingPeers.get(i).getPeerIP().equals(inPkt.getRemoteIP()))
 	                		advertisingPeers.remove(i); //check list and remove peer status if already in, so we can update it
+	                }
 	                advertisingPeers.add(recvStatus); //add peer to list	                	
 				}else
 					Log.d("LANListener","received improper message: "+inPkt.getType()); 

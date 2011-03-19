@@ -127,7 +127,9 @@ public class NimpresClient extends Activity {
 	public static void testLANAdvertising() {
 		Presentation Pres = new Presentation();
 		Pres.setTitle("Test");
+		Pres.setNumSlides(50);
 		Pres.setCurrentSlide(5);
+		Pres.setPresentationID(25);
 		Thread LANAdvert;
 		try {
 			LANAdvert = new Thread(new LANAdvertiser(Pres,Utilities.getBroadcastAddress(NimpresObjects.ctx)));

@@ -28,6 +28,8 @@ package com.nimpres.android.lan;
 
 import java.net.InetAddress;
 
+import android.util.Log;
+
 import com.nimpres.android.settings.NimpresSettings;
 
 
@@ -67,9 +69,9 @@ public class PeerStatus {
 		String dataStr = message.getDataAsString();
 		int seperatorLength = NimpresSettings.STATUS_SEPERATOR.length();
 		int firstSeperatorIndex = dataStr.indexOf(NimpresSettings.STATUS_SEPERATOR);
-		int secondSeperatorIndex = dataStr.substring(firstSeperatorIndex+seperatorLength).indexOf(NimpresSettings.STATUS_SEPERATOR);
-		int thirdSeperatorIndex = dataStr.substring(secondSeperatorIndex+seperatorLength).indexOf(NimpresSettings.STATUS_SEPERATOR);
-		
+		int secondSeperatorIndex = dataStr.indexOf(NimpresSettings.STATUS_SEPERATOR,firstSeperatorIndex+seperatorLength);
+		int thirdSeperatorIndex = dataStr.indexOf(NimpresSettings.STATUS_SEPERATOR,secondSeperatorIndex+seperatorLength);
+		Log.d("PeerStatus","first_index:"+firstSeperatorIndex+", second_index:"+secondSeperatorIndex+", third_index:"+thirdSeperatorIndex);
 		peerIP = message.remoteIP;
 		presentationName = dataStr.substring(0, firstSeperatorIndex);
 		slideNumber = Integer.parseInt(dataStr.substring(firstSeperatorIndex+seperatorLength,secondSeperatorIndex));
