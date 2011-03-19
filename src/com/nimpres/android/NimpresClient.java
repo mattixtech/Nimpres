@@ -67,14 +67,14 @@ public class NimpresClient extends Activity {
 		 */
 
 		//setContentView(R.layout.presentation_viewer); //TODO call the main view from here and have UI elements to access the other views
-		testListing();
+		// testListing();
 		// testSlideNum();
 		// testUpdateSlide();
 		// testPresentation();
 		// testPresentation();
 		// testLoginAPI();
 		// testLANAdvertising();
-		// testLANListening();
+		 testLANListening();
 		// testDPSDownload(ctx);
 		// testDPSHosting("tmpdps_down.dps", ctx);
 		// testLANAdvertising();

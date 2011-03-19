@@ -1,7 +1,7 @@
 /**
  * Project:			Nimpres Android Client
  * File name: 		NimpresObjects.java
- * Date modified:	2011-03-16
+ * Date modified:	2011-03-18
  * Description:		Provides a static reference to many of the currently used objectss
  * 
  * License:			Copyright (c) 2010 (Matthew Brooks, Jordan Emmons, William Kong)
@@ -37,4 +37,6 @@ public class NimpresObjects {
 	public static Presentation currentPresentation;
 	public static Context ctx;
 	public static boolean currentlyViewing = false;
+	public static String presenterName = "matt";	//TODO this should be loaded from local config
+	public static int hostedPresentationID = 1; //TODO this should be retrieved from the webapi or generated dynamically when sharing via LAN
 }

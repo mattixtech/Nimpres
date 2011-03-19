@@ -1,7 +1,7 @@
 /**
  * Project:			Nimpres Android Client
  * File name: 		LANListener.java
- * Date modified:	2011-03-13
+ * Date modified:	2011-03-18
  * Description:		Listens for updates about a presentation on the LAN
  * 
  * License:			Copyright (c) 2010 (Matthew Brooks, Jordan Emmons, William Kong)
@@ -55,7 +55,8 @@ public class LANListener implements Runnable{
 				UDPMessage inPkt = new UDPMessage(NimpresSettings.SERVER_PEER_PORT,1024);
 				if(inPkt.getType().equals(NimpresSettings.MSG_PRESENTATION_STATUS)){
 					PeerStatus recvStatus = new PeerStatus(inPkt);
-	                Log.d("LANListener","received message from peer: "+inPkt.getRemoteIP());	                
+	                Log.d("LANListener","received message from peer: "+inPkt.getRemoteIP()+", id: "+recvStatus.getPresentationID()
+	                		+", presenter:"+recvStatus.getPresenterName()+", title:"+recvStatus.getPresenterName());	                
 	                for(int i=0;i<advertisingPeers.size();i++)
 	                	if(advertisingPeers.get(i).getPeerIP().equals(inPkt.getRemoteIP()))
 	                		advertisingPeers.remove(i); //check list and remove peer status if already in, so we can update it
@@ -64,6 +65,7 @@ public class LANListener implements Runnable{
 					Log.d("LANListener","received improper message: "+inPkt.getType()); 
 	        }catch(Exception e){
 	        	 Log.d("LANListener"," Exception: "+e.toString());
+	        	 e.printStackTrace();
 	        }
 		}      
 	}

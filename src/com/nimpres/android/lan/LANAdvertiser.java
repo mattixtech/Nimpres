@@ -1,7 +1,7 @@
 /**
  * Project:			Nimpres Android Client
  * File name: 		LANAdvertiser.java
- * Date modified:	2011-03-13
+ * Date modified:	2011-03-18
  * Description:		Advertises available presentations on the local LAN
  * 
  * License:			Copyright (c) 2010 (Matthew Brooks, Jordan Emmons, William Kong)
@@ -29,12 +29,15 @@ package com.nimpres.android.lan;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-
-import com.nimpres.android.presentation.Presentation;
-import com.nimpres.android.settings.NimpresSettings;
+import java.net.UnknownHostException;
 
 import android.os.Handler;
 import android.util.Log;
+
+import com.nimpres.android.NimpresObjects;
+import com.nimpres.android.presentation.Presentation;
+import com.nimpres.android.settings.NimpresSettings;
+import com.nimpres.android.utilities.Utilities;
 
 public class LANAdvertiser implements Runnable{
 
@@ -77,7 +80,15 @@ public class LANAdvertiser implements Runnable{
 	 */
 	public void run(){
 		initMessage();
-		outputBuff = (pres.getTitle()+NimpresSettings.STATUS_SEPERATOR+pres.getCurrentSlide()).getBytes();
+		PeerStatus advStatus = null;
+		try {
+			advStatus = new PeerStatus(InetAddress.getByName(Utilities.getLocalIpAddress()),
+					pres.getTitle(),pres.getCurrentSlide(),NimpresObjects.presenterName,NimpresObjects.hostedPresentationID);
+		} catch (UnknownHostException e) {
+			
+			e.printStackTrace();
+		}
+		outputBuff = advStatus.getDataString().getBytes();
 		mHandler.removeCallbacks(lanAdvertiseTask);
 		mHandler.postDelayed(lanAdvertiseTask, 100);        
 	}
