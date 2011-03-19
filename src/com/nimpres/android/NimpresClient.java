@@ -94,8 +94,7 @@ public class NimpresClient extends Activity {
 		 startButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				Intent launchview = new Intent(view.getContext(),
-						PresentationView.class);
+				Intent launchview = new Intent(view.getContext(),PresentationView.class);
 				startActivity(launchview);
 			}
 		});
