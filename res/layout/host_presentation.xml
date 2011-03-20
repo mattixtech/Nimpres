@@ -9,12 +9,12 @@
     android:layout_height="wrap_content" 
     android:text="Host Presentation"
     />
-<TextView android:text="Title: " android:id="@+id/textView1" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
-<EditText android:layout_height="wrap_content" android:id="@+id/editText1" android:text="" android:layout_width="match_parent"></EditText>
-<TextView android:text="Password: " android:id="@+id/textView3" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
-<EditText android:layout_height="wrap_content" android:id="@+id/editText2" android:text="" android:layout_width="match_parent"></EditText>
-<TextView android:text="File: " android:id="@+id/textView4" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
-<Button android:layout_width="wrap_content" android:id="@+id/button1" android:text="Choose File" android:layout_height="wrap_content"></Button>
-<Button android:text="Back" android:id="@+id/button2" android:layout_width="wrap_content" android:layout_height="wrap_content"></Button>
-<Button android:text="Host" android:id="@+id/button3" android:layout_width="wrap_content" android:layout_height="wrap_content"></Button>
+<TextView android:text="Title: " android:id="@+id/hpTitleLabel" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+<EditText android:layout_height="wrap_content" android:id="@+id/hpTitle" android:text="" android:layout_width="match_parent"></EditText>
+<TextView android:text="Password: " android:id="@+id/hpPasswordLabel" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+<EditText android:layout_height="wrap_content" android:id="@+id/hpPassword" android:text="" android:layout_width="match_parent"></EditText>
+<TextView android:text="File: " android:id="@+id/hpFileName" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+<Button android:layout_width="wrap_content" android:id="@+id/hpChooseFile" android:text="Choose File" android:layout_height="wrap_content"></Button>
+<Button android:text="Back" android:id="@+id/hpBack" android:layout_width="wrap_content" android:layout_height="wrap_content"></Button>
+<Button android:text="Host" android:id="@+id/hpHost" android:layout_width="wrap_content" android:layout_height="wrap_content"></Button>
 </LinearLayout>

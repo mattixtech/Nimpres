@@ -32,7 +32,19 @@
 		<activity android:name="com.nimpres.android.ui.Settings"
 			android:configChanges="orientation|keyboardHidden" android:label="@string/app_name">
 		</activity>
-				<activity android:name="com.nimpres.android.ui.HostEnd"
+		<activity android:name="com.nimpres.android.ui.HostEnd"
+			android:configChanges="orientation|keyboardHidden" android:label="@string/app_name">
+		</activity>
+		<activity android:name="com.nimpres.android.ui.JoinPresentation"
+			android:configChanges="orientation|keyboardHidden" android:label="@string/app_name">
+		</activity>
+		<activity android:name="com.nimpres.android.ui.HostPresentation"
+			android:configChanges="orientation|keyboardHidden" android:label="@string/app_name">
+		</activity>
+		<activity android:name="com.nimpres.android.ui.CreateAccount"
+			android:configChanges="orientation|keyboardHidden" android:label="@string/app_name">
+		</activity>
+		<activity android:name="com.nimpres.android.ui.ExistingAccount"
 			android:configChanges="orientation|keyboardHidden" android:label="@string/app_name">
 		</activity>
 	</application>

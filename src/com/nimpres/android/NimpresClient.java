@@ -43,6 +43,9 @@ import com.nimpres.android.lan.DPSServer;
 import com.nimpres.android.lan.LANAdvertiser;
 import com.nimpres.android.lan.LANListener;
 import com.nimpres.android.presentation.Presentation;
+import com.nimpres.android.ui.CreateAccount;
+import com.nimpres.android.ui.ExistingAccount;
+import com.nimpres.android.ui.JoinPresentation;
 import com.nimpres.android.ui.LoadingScreen;
 import com.nimpres.android.ui.PresentationHost;
 import com.nimpres.android.ui.PresentationView;
@@ -92,6 +95,26 @@ public class NimpresClient extends Activity {
 		 * End of testing code
 		 */
 
+		// setup Create Account button listener
+		 Button createAccountButton = (Button) findViewById(R.id.mCreate);
+		 createAccountButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				Intent launchview = new Intent(view.getContext(),CreateAccount.class);
+				startActivity(launchview);
+			}
+		});
+
+		// setup Login button listener
+		 Button loginButton = (Button) findViewById(R.id.mLogin);
+		 loginButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				Intent launchview = new Intent(view.getContext(),ExistingAccount.class);
+				startActivity(launchview);
+			}
+		});
+		 
 		// setup Join button listener
 		 Button joinButton = (Button) findViewById(R.id.mJoin);
 		 joinButton.setOnClickListener(new OnClickListener() {
@@ -102,12 +125,12 @@ public class NimpresClient extends Activity {
 			}
 		});
 		 
-		// setup Join button listener
+		// setup Host button listener
 		 Button hostButton = (Button) findViewById(R.id.mHost);
 		 hostButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				Intent launchview = new Intent(view.getContext(),PresentationHost.class);
+				Intent launchview = new Intent(view.getContext(),JoinPresentation.class);
 				startActivity(launchview);
 			}
 		});
