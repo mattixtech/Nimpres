@@ -43,7 +43,9 @@ import com.nimpres.android.lan.DPSServer;
 import com.nimpres.android.lan.LANAdvertiser;
 import com.nimpres.android.lan.LANListener;
 import com.nimpres.android.presentation.Presentation;
+import com.nimpres.android.ui.LoadingScreen;
 import com.nimpres.android.ui.PresentationView;
+import com.nimpres.android.ui.Settings;
 import com.nimpres.android.utilities.Utilities;
 import com.nimpres.android.web.APIContact;
 
@@ -89,12 +91,22 @@ public class NimpresClient extends Activity {
 		 * End of testing code
 		 */
 
-		// setup button listener
+		// setup Join button listener
 		 Button startButton = (Button) findViewById(R.id.mJoin);
 		 startButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
 				Intent launchview = new Intent(view.getContext(),PresentationView.class);
+				startActivity(launchview);
+			}
+		});
+		 
+		// setup Settings button listener
+		 Button settingsButton = (Button) findViewById(R.id.mSettings);
+		 settingsButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				Intent launchview = new Intent(view.getContext(),Settings.class);
 				startActivity(launchview);
 			}
 		});

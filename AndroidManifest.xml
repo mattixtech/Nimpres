@@ -13,17 +13,24 @@
 
 	<application android:icon="@drawable/icon" android:label="@string/app_name"
 		android:debuggable="true">
-		<activity android:name="com.nimpres.android.NimpresClient" android:label="@string/app_name">
+		<activity android:name="com.nimpres.android.NimpresClient"
+			android:label="@string/app_name">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
 		</activity>
-		<activity android:name="com.nimpres.android.ui.PresentationView" android:configChanges="orientation|keyboardHidden" android:label="@string/app_name">
+		<activity android:name="com.nimpres.android.ui.PresentationView"
+			android:configChanges="orientation|keyboardHidden" android:label="@string/app_name">
 		</activity>
-		<activity android:name="com.nimpres.android.ui.PresentationHost" android:configChanges="orientation|keyboardHidden" android:label="@string/app_name">
+		<activity android:name="com.nimpres.android.ui.PresentationHost"
+			android:configChanges="orientation|keyboardHidden" android:label="@string/app_name">
 		</activity>
-		<activity android:name="com.nimpres.android.ui.LoadingScreen" android:configChanges="orientation|keyboardHidden" android:label="@string/app_name">
+		<activity android:name="com.nimpres.android.ui.LoadingScreen"
+			android:configChanges="orientation|keyboardHidden" android:label="@string/app_name">
+		</activity>
+		<activity android:name="com.nimpres.android.ui.Settings"
+			android:configChanges="orientation|keyboardHidden" android:label="@string/app_name">
 		</activity>
 	</application>
 </manifest>

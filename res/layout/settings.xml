@@ -9,7 +9,7 @@
     android:layout_height="wrap_content" 
     android:text="Host Presentation"
     />
-<TextView android:text="Your ID: " android:id="@+id/textView1" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
-<EditText android:layout_height="wrap_content" android:id="@+id/editText1" android:text="" android:layout_width="match_parent"></EditText>
-<Button android:layout_width="wrap_content" android:id="@+id/button1" android:text="Forget ID" android:layout_height="wrap_content"></Button>
+<TextView android:text="Your ID: " android:id="@+id/sID" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+<Button android:layout_width="wrap_content" android:id="@+id/sForget" android:text="Forget ID" android:layout_height="wrap_content"></Button>
+<Button android:layout_height="wrap_content" android:id="@+id/sBack" android:layout_width="wrap_content" android:text="Back"></Button>
 </LinearLayout>
