@@ -44,6 +44,7 @@ import com.nimpres.android.lan.LANAdvertiser;
 import com.nimpres.android.lan.LANListener;
 import com.nimpres.android.presentation.Presentation;
 import com.nimpres.android.ui.LoadingScreen;
+import com.nimpres.android.ui.PresentationHost;
 import com.nimpres.android.ui.PresentationView;
 import com.nimpres.android.ui.Settings;
 import com.nimpres.android.utilities.Utilities;
@@ -92,11 +93,21 @@ public class NimpresClient extends Activity {
 		 */
 
 		// setup Join button listener
-		 Button startButton = (Button) findViewById(R.id.mJoin);
-		 startButton.setOnClickListener(new OnClickListener() {
+		 Button joinButton = (Button) findViewById(R.id.mJoin);
+		 joinButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
 				Intent launchview = new Intent(view.getContext(),PresentationView.class);
+				startActivity(launchview);
+			}
+		});
+		 
+		// setup Join button listener
+		 Button hostButton = (Button) findViewById(R.id.mHost);
+		 hostButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				Intent launchview = new Intent(view.getContext(),PresentationHost.class);
 				startActivity(launchview);
 			}
 		});

@@ -35,5 +35,7 @@ public class Settings extends Activity {
 				finish();
 			}
 		});
+		
+		//TODO add in code that rewrites the sID textview with "Your ID: ID#"
 	}
 }

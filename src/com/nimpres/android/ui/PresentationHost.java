@@ -1,6 +1,7 @@
 package com.nimpres.android.ui;
 
 import com.nimpres.R;
+import com.nimpres.android.NimpresClient;
 import com.nimpres.android.NimpresObjects;
 import com.nimpres.android.dps.DPS;
 import com.nimpres.android.settings.NimpresSettings;
@@ -17,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -60,8 +62,8 @@ public class PresentationHost extends Activity {
 	/**
 	 * 
 	 */
-//	public void onConfigurationChanged() {
-	//}
+	// public void onConfigurationChanged() {
+	// }
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -169,23 +171,19 @@ public class PresentationHost extends Activity {
 		// Handle item selection
 		switch (item.getItemId()) {
 		case R.id.pvhmStats:
-			//TODO create a method to collect stats
+			// TODO create a method to collect stats
 			return true;
 		case R.id.pvhmEnd:
-			leave(); //TODO perform some checks before ending presentation
+			// TODO perform some checks before ending presentation
+			Intent launchview = new Intent(this, HostEnd.class);
+			startActivity(launchview);
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
 	}
 
-	public void leave() {
-		Intent intent = new Intent();
-		setResult(RESULT_OK, intent);
-		finish();
-	}
-
-	public void updateSlide() {  //TODO create setSlide() method?
+	public void updateSlide() { // TODO create setSlide() method?
 		ImageView slide = (ImageView) findViewById(R.id.pvSlide);
 		TextView title = (TextView) findViewById(R.id.pvTitle);
 		TextView slideTitle = (TextView) findViewById(R.id.pvSlideTitle);
@@ -204,18 +202,26 @@ public class PresentationHost extends Activity {
 	/**
 	 * This task is responsible for updating the image displayed during viewing
 	 */
-	private Runnable viewerUpdateTask = new Runnable() {  //TODO take this out if not needed for host view
+	private Runnable viewerUpdateTask = new Runnable() { // TODO take this out
+															// if not needed for
+															// host view
 		public void run() {
 			if (!NimpresObjects.currentPresentation.isPaused()) {
 				if (Utilities.isOnline(NimpresObjects.ctx)) {
-					//TODO we should do something here to make resuming while on LAN quicker, currently we have to wait for a new status message
-					if(NimpresObjects.updateSource.equals(NimpresSettings.UPDATE_SOURCE_INTERNET)){
+					// TODO we should do something here to make resuming while
+					// on LAN quicker, currently we have to wait for a new
+					// status message
+					if (NimpresObjects.updateSource
+							.equals(NimpresSettings.UPDATE_SOURCE_INTERNET)) {
 						// TODO change to get the correct slide number for the
 						// current presentation rather then hard coded
 						int slideNum = APIContact.getSlideNumber("2", "test");
 						// Make sure slide was not negative (error code -1)
 						if (slideNum >= 0)
-							NimpresObjects.currentPresentation.setCurrentSlide(slideNum); // Update slide number of presentation
+							NimpresObjects.currentPresentation
+									.setCurrentSlide(slideNum); // Update slide
+																// number of
+																// presentation
 					}
 				} else
 					Log.d("NimpresClient",
