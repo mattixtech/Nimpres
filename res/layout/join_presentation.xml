@@ -14,5 +14,6 @@
 <Button android:layout_width="wrap_content" android:id="@+id/jpFind" android:text="Find" android:layout_height="wrap_content"></Button>
 <TextView android:text="Available Presentations" android:id="@+id/jpAvailablePresentations" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
 <ListView android:layout_height="wrap_content" android:id="@+id/jpList" android:layout_width="match_parent"></ListView>
+<Button android:text="Join" android:id="@+id/jpJoin" android:layout_width="wrap_content" android:layout_height="wrap_content"></Button>
 <Button android:layout_height="wrap_content" android:id="@+id/jpBack" android:layout_width="wrap_content" android:text="Back"></Button>
 </LinearLayout>

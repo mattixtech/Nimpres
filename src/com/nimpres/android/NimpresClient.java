@@ -45,6 +45,7 @@ import com.nimpres.android.lan.LANListener;
 import com.nimpres.android.presentation.Presentation;
 import com.nimpres.android.ui.CreateAccount;
 import com.nimpres.android.ui.ExistingAccount;
+import com.nimpres.android.ui.HostPresentation;
 import com.nimpres.android.ui.JoinPresentation;
 import com.nimpres.android.ui.LoadingScreen;
 import com.nimpres.android.ui.PresentationHost;
@@ -120,7 +121,7 @@ public class NimpresClient extends Activity {
 		 joinButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				Intent launchview = new Intent(view.getContext(),PresentationView.class);
+				Intent launchview = new Intent(view.getContext(),JoinPresentation.class); 
 				startActivity(launchview);
 			}
 		});
@@ -130,7 +131,7 @@ public class NimpresClient extends Activity {
 		 hostButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				Intent launchview = new Intent(view.getContext(),JoinPresentation.class);
+				Intent launchview = new Intent(view.getContext(),HostPresentation.class);
 				startActivity(launchview);
 			}
 		});

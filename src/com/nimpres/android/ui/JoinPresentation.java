@@ -14,30 +14,43 @@ public class JoinPresentation extends Activity {
 	public void onCreate(Bundle created) {
 		super.onCreate(created);
 		setContentView(R.layout.join_presentation);
-		
+
 		// setup Find button listener
-		 Button findButton = (Button) findViewById(R.id.jpFind);
-		 findButton.setOnClickListener(new OnClickListener() {
+		Button findButton = (Button) findViewById(R.id.jpFind);
+		findButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
-			//TODO check and join entered presentation ID	
+				// TODO check and join entered presentation ID
 
-			//If entered presentation ID exists, enter the specified presentation
-			//TODO need way of entering the presentation for the entered presentation ID
-			Intent launchview = new Intent(view.getContext(),PresentationView.class);
-			startActivity(launchview);
+				// If entered presentation ID exists, enter the specified
+				// presentation
+				// TODO need way of entering the presentation for the entered
+				// presentation ID
+				Intent launchview = new Intent(view.getContext(),
+						PresentationView.class);
+				startActivity(launchview);
 			}
 		});
-		 
-			// setup Back button listener
-			Button backButton = (Button) findViewById(R.id.jpBack);
-			backButton.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View view) {
-					Intent intent = new Intent();
-					setResult(RESULT_OK, intent);
-					finish();
-				}
-			});
+		// setup Join button listener
+		Button joinButton = (Button) findViewById(R.id.jpJoin);
+		joinButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				// TODO join presentation code
+				Intent launchview = new Intent(view.getContext(),
+						PresentationView.class); //TODO change this to loading screen
+				startActivity(launchview);
+			}
+		});
+		// setup Back button listener
+		Button backButton = (Button) findViewById(R.id.jpBack);
+		backButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				Intent intent = new Intent();
+				setResult(RESULT_OK, intent);
+				finish();
+			}
+		});
 	}
 }
