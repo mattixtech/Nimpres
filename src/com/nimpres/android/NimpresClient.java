@@ -90,8 +90,6 @@ public class NimpresClient extends Activity {
 		// testDPSHosting("tmpdps_down.dps",ctx);
 		// testCreate();
 
-		// this.finish();
-
 		/*
 		 * End of testing code
 		 */

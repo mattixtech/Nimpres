@@ -41,10 +41,10 @@ public class JoinPresentation extends Activity {
 				// TODO join presentation code
 				//Testing Code
 				EditText presenterID = (EditText) findViewById(R.id.jpID);
+				EditText presenterPassword = (EditText) findViewById(R.id.jpPassword);
 				NimpresObjects.presentationID = Integer.parseInt(presenterID.getText().toString());
-				NimpresObjects.presentationPassword = "test";
-				NimpresObjects.updateSource = "internet";
-				
+				NimpresObjects.presentationPassword = presenterPassword.getText().toString();
+				NimpresObjects.updateSource = "internet";	//TODO should check here to see if it should be LAN
 				
 				Intent launchview = new Intent(view.getContext(),
 						PresentationView.class); //TODO change this to loading screen
