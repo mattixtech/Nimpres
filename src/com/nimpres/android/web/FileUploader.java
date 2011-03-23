@@ -46,7 +46,7 @@ public class FileUploader {
 	public FileUploader(String urlString, String fileName ){
 		try{
 			connectURL = new URL(urlString);
-			Log.i("FileUploader","creating upload request to: "+urlString);
+			Log.d("FileUploader","creating upload request to: "+urlString);
 			this.fileInputStream = NimpresObjects.ctx.openFileInput(fileName);
 		}catch(Exception e){
 			Log.d("FileUploader","Error: "+e.getMessage());
@@ -64,7 +64,7 @@ public class FileUploader {
 			conn.setDoInput(true);
 			conn.setDoOutput(true);
 			conn.setUseCaches(false);	
-			Log.i("FileUploader","starting post");
+			Log.d("FileUploader","starting post");
 			// Use a post method.
 			conn.setRequestMethod("POST");	
 			conn.setRequestProperty("Connection", "Keep-Alive");	
@@ -105,7 +105,7 @@ public class FileUploader {
 			}
 			String s = b.toString();
 			responseMessage = s;
-			Log.i("FileUploader","response: "+s);
+			Log.d("FileUploader","response: "+s);
 			dos.close();
 			
 		}catch(Exception e){

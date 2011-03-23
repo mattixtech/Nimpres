@@ -81,7 +81,7 @@ public class NimpresClient extends Activity {
 		// testPresentation();
 		// testLoginAPI();
 		// testLANAdvertising();
-		 testLANListening();
+		// testLANListening();
 		// testDPSDownload(ctx);
 		// testDPSHosting("tmpdps_down.dps", ctx);
 		// testLANAdvertising();
@@ -158,7 +158,7 @@ public class NimpresClient extends Activity {
 	}
 
 	public static void testUpdateSlide(){
-		APIContact.updateSlideNumber("win", "testing1", "25", "test", "1337");
+		APIContact.updateSlideNumber("win", "testing1", 25, "test", 1337);
 	}
 	
 	public static void testSlideNum() {
@@ -204,7 +204,7 @@ public class NimpresClient extends Activity {
 	
 	public static void testCreate()
 	{
-		if(APIContact.createPresentation("win", "testing1", "MattTesting", "test", "1", "will.dps"))
+		if(APIContact.createPresentation("win", "testing1", "MattTesting", "test", 1, "will.dps") > 0)
 			Log.d("NimpresClient","presentation created successfully");
 		else
 			Log.d("NimpresClient","presentation creation failed");

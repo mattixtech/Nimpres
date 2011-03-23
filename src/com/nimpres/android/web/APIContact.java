@@ -248,14 +248,14 @@ public class APIContact {
 	 * @param password
 	 * @return
 	 */
-	public static boolean updateSlideNumber(String userID, String userPass, String presID, String presPass, String slide_num){
+	public static boolean updateSlideNumber(String userID, String userPass, int presID, String presPass, int slide_num){
 		String result = "";
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
 		params.add(new BasicNameValuePair("user_id", userID));
 		params.add(new BasicNameValuePair("user_password", userPass));
-		params.add(new BasicNameValuePair("pres_id", presID));
+		params.add(new BasicNameValuePair("pres_id", String.valueOf(presID)));
 		params.add(new BasicNameValuePair("pres_password", presPass));
-		params.add(new BasicNameValuePair("slide_num", slide_num));
+		params.add(new BasicNameValuePair("slide_num", String.valueOf(slide_num)));
 		HttpEntity resEntity = apiPostRequest(NimpresSettings.API_PRESENTATION_UPDATE_SLIDE,params);
 		try{
 			result = EntityUtils.toString(resEntity);
@@ -278,7 +278,7 @@ public class APIContact {
 	 * @param over
 	 * @return
 	 */	
-	public static boolean createPresentation(String userID, String userPass, String title, String presPass, String length, String fileName){
+	public static int createPresentation(String userID, String userPass, String title, String presPass, int length, String fileName){
 
 		String queryString = "?title="+title+"&user_id="+userID+"&user_password="+userPass+"&pres_password="+presPass+"&length="+length;
 		String url = NimpresSettings.API_BASE_URL + NimpresSettings.API_CREATE_PRESENTATION + NimpresSettings.API_EXTENSION;
@@ -286,10 +286,10 @@ public class APIContact {
 		FileUploader upFile = new FileUploader(queryUrl, fileName);
 		String response = upFile.upload();
 		Log.d("APIContact","FileUploader's response: "+response);
-		if(response.equals(NimpresSettings.API_RESPONSE_POSITIVE))
-			return true;
+		if( ! response.equals(NimpresSettings.API_RESPONSE_NEGATIVE))
+			return Integer.parseInt(response);
 		else		
-			return false;
+			return -1;
 	}
 	
 	/**
