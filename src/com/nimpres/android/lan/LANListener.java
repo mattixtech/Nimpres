@@ -56,6 +56,7 @@ public class LANListener implements Runnable{
 				UDPMessage inPkt = new UDPMessage(NimpresSettings.SERVER_PEER_PORT,1024);
 				if(inPkt.getType().equals(NimpresSettings.MSG_PRESENTATION_STATUS)){
 					PeerStatus recvStatus = new PeerStatus(inPkt);
+					recvStatus.setSource(NimpresSettings.UPDATE_SOURCE_LAN);
 	                Log.d("LANListener","received message from peer: "+inPkt.getRemoteIP()+", id: "+recvStatus.getPresentationID()
 	                		+", presenter:"+recvStatus.getPresenterName()+", title:"+recvStatus.getPresenterName()+", current slide:"+recvStatus.getSlideNumber());	                
 	                

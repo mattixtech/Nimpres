@@ -39,7 +39,7 @@ public class PeerStatus {
 	private String presenterName = "";
 	private int presentationID = 0;
 	private int slideNumber = 0;
-	
+	private String source = ""; //internet or lan
 	/**
 	 * Default empty constructor
 	 */
@@ -154,6 +154,20 @@ public class PeerStatus {
 	 */
 	public void setPresentationID(int presentationID) {
 		this.presentationID = presentationID;
+	}
+
+	/**
+	 * @return the source
+	 */
+	public String getSource() {
+		return source;
+	}
+
+	/**
+	 * @param source the source to set
+	 */
+	public void setSource(String source) {
+		this.source = source;
 	}
 	
 	
