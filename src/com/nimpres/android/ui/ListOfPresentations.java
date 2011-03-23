@@ -33,7 +33,7 @@ public class ListOfPresentations extends ListActivity {
 
 	}
 
-	private void getDir(String dirPath) {
+	/*private void getDir(String dirPath) {
 		myPath.setText("Location: " + dirPath);
 
 		item = new ArrayList<String>();
@@ -107,4 +107,5 @@ public class ListOfPresentations extends ListActivity {
 							}).show();
 		}
 	}
+	*/
 }

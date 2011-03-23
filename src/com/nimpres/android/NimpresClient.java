@@ -80,7 +80,7 @@ public class NimpresClient extends Activity {
 		// testPresentation();
 		// testPresentation();
 		// testLoginAPI();
-		// testLANAdvertising();
+		 testLANAdvertising();
 		// testLANListening();
 		// testDPSDownload(ctx);
 		// testDPSHosting("tmpdps_down.dps", ctx);
@@ -172,6 +172,7 @@ public class NimpresClient extends Activity {
 	public static void testLANAdvertising() {
 		Presentation Pres = new Presentation();
 		Pres.setTitle("Test");
+		Pres.setOwner("Matt");
 		Pres.setNumSlides(50);
 		Pres.setCurrentSlide(5);
 		Pres.setPresentationID(25);

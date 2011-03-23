@@ -7,9 +7,11 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import com.nimpres.R;
 import com.nimpres.android.NimpresObjects;
+import com.nimpres.android.dps.DPS;
 
 public class JoinPresentation extends Activity {
 	@Override
@@ -40,15 +42,21 @@ public class JoinPresentation extends Activity {
 			public void onClick(View view) {
 				// TODO join presentation code
 				//Testing Code
+				
+				
+				
 				EditText presenterID = (EditText) findViewById(R.id.jpID);
 				EditText presenterPassword = (EditText) findViewById(R.id.jpPassword);
 				NimpresObjects.presentationID = Integer.parseInt(presenterID.getText().toString());
 				NimpresObjects.presentationPassword = presenterPassword.getText().toString();
 				NimpresObjects.updateSource = "internet";	//TODO should check here to see if it should be LAN
 				
-				Intent launchview = new Intent(view.getContext(),
-						PresentationView.class); //TODO change this to loading screen
-				startActivity(launchview);
+				setContentView(R.layout.loading);
+				ImageView loadingImage = (ImageView) findViewById(R.id.loading);
+				loadingImage.setImageResource(R.drawable.loader);
+				Thread load = new Thread(loadTask);
+				load.start();
+
 			}
 		});
 		// setup Back button listener
@@ -62,4 +70,15 @@ public class JoinPresentation extends Activity {
 			}
 		});
 	}
+	
+	private Runnable loadTask = new Runnable() {
+		public void run() {
+			NimpresObjects.currentDPS = new DPS("api", "internet", NimpresObjects.presentationID, NimpresObjects.presentationPassword, "downloaded", NimpresObjects.ctx);
+			NimpresObjects.currentPresentation = NimpresObjects.currentDPS.getDpsPres();
+			NimpresObjects.currentPresentation.setPresentationID(NimpresObjects.presentationID);
+			NimpresObjects.currentlyViewing = true;
+			Intent intent = new Intent(NimpresObjects.ctx,PresentationView.class);
+			startActivity(intent);
+		}
+	};
 }
