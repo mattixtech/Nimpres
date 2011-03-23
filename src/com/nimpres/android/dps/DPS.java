@@ -55,7 +55,7 @@ public class DPS {
 	private boolean isRemote = false; 		//Specifies whether this dps project originiated on device or was downloaded via LAN/Internet
 	private String remoteType = "";			//"lan" or "internet"
 	private String dpsOrigin = ""; 			//Stores the URL origin or IP Address of the DPS file's original location
-	private String dpsID = "";				//Stores the ID of this DPS file for synchronizing
+	private int dpsID = -1;				//Stores the ID of this DPS file for synchronizing
 	private String dpsPassword = "";		//Stores a password for password protected synchronizing
 	
 	/**
@@ -81,7 +81,7 @@ public class DPS {
 	 * @param desiredFolderName
 	 * @param ctx
 	 */
-	public DPS(String dpsLocation, String remoteType, String dpsID, String dpsPassword, String desiredFolderName, Context ctx){
+	public DPS(String dpsLocation, String remoteType, int dpsID, String dpsPassword, String desiredFolderName, Context ctx){
 		isRemote = true;
 		dpsOrigin = dpsLocation;			
 		this.dpsID = dpsID;
@@ -90,14 +90,14 @@ public class DPS {
 			if(remoteType.equalsIgnoreCase("internet")){
 				this.remoteType = "internet";
 				try {
-					dpsPath = downloadFromAPI(Integer.parseInt(dpsID),dpsPassword,NimpresSettings.API_DOWNLOAD_PREFIX+desiredFolderName,desiredFolderName,ctx);
+					dpsPath = downloadFromAPI(dpsID,dpsPassword,NimpresSettings.API_DOWNLOAD_PREFIX+desiredFolderName,desiredFolderName,ctx);
 				} catch (Exception e) {
 					Log.d("DPS","Error: "+e.getMessage());
 				}
 			}else if(remoteType.equalsIgnoreCase("lan")){
 				this.remoteType = "lan";
 				try {
-					dpsPath = downloadFromLAN(dpsLocation, Integer.parseInt(dpsID), dpsPassword, desiredFolderName, ctx);
+					dpsPath = downloadFromLAN(dpsLocation, dpsID, dpsPassword, desiredFolderName, ctx);
 				} catch (Exception e) {
 					Log.d("DPS","Error: "+e.getMessage());
 				}				
@@ -128,7 +128,7 @@ public class DPS {
 			try {
 				Log.d("DPSGet", "download begining from api");
 				Log.d("DPSGet","id:"+id+" password:"+password);
-				InputStream is = APIContact.downloadPresentation(String.valueOf(id), password);
+				InputStream is = APIContact.downloadPresentation(id, password);
 				if(is != null){
 					FileOutputStream fos = ctx.openFileOutput(fileName,Context.MODE_PRIVATE);
 					
@@ -367,14 +367,14 @@ public class DPS {
 	/**
 	 * @return the dpsID
 	 */
-	public String getDpsID() {
+	public int getDpsID() {
 		return dpsID;
 	}
 
 	/**
 	 * @param dpsID the dpsID to set
 	 */
-	public void setDpsID(String dpsID) {
+	public void setDpsID(int dpsID) {
 		this.dpsID = dpsID;
 	}
 
