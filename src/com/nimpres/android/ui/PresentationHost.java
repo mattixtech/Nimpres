@@ -30,7 +30,7 @@ public class PresentationHost extends Activity {
 		// then return to this screen after download is done
 		NimpresObjects.currentlyPresenting = true;
 		hostedPresentation = NimpresObjects.currentPresentation;
-
+		updateSlide();
 	}
 
 
@@ -126,15 +126,10 @@ public class PresentationHost extends Activity {
 	}
 
 	public void updateSlide() { // TODO create setSlide() method?
-		ImageView slide = (ImageView) findViewById(R.id.pvSlide);
-		TextView title = (TextView) findViewById(R.id.pvTitle);
-		TextView slideTitle = (TextView) findViewById(R.id.pvSlideTitle);
-		TextView slideNotes = (TextView) findViewById(R.id.pvNotes);
+		ImageView slide = (ImageView) findViewById(R.id.phvSlide);
+		TextView title = (TextView) findViewById(R.id.phvTitle);
+
 		title.setText(hostedPresentation.getTitle());
-		slideTitle.setText(hostedPresentation
-				.getCurrentSlideFile().getSlideTitle());
-		slideNotes.setText(hostedPresentation
-				.getCurrentSlideFile().getSlideComments());
 		slide.setImageBitmap(BitmapFactory
 				.decodeFile(hostedPresentation.getPath()
 						+ hostedPresentation

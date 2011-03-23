@@ -121,7 +121,8 @@ public class NimpresClient extends Activity {
 		 joinButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				Intent launchview = new Intent(view.getContext(),JoinPresentation.class); 
+				//Intent launchview = new Intent(view.getContext(),JoinPresentation.class); 
+				Intent launchview = new Intent(view.getContext(),PresentationView.class);
 				startActivity(launchview);
 			}
 		});
@@ -162,7 +163,7 @@ public class NimpresClient extends Activity {
 	}
 	
 	public static void testSlideNum() {
-		int slideNum = APIContact.getSlideNumber("25", "test");
+		int slideNum = APIContact.getSlideNumber(25, "test");
 		Log.d("NimpresClient", "slide # " + slideNum);
 	}
 	
@@ -197,9 +198,11 @@ public class NimpresClient extends Activity {
 	}
 
 	public static void testDPSDownload(Context ctx) {
-		DPS lanDPS = new DPS("192.168.1.4", "lan", "123", "pass","testing_dps", ctx);
+		APIContact.downloadPresentation(26, "test");
+		DPS netDPS = new DPS("api","internet",26,"test","test",NimpresObjects.ctx);
+		//DPS lanDPS = new DPS("192.168.1.4", "lan", "123", "pass","testing_dps", ctx);
 		Log.d("NimpresClient", "DPS fully created");
-		Log.d("NimpresClient", "DPS presentation title:"+ lanDPS.getDpsPres().getTitle());
+		Log.d("NimpresClient", "DPS presentation title:"+ netDPS.getDpsPres().getTitle());
 	}
 	
 	public static void testCreate()

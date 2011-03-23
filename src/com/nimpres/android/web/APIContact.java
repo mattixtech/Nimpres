@@ -168,10 +168,10 @@ public class APIContact {
 	 * @param password
 	 * @return
 	 */
-	public static int getSlideNumber(String presID, String presPass){
+	public static int getSlideNumber(int presID, String presPass){
 		String result = "";
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
-		params.add(new BasicNameValuePair("pres_id", presID));
+		params.add(new BasicNameValuePair("pres_id", String.valueOf(presID)));
 		params.add(new BasicNameValuePair("pres_password", presPass));
 		HttpEntity resEntity = apiPostRequest(NimpresSettings.API_PRESENTATION_CURRENT_SLIDE,params);
 		try{
@@ -193,11 +193,11 @@ public class APIContact {
 	 * @param password
 	 * @return
 	 */
-	public static InputStream downloadPresentation(String presID, String presPass){
+	public static InputStream downloadPresentation(int presID, String presPass){
 		InputStream downloadedDps = null;
 		String response = "";
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
-		params.add(new BasicNameValuePair("pres_id", presID));
+		params.add(new BasicNameValuePair("pres_id", String.valueOf(presID)));
 		params.add(new BasicNameValuePair("pres_password", presPass));
 		HttpEntity resEntity = apiPostRequest(NimpresSettings.API_DOWNLOAD_PRESENTATION,params);		
 		try{
@@ -224,12 +224,12 @@ public class APIContact {
 	 * @param password
 	 * @return true if sucessfully deleted, false otherwise
 	 */
-	public static boolean deletePresentation(String userID, String userPass, String presID, String presPass){
+	public static boolean deletePresentation(String userID, String userPass, int presID, String presPass){
 		String result = "";
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
 		params.add(new BasicNameValuePair("user_id", userID));
 		params.add(new BasicNameValuePair("user_password", userPass));
-		params.add(new BasicNameValuePair("pres_id", presID));
+		params.add(new BasicNameValuePair("pres_id", String.valueOf(presID)));
 		params.add(new BasicNameValuePair("pres_password", presPass));
 		HttpEntity resEntity = apiPostRequest(NimpresSettings.API_DELETE_PRESENTATION,params);
 		try{

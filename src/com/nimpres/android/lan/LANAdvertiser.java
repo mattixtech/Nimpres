@@ -48,6 +48,7 @@ public class LANAdvertiser implements Runnable{
     private DatagramPacket pkt;
     private Handler mHandler = new Handler();
     private byte[] outputBuff = null;
+    private PeerStatus advStatus = null;
 	
     /**
      * 
@@ -65,6 +66,14 @@ public class LANAdvertiser implements Runnable{
 		public void run() {			
 			try{
 				if( ! isStopped()){
+					try {
+						advStatus = new PeerStatus(InetAddress.getByName(Utilities.getLocalIpAddress()),
+								pres.getTitle(),pres.getCurrentSlide(),NimpresObjects.presenterName,pres.getPresentationID());
+					} catch (UnknownHostException e) {
+						
+						e.printStackTrace();
+					}
+					outputBuff = advStatus.getDataString().getBytes();
 					UDPMessage outPkt = new UDPMessage(NimpresSettings.MSG_PRESENTATION_STATUS, outputBuff, broadcastAddress, NimpresSettings.SERVER_PEER_PORT,true);
                     Log.d("LANAdvertiser"," sent presentation status message to: "+broadcastAddress);               	                    
 	            }
@@ -80,15 +89,6 @@ public class LANAdvertiser implements Runnable{
 	 */
 	public void run(){
 		initMessage();
-		PeerStatus advStatus = null;
-		try {
-			advStatus = new PeerStatus(InetAddress.getByName(Utilities.getLocalIpAddress()),
-					pres.getTitle(),pres.getCurrentSlide(),NimpresObjects.presenterName,pres.getPresentationID());
-		} catch (UnknownHostException e) {
-			
-			e.printStackTrace();
-		}
-		outputBuff = advStatus.getDataString().getBytes();
 		mHandler.removeCallbacks(lanAdvertiseTask);
 		mHandler.postDelayed(lanAdvertiseTask, 100);        
 	}

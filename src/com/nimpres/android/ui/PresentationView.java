@@ -59,11 +59,11 @@ public class PresentationView extends Activity {
 		// TODO we should show a loading screen before we do this download and
 		// then return to this screen after download is done
 
-		NimpresObjects.currentDPS = new DPS("api", "internet", "25", "test",
+		NimpresObjects.currentDPS = new DPS("api", "internet", 37, "test",
 				"downloaded", NimpresObjects.ctx);
 		NimpresObjects.currentPresentation = NimpresObjects.currentDPS
 				.getDpsPres();
-		NimpresObjects.currentPresentation.setPresentationID(25);
+		NimpresObjects.currentPresentation.setPresentationID(37);
 		NimpresObjects.currentlyViewing = true;
 
 		if (NimpresObjects.currentPresentation.getNumSlides() > 0) {
@@ -264,7 +264,7 @@ public class PresentationView extends Activity {
 					if(NimpresObjects.updateSource.equals(NimpresSettings.UPDATE_SOURCE_INTERNET)){
 						// TODO change to get the correct slide number for the
 						// current presentation rather then hard coded
-						int slideNum = APIContact.getSlideNumber("2", "test");
+						int slideNum = APIContact.getSlideNumber(2, "test");
 						// Make sure slide was not negative (error code -1)
 						if (slideNum >= 0)
 							NimpresObjects.currentPresentation.setCurrentSlide(slideNum); // Update slide number of presentation
