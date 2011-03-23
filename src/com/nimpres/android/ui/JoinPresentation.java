@@ -1,13 +1,15 @@
 package com.nimpres.android.ui;
 
-import com.nimpres.R;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.EditText;
+
+import com.nimpres.R;
+import com.nimpres.android.NimpresObjects;
 
 public class JoinPresentation extends Activity {
 	@Override
@@ -37,6 +39,13 @@ public class JoinPresentation extends Activity {
 			@Override
 			public void onClick(View view) {
 				// TODO join presentation code
+				//Testing Code
+				EditText presenterID = (EditText) findViewById(R.id.jpID);
+				NimpresObjects.presentationID = Integer.parseInt(presenterID.getText().toString());
+				NimpresObjects.presentationPassword = "test";
+				NimpresObjects.updateSource = "internet";
+				
+				
 				Intent launchview = new Intent(view.getContext(),
 						PresentationView.class); //TODO change this to loading screen
 				startActivity(launchview);

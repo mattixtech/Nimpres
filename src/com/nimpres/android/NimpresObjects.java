@@ -39,10 +39,17 @@ public class NimpresObjects {
 	public static DPS currentDPS;
 	public static Presentation currentPresentation;
 	public static Context ctx;
+	
+	public static int presentationID = 0;
+	public static String presentationPassword = "";
+	
 	public static boolean currentlyViewing = false;
 	public static boolean currentlyPresenting = false;
-	public static String presenterName = "test";	//TODO this should be loaded from local config
-	public static String presenterPassword = "test1234";
+	
+	public static String presenterName = "test";			//TODO this should be loaded from local config
+	public static String presenterPassword = "test1234";  	//TODO this should be loaded from local config
+	
+	
 	public static String updateSource = "";	//This will be either "lan" or "internet"
 	public static ArrayList<PeerStatus> peerPresentations = new ArrayList<PeerStatus>();
 }
