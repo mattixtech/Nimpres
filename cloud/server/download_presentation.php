@@ -30,11 +30,12 @@ ini_set('display_errors',1);
 error_reporting(E_ALL|E_STRICT);
 require_once('./includes/init.php');
 
+$user = $_POST['user_id'];
+$password = $_POST['user_password'];
 $pid = $_POST['pres_id'];
 $pres_pass = $_POST['pres_password'];
 
-if (!empty($pid) && $pres_pass === PresentationBO::getPresPass($pid))
-{
+if (!empty($pid) && $pres_pass === PresentationBO::getPresPass($pid) && userBO::validateLogin($user, $password)){
 	readfile(PRESENTATIONS_DIR.$pid.'.dps');
 }
 else

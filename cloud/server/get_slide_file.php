@@ -1,9 +1,9 @@
 <?php
 /**
  * Project:			Nimpres Server API
- * File name: 		PresentationDTO.php
- * Date modified:	2011-03-17
- * Description:		Specifies the structure of a PresentationDTO object
+ * File name: 		get_slide_file.php
+ * Date modified:	2011-03-18
+ * Description:		Sends an image file based on the pid and slide num associated with a filename in slides table
  * 
  * License:			Copyright (c) 2011 (Matthew Brooks, Jordan Emmons, William Kong)
 					
@@ -26,26 +26,26 @@
 					THE SOFTWARE.
  */
 
-	class PresentationDTO{
-		
-		/*Member variables*/
-	
-		public $pid = "";
-		public $user = "";
-		public $title = "";
-		public $pres_pass = "";
-		public $created = "";
-		public $size = "";
-		public $length = "";
-		public $filename = "";
-		public $slide_num = "";
-		public $status = "";
-		public $updated_time = "";
-		public $over = "";
-		
-		function __construct(){
-		}
-		
-	}
+ini_set('display_errors',1);
+error_reporting(E_ALL|E_STRICT);
+require_once('./includes/init.php');
 
+$user = $_GET['user_id'];
+$password = $_GET['user_password'];
+$pid = $_GET['pres_id'];
+$pres_pass = $_GET['pres_password'];
+$slide_num = $_GET['slide_num'];
+
+if (!empty($pid) && !empty($user) && !empty($password) && $pres_pass === PresentationBO::getPresPass($pid) && userBO::validateLogin($user, $password)){
+	$filename=PresentationBO::getFilenameByID($pid, $slide_num);
+	
+	if (!empty($filename)){
+		header('Content-Type: image/jpeg');
+		readfile(PRESENTATIONS_DIR.$pid.'/'.$filename);
+	}
+	else 
+		echo 'FAIL1';
+}
+else
+	echo 'FAIL2';
 ?>

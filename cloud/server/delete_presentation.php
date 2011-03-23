@@ -4,7 +4,7 @@
  * File name: 		delete_presentation.php
  * Date modified:	2011-03-17
  * Description:		Verifies the request is from the owner of the presentation, then deletes the presentation
- * 					from both pres and pres_status
+ * 					from pres, pres_status, slides, and the file and folder on the web
  * 
  * License:			Copyright (c) 2011 (Matthew Brooks, Jordan Emmons, William Kong)
 					
@@ -37,13 +37,21 @@ $password = $_GET['user_password'];
 $pid = $_GET['pres_id'];
 $pres_pass = $_GET['pres_password'];
 
-//TODO delete the file and folder
-if (!empty($pid) && $pres_pass === PresentationBO::getPresPass($pid) && PresentationBO::verifyOwner($pid, $user, $password))
-{
-	if(PresentationBO::deletePres($pid))
-		echo 'OK';
-	else
-		echo 'FAIL';
+if (!empty($pid) && $pres_pass === PresentationBO::getPresPass($pid) && PresentationBO::verifyOwner($pid, $user, $password)){
+
+	$target_folder = PRESENTATIONS_DIR;
+	$target_folder = $target_folder . $pid;
+	$target_path = PRESENTATIONS_DIR;
+	$target_path = $target_path . $pid . '.dps';
+	
+	if (unlink($target_path)){
+		if (PresentationBO::recursiveDelete($target_folder)){
+			if(PresentationBO::deletePres($pid))
+				echo 'OK';
+			else
+				echo 'FAIL';
+		}
+	}
 }
 else
 	echo 'FAIL';

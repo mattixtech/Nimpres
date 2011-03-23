@@ -1,9 +1,9 @@
 <?php
 /**
  * Project:			Nimpres Server API
- * File name: 		
+ * File name: 		PresentationDO.php
  * Date modified:	2011-03-17
- * Description:		
+ * Description:		Contains functions manipulating objects from PresentationBO and making database queries
  * 
  * License:			Copyright (c) 2011 (Matthew Brooks, Jordan Emmons, William Kong)
 					
@@ -32,8 +32,8 @@ require_once('./includes/init.php');
 
 	class PresentationDO {
 		
-		public static function getByUser($user = '')
-		{
+		public static function getByUser($user = ''){
+			
 			if (!empty($user)){
 				$mydb = new MySQLDatabase(DATABASE_ADDR,DATABASE_NAME,DATABASE_USER,DATABASE_PASSWORD);
 				if(GLOBAL_DEBUGGING)
@@ -42,8 +42,7 @@ require_once('./includes/init.php');
 				$pres_rows = $mydb->run_unsafe_query($sql);
 
 				$found_presentations = array();
-				while ($rows = $mydb->get_array($pres_rows))
-				{
+				while ($rows = $mydb->get_array($pres_rows)){
 					$newPresDTO = new PresentationDTO;
 					$pid = $rows['pid'];
 					array_push($found_presentations, self::getByPID($pid));
@@ -52,8 +51,8 @@ require_once('./includes/init.php');
 			}
 		}
 		
-		public static function getByPID($pid = '')
-		{
+		public static function getByPID($pid = ''){
+			
 			if (!empty($pid)){
 
 				$mydb = new MySQLDatabase(DATABASE_ADDR,DATABASE_NAME,DATABASE_USER,DATABASE_PASSWORD);
@@ -96,8 +95,7 @@ require_once('./includes/init.php');
 			}
 		}
 		
-		public static function updatePres($newPresDTO = '')
-		{
+		public static function updatePres($newPresDTO = ''){
 			ini_set('display_errors',1);
 			error_reporting(E_ALL|E_STRICT);
 			if (!empty($newPresDTO->pid)){
@@ -113,14 +111,13 @@ require_once('./includes/init.php');
 				$mydb->run_unsafe_query($sql);
 				return TRUE;
 			}
-			
 			else{
 				return FALSE;
 			}
 		}
 		
-		public static function insertPres($newPresDTO = '')
-		{
+		public static function insertPres($newPresDTO = ''){
+			
 			ini_set('display_errors',1);
 			error_reporting(E_ALL|E_STRICT);
 
@@ -151,18 +148,51 @@ require_once('./includes/init.php');
 			
 			if (!empty($newPresDTO->pid)){
 				
-				if(!($mydb->record_key_exists("'$newPresDTO->pid'",'pid','pres')))	//Check for existence of the presentationin pres
-			      return FALSE;
+				if(!($mydb->record_key_exists("'$newPresDTO->pid'",'pid','pres')))	//Check for existence of the presentation in pres
+			    	return FALSE;
 				$sql = "DELETE FROM pres WHERE pid = '$newPresDTO->pid'";
 				$mydb->run_unsafe_query($sql);
 				
 				if(!($mydb->record_key_exists("'$newPresDTO->pid'",'pid','pres_status')))	//Check for existence of the presentation in pres_status
-			      return FALSE;
+			    	return FALSE;
 				$sql = "DELETE FROM pres_status WHERE pid = '$newPresDTO->pid'";
 				$mydb->run_unsafe_query($sql);
+				
+				if(!($mydb->record_key_exists("'$newPresDTO->pid'",'pid','slides')))
+					return FALSE;
+				$sql = "DELETE FROM slides WHERE pid = '$newPresDTO->pid'";
+				$mydb->run_unsafe_query($sql);
+				
 				return TRUE;
-			}
-			else 
+			}else 
+				return FALSE;
+		}
+		
+		public static function storeSlide($newPresDTO = ''){
+			$mydb = new MySQLDatabase(DATABASE_ADDR,DATABASE_NAME,DATABASE_USER,DATABASE_PASSWORD);
+			if(GLOBAL_DEBUGGING)
+				$mydb -> debug_on();
+			if (!empty($newPresDTO->pid) && is_numeric($newPresDTO->slide_num) && !empty($newPresDTO->filename)){
+				$sql  = "INSERT INTO slides (pid, slide_num, filename) VALUE ('$newPresDTO->pid', '$newPresDTO->slide_num', '$newPresDTO->filename')";
+				$mydb->run_unsafe_query($sql);
+				return TRUE;
+			}else
+				return FALSE;
+		}
+		
+		public static function getFilenameByID($newPresDTO = ''){
+			$mydb = new MySQLDatabase(DATABASE_ADDR,DATABASE_NAME,DATABASE_USER,DATABASE_PASSWORD);
+			if(GLOBAL_DEBUGGING)
+				$mydb -> debug_on();
+				
+			if (!empty($newPresDTO->pid) && is_numeric($newPresDTO->slide_num))
+			{
+				$sql= "SELECT * FROM slides WHERE pid='$newPresDTO->pid' && slide_num='$newPresDTO->slide_num'";
+				$slide_row = $mydb->run_unsafe_query($sql);
+				$slide_row = $mydb->get_array($slide_row);
+				$newPresDTO->filename = $slide_row['filename'];
+				return $newPresDTO->filename;
+			}else
 				return FALSE;
 		}
 	}

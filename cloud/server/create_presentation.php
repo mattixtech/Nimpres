@@ -1,9 +1,10 @@
 <?php
 /**
  * Project:			Nimpres Server API
- * File name: 		create_presentation.php
+ * File name: 		create_presentation2.php
  * Date modified:	2011-03-17
- * Description:		This class creates a presentation entry in pres and pres_status tables
+ * Description:		This class creates a presentation entry in pres and pres_status tables, labels the slides in the slides table
+ * 					, uploads a .dps file and fills a folder with the extracted contents
  * 
  * License:			Copyright (c) 2011 (Matthew Brooks, Jordan Emmons, William Kong)
 					
@@ -39,38 +40,41 @@ $slide_num = 0;
 $status = 'available';
 $over = 0;
 
-
-//TODO check the user/password of the uploader first for security
-
-if (!empty($user) && !empty($password) && !empty($title) && !empty($length) && is_numeric($slide_num) && !empty($status) && userBO::validateLogin($user, $password))
-{
+//TODO adjust for slide ordering
+if (!empty($user) && !empty($password) && !empty($title) && !empty($length) && is_numeric($slide_num) && !empty($status) && userBO::validateLogin($user, $password)){
 	$id = PresentationBO::createPres($user, $title, $pres_pass, $length, $slide_num, $status, $over);
 	if ($id >= 0){
+		$target_folder = PRESENTATIONS_DIR;
+		$target_folder = $target_folder . $id;
 		$target_path = PRESENTATIONS_DIR;
+		$target_path = $target_path . $id . '.dps';
+		$target_pathToUnzip = $target_folder;
 		
-		$target_path = $target_path . $id . '.dps'; 
-		
-		if(move_uploaded_file($_FILES['uploadedfile']['tmp_name'], $target_path)) 
-		{
-			//TODO make folder called 1 for example and extract slides and metafile to this folder
-			/*
-			 *  $zip = new ZipArchive;
-				if ($zip->open('test.zip') === TRUE) {
-				    $zip->extractTo('/my/destination/dir/');
-				    $zip->close();
-				    echo 'ok';
-				} else {
-				    echo 'failed';
-				}
-			 */
-		    echo 'OK';
-		} 
-		else
-		    echo 'FAILFILE';
-	}
-	else
-		echo 'FAILCREATE';
+		if(move_uploaded_file($_FILES['uploadedfile']['tmp_name'], $target_path)) {
+				if (mkdir($target_folder, 0777)){
+				 	$zip = new ZipArchive;
+					if ($zip->open($target_path) === TRUE) {
+					    $zip->extractTo($target_pathToUnzip);
+					    $adjustIndex = 0;
+					    for($i = 0; $i < $zip->numFiles; $i++){   
+     						$adjustIndex++;
+         					$name = $zip->getNameIndex($i);
+         					if ($name != 'meta-inf.xml')
+         						PresentationBO::storeSlide($id, $adjustIndex, $name);
+         					else 
+         						$adjustIndex--;
+    					}
+					    $zip->close();
+					    echo $id; 
+					} else 
+					    echo 'FAIL';
+				}else
+					echo 'FAIL';
+		}else
+		    echo 'FAIL';
+	}else
+		echo 'FAIL';
 }else 
-	echo 'FAILEMPTY';
+	echo 'FAIL';
 
 ?>

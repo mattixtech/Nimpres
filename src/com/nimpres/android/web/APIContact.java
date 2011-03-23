@@ -120,15 +120,15 @@ public class APIContact {
 	
 	/**
 	 * This method creates a user with a login/password combination
-	 * @param login
-	 * @param password
+	 * @param user_id
+	 * @param user_password
 	 * @return true if user is created, false otherwise
 	 */
 	public static boolean createUser(String login, String password){
 		String result = "";
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
-		params.add(new BasicNameValuePair("login", login));
-        params.add(new BasicNameValuePair("password", password));
+		params.add(new BasicNameValuePair("user_id", login));
+        params.add(new BasicNameValuePair("user_password", password));
         HttpEntity resEntity = apiPostRequest(NimpresSettings.API_CREATE_ACCOUNT,params);
 		try{
 			result = EntityUtils.toString(resEntity);
@@ -142,15 +142,15 @@ public class APIContact {
 	
 	/**
 	 * This method validates a login/password combination
-	 * @param login
-	 * @param password
+	 * @param user_id
+	 * @param user_password
 	 * @return true if valid login, false otherwise
 	 */
 	public static boolean validateLogin(String login, String password){
 		String result = "";
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
-		params.add(new BasicNameValuePair("login", login));
-        params.add(new BasicNameValuePair("password", password));
+		params.add(new BasicNameValuePair("user_id", login));
+        params.add(new BasicNameValuePair("user_password", password));
         HttpEntity resEntity = apiPostRequest(NimpresSettings.API_LOGIN,params);
 		try{
 			result = EntityUtils.toString(resEntity);
@@ -164,8 +164,8 @@ public class APIContact {
 	
 	/**
 	 * This method gets the current slide number for the DPS identified by id
-	 * @param id
-	 * @param password
+	 * @param pres_id
+	 * @param pres_password
 	 * @return
 	 */
 	public static int getSlideNumber(String presID, String presPass){
@@ -189,14 +189,18 @@ public class APIContact {
 	
 	/**
 	 * Downloads the presentation dps file
-	 * @param id
-	 * @param password
+	 * @param user_id
+	 * @param user_password
+	 * @param pres_id
+	 * @param pres_password
 	 * @return
 	 */
-	public static InputStream downloadPresentation(String presID, String presPass){
+	public static InputStream downloadPresentation(String userID, String userPass, String presID, String presPass){
 		InputStream downloadedDps = null;
 		String response = "";
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
+		params.add(new BasicNameValuePair("user_id", userID));
+		params.add(new BasicNameValuePair("user_password", userPass));
 		params.add(new BasicNameValuePair("pres_id", presID));
 		params.add(new BasicNameValuePair("pres_password", presPass));
 		HttpEntity resEntity = apiPostRequest(NimpresSettings.API_DOWNLOAD_PRESENTATION,params);		
@@ -219,9 +223,11 @@ public class APIContact {
 	}
 	
 	/**
-	 * This method deletes a presentation from pres and pres_status based on id
-	 * @param id
-	 * @param password
+	 * This method deletes a presentation from pres, pres_status, and slides based on id
+	 * @param user_id
+	 * @param user_password
+	 * @param pres_id
+	 * @param pres_password
 	 * @return true if sucessfully deleted, false otherwise
 	 */
 	public static boolean deletePresentation(String userID, String userPass, String presID, String presPass){
@@ -244,8 +250,11 @@ public class APIContact {
 	
 	/**
 	 * This method sets the current slide number for the DPS identified by id
-	 * @param id
-	 * @param password
+	 * @param user_id
+	 * @param user_password
+	 * @param pres_id
+	 * @param pres_password
+	 * @param slide_num
 	 * @return
 	 */
 	public static boolean updateSlideNumber(String userID, String userPass, String presID, String presPass, String slide_num){
@@ -294,7 +303,9 @@ public class APIContact {
 	
 	/**
 	 * This method lists the presentations in the tables based on a username
-	 * @param user
+	 * @param user_id
+	 * @param user_password
+	 * @param user_search
 	 * @return echos of xml code
 	 */
 	//TODO Return statement needs to be revised for XML output
@@ -305,6 +316,35 @@ public class APIContact {
 		params.add(new BasicNameValuePair("user_password", userPass));
 		params.add(new BasicNameValuePair("user_search", userSearch));
         HttpEntity resEntity = apiPostRequest(NimpresSettings.API_LIST_PRESENTATIONS,params);
+		try{
+			result = EntityUtils.toString(resEntity);
+		}catch (Exception e) {
+	        e.printStackTrace();
+	    }
+		if(result.equals(NimpresSettings.API_RESPONSE_POSITIVE))
+			return true;
+		return false;
+	}
+	
+	/**
+	 * This method returns the image file based on an associated filename in the slides table
+	 * @param user_id
+	 * @param user_password
+	 * @param pres_id
+	 * @param pres_password
+	 * @param slide_num
+	 * @return an image file
+	 */
+	//TODO Revise return statement for picture?
+	public static boolean getSlideFile(String userID, String userPass, String presID, String presPass, String slide_num){
+		String result = "";
+		List<NameValuePair> params = new ArrayList<NameValuePair>();
+		params.add(new BasicNameValuePair("user_id", userID));
+		params.add(new BasicNameValuePair("user_password", userPass));
+		params.add(new BasicNameValuePair("pres_id", presID));
+		params.add(new BasicNameValuePair("pres_password", presPass));
+		params.add(new BasicNameValuePair("slide_num", slide_num));
+		HttpEntity resEntity = apiPostRequest(NimpresSettings.API_GET_SLIDE_FILE,params);
 		try{
 			result = EntityUtils.toString(resEntity);
 		}catch (Exception e) {

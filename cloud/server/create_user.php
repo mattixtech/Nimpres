@@ -30,15 +30,11 @@ ini_set('display_errors',1);
 error_reporting(E_ALL|E_STRICT);
 require_once('./includes/init.php');
 
-
-//retrieve username and password from POST sent to the page
 //TODO change to POST
 $login = $_GET['user_id'];
 $password = $_GET['user_password'];
-echo 'test';
 
 if(!empty($login) && !empty($password)){
-	echo 'testing';
 	if (UserBO::createUser($login,$password))
 		echo 'OK';
 	else 
