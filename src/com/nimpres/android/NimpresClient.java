@@ -95,7 +95,7 @@ public class NimpresClient extends Activity {
 		/*
 		 * End of testing code
 		 */
-
+/*
 		// setup Create Account button listener
 		 Button createAccountButton = (Button) findViewById(R.id.mCreate);
 		 createAccountButton.setOnClickListener(new OnClickListener() {
@@ -105,7 +105,7 @@ public class NimpresClient extends Activity {
 				startActivity(launchview);
 			}
 		});
-
+*/
 		// setup Login button listener
 		 Button loginButton = (Button) findViewById(R.id.mLogin);
 		 loginButton.setOnClickListener(new OnClickListener() {
