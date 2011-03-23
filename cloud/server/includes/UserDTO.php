@@ -1,9 +1,9 @@
 <?php
 /**
  * Project:			Nimpres Server API
- * File name: 		
+ * File name: 		UserDTO.php
  * Date modified:	2011-03-17
- * Description:		
+ * Description:		Specifies the structure of a UserDTO object
  * 
  * License:			Copyright (c) 2011 (Matthew Brooks, Jordan Emmons, William Kong)
 					

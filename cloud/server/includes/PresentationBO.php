@@ -1,9 +1,9 @@
 <?php
 /**
  * Project:			Nimpres Server API
- * File name: 		
+ * File name: 		PresentationBO.php
  * Date modified:	2011-03-17
- * Description:		
+ * Description:		Contains functions called by the API scripts for interaction with PresentationDTO objects
  * 
  * License:			Copyright (c) 2011 (Matthew Brooks, Jordan Emmons, William Kong)
 					
@@ -28,8 +28,7 @@
 
 	class PresentationBO{
 		
-		public static function createPres($user, $title, $pres_pass, $length, $slide_num, $status, $over)
-		{
+		public static function createPres($user, $title, $pres_pass, $length, $slide_num, $status, $over){
 			$newPresDTO = new PresentationDTO;
 
 			$newPresDTO->user = $user;
@@ -44,8 +43,20 @@
 			return $pid;
 		}
 		
-		public static function listPres($user)
-		{
+		public static function storeSlide($id, $slide_num, $filename){
+			$newPresDTO = new PresentationDTO;
+			
+			$newPresDTO->pid=$id;
+			$newPresDTO->slide_num=$slide_num;
+			$newPresDTO->filename=$filename;
+			
+			if(PresentationDO::storeSlide($newPresDTO))
+				return TRUE;
+			else 
+				return FALSE;
+		}
+		
+		public static function listPres($user){
 			$Presentations = array();
 			$Presentations = PresentationDO::getByUser($user);
 			
@@ -55,8 +66,7 @@
 			$xmlPresList.= '</presentation_user>';
 			$presNum = 1;
 			
-			foreach($Presentations as $presentation)
-			{
+			foreach($Presentations as $presentation){
 
 				$xmlPresList.= '<presentation number="';
 				$xmlPresList.= $presNum;
@@ -91,27 +101,31 @@
 			return $xmlPresList;
 		}
 		
-		public static function getSlideNum($pid)
-		{
+		public static function getSlideNum($pid){
+			
 			$newPresDTO = PresentationDO::getByPID($pid);
 			return $newPresDTO->slide_num;
 		}
 		
-		public static function getOwner($pid)
-		{
+		public static function getLength($pid){
+			
+			$newPresDTO = PresentationDO::getByPID($pid);
+			return $newPresDTO->length;
+		}
+		
+		public static function getOwner($pid){
+			
 			$newPresDTO = PresentationDO::getByPID($pid);
 			return $newPresDTO->user;
 		}
 		
-		public static function getPresPass($pid)
-		{
+		public static function getPresPass($pid){
 
 			$newPresDTO = PresentationDO::getByPID($pid);
 			return $newPresDTO->pres_pass;
 		}
 		
-		public static function updateSlideNum($pid,$slide_num)
-		{
+		public static function updateSlideNum($pid,$slide_num){
 			
 			$newPresDTO = PresentationDO::getByPID($pid);
 			$newPresDTO->slide_num = $slide_num;
@@ -122,22 +136,22 @@
 				return FALSE;
 		}
 
-		public static function verifyOwner($pid, $user, $password)
-		{
+		public static function verifyOwner($pid, $user, $password){
+			
 			$existingPresDTO = PresentationDO::getByPID($pid);
-			if ($existingPresDTO->user===$user)
+			if ($existingPresDTO->user===$user){
 				if(UserBO::validateLogin($user, $password))
 					return TRUE;
 				else 
 					return FALSE;
-			else 
+			}else 
 				return FALSE;
 		}
 		
 		public static function deletePres($pid){
 			
 			$newPresDTO = new PresentationDTO;
-			$newPresDTO->pid = $pid;
+			$newPresDTO->pid=$pid;
 			
 			if(PresentationDO::deletePres($newPresDTO))
 				return TRUE;
@@ -145,6 +159,28 @@
 				return FALSE;
 		}
 		
+		public static function recursiveDelete($str){
+			
+	        if(is_file($str)){
+	            return @unlink($str);
+	        }
+	        elseif(is_dir($str)){
+	            $scan = glob(rtrim($str,'/').'/*');
+	            foreach($scan as $index=>$path){
+	                self::recursiveDelete($path);
+	            }
+	            return @rmdir($str);
+	        }
+   		}
+   		
+   		public static function getFilenameByID($pid, $slide_num){
+   			
+   			$newPresDTO = new PresentationDTO;
+   			$newPresDTO->pid=$pid;
+   			$newPresDTO->slide_num=$slide_num;
+   			$newPresDTO->filename = PresentationDO::getFilenameByID($newPresDTO);
+			return $newPresDTO->filename;
+		}
 	}
 
 

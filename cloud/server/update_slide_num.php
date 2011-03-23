@@ -38,8 +38,7 @@ $pid = $_POST['pres_id'];
 $pres_pass = $_POST['pres_password'];
 $slide_num = $_POST['slide_num'];
 
-//TODO check to see if slide num is less than or equal to the length
-if (!empty($pid) && is_numeric($pid) && is_numeric($slide_num) && $slide_num >= 0 && $pres_pass === PresentationBO::getPresPass($pid) && PresentationBO::verifyOwner($pid, $user, $password)){
+if (!empty($pid) && is_numeric($pid) && is_numeric($slide_num) && $slide_num >= 0 && $slide_num <= PresentationBO::getLength($pid) && $pres_pass === PresentationBO::getPresPass($pid) && PresentationBO::verifyOwner($pid, $user, $password)){
 	if(PresentationBO::updateSlideNum($pid, $slide_num))
 		echo 'OK';
 	else

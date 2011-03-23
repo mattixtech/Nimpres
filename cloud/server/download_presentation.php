@@ -32,9 +32,8 @@ require_once('./includes/init.php');
 
 $pid = $_POST['pres_id'];
 $pres_pass = $_POST['pres_password'];
-
-if (!empty($pid) && $pres_pass === PresentationBO::getPresPass($pid))
-{
+//TODO add support for account whenever downloading from tablet or web
+if (!empty($pid) && $pres_pass === PresentationBO::getPresPass($pid)){
 	readfile(PRESENTATIONS_DIR.$pid.'.dps');
 }
 else

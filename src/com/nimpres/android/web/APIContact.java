@@ -115,20 +115,17 @@ public class APIContact {
 		return null;
 	}
 	
-	
-	
-	
 	/**
 	 * This method creates a user with a login/password combination
-	 * @param login
-	 * @param password
+	 * @param user_id
+	 * @param user_password
 	 * @return true if user is created, false otherwise
 	 */
 	public static boolean createUser(String login, String password){
 		String result = "";
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
-		params.add(new BasicNameValuePair("login", login));
-        params.add(new BasicNameValuePair("password", password));
+		params.add(new BasicNameValuePair("user_id", login));
+        params.add(new BasicNameValuePair("user_password", password));
         HttpEntity resEntity = apiPostRequest(NimpresSettings.API_CREATE_ACCOUNT,params);
 		try{
 			result = EntityUtils.toString(resEntity);
@@ -142,15 +139,15 @@ public class APIContact {
 	
 	/**
 	 * This method validates a login/password combination
-	 * @param login
-	 * @param password
+	 * @param user_id
+	 * @param user_password
 	 * @return true if valid login, false otherwise
 	 */
 	public static boolean validateLogin(String login, String password){
 		String result = "";
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
-		params.add(new BasicNameValuePair("login", login));
-        params.add(new BasicNameValuePair("password", password));
+		params.add(new BasicNameValuePair("user_id", login));
+        params.add(new BasicNameValuePair("user_password", password));
         HttpEntity resEntity = apiPostRequest(NimpresSettings.API_LOGIN,params);
 		try{
 			result = EntityUtils.toString(resEntity);
@@ -161,6 +158,7 @@ public class APIContact {
 			return true;
 		return false;
 	}
+	
 	
 	/**
 	 * This method gets the current slide number for the DPS identified by id

@@ -40,6 +40,9 @@ public class NimpresObjects {
 	public static Presentation currentPresentation;
 	public static Context ctx;
 	
+	public static String loadType = "";
+	public static boolean finishedLoading = false;
+	
 	public static int presentationID = 0;
 	public static String presentationPassword = "";
 	
@@ -52,4 +55,5 @@ public class NimpresObjects {
 	
 	public static String updateSource = "";	//This will be either "lan" or "internet"
 	public static ArrayList<PeerStatus> peerPresentations = new ArrayList<PeerStatus>();
+	
 }

@@ -35,8 +35,7 @@ $userLocal = $_POST['user_id'];
 $password = $_POST['user_password'];
 $user = $_POST['user_search'];
 
-if (!empty($user) && !empty($userLocal) && !empty($password) && userBO::validateLogin($userLocal, $password))
-{
+if (!empty($user) && !empty($userLocal) && !empty($password) && userBO::validateLogin($userLocal, $password)){
 	$xmlPresList = PresentationBO::listPres($user);
 	echo '<?xml version="1.0"?>';
 	echo '<presentations>';

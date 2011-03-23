@@ -56,17 +56,8 @@ public class PresentationView extends Activity {
 	public void onCreate(Bundle created) {
 		super.onCreate(created);
 		setContentView(R.layout.presentation_viewer);
-
-		// TODO we should show a loading screen before we do this download and
-		// then return to this screen after download is done
 		viewedPresentationID = NimpresObjects.presentationID;
-		viewedPresentationPassword = NimpresObjects.presentationPassword;
-		
-		NimpresObjects.currentDPS = new DPS("api", "internet", viewedPresentationID, viewedPresentationPassword, "downloaded", NimpresObjects.ctx);
-		NimpresObjects.currentPresentation = NimpresObjects.currentDPS.getDpsPres();
-		NimpresObjects.currentPresentation.setPresentationID(viewedPresentationID);
-		NimpresObjects.currentlyViewing = true;
-
+		viewedPresentationPassword = NimpresObjects.presentationPassword;		
 		
 		if (NimpresObjects.currentPresentation.getNumSlides() > 0) {
 			mHandler.removeCallbacks(viewerUpdateTask);

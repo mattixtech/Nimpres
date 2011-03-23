@@ -1,9 +1,9 @@
 <?php
 /**
  * Project:			Nimpres Server API
- * File name: 		
+ * File name: 		UserDO.php
  * Date modified:	2011-03-17
- * Description:		
+ * Description:		Contains functions manipulating objects from UserBO and making database queries
  * 
  * License:			Copyright (c) 2011 (Matthew Brooks, Jordan Emmons, William Kong)
 					
@@ -64,7 +64,6 @@ require_once('./includes/init.php');
 				$user_row = $mydb->get_array($user_row);
 				
 				if($user_row){ //Check to make sure there was a result returned
-					
 					$newUserDTO = new UserDTO;
 					
 					$newUserDTO->id = $user_row['id'];

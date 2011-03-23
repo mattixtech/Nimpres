@@ -33,7 +33,6 @@ public class ListOfPresentations extends ListActivity {
 			public void onClick(View view) {
 				EditText presenterID = (EditText) findViewById(R.id.lopPresenterID);
 				String presenterIDString = presenterID.getText().toString();
-
 				for (int i = 0; i < NimpresObjects.peerPresentations.size(); i++) {
 					if (presenterIDString.equals(NimpresObjects.peerPresentations.get(i).getPresenterName())) {
 						item.add(NimpresObjects.peerPresentations.get(i).getPresentationName());
@@ -65,4 +64,5 @@ public class ListOfPresentations extends ListActivity {
 					}
 				}).show();
 	}
+	
 }

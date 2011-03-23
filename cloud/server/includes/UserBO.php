@@ -1,9 +1,9 @@
 <?php
 /**
  * Project:			Nimpres Server API
- * File name: 		
+ * File name: 		UserBO.php
  * Date modified:	2011-03-17
- * Description:		
+ * Description:		Contains functions called by the API scripts for interaction with UserDTO objects
  * 
  * License:			Copyright (c) 2011 (Matthew Brooks, Jordan Emmons, William Kong)
 					
