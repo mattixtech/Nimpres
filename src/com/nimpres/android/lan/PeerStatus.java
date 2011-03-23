@@ -1,7 +1,7 @@
 /**
  * Project:			Nimpres Android Client
  * File name: 		PeerStatus.java
- * Date modified:	2011-03-18
+ * Date modified:	2011-03-23
  * Description:		Status message from peer
  * 
  * License:			Copyright (c) 2010 (Matthew Brooks, Jordan Emmons, William Kong)
