@@ -56,17 +56,22 @@ public class LANListener implements Runnable{
 				UDPMessage inPkt = new UDPMessage(NimpresSettings.SERVER_PEER_PORT,1024);
 				if(inPkt.getType().equals(NimpresSettings.MSG_PRESENTATION_STATUS)){
 					PeerStatus recvStatus = new PeerStatus(inPkt);
+					recvStatus.setSource(NimpresSettings.UPDATE_SOURCE_LAN);
 	                Log.d("LANListener","received message from peer: "+inPkt.getRemoteIP()+", id: "+recvStatus.getPresentationID()
 	                		+", presenter:"+recvStatus.getPresenterName()+", title:"+recvStatus.getPresenterName()+", current slide:"+recvStatus.getSlideNumber());	                
 	                
-	                if(recvStatus.getPresentationID() == NimpresObjects.currentPresentation.getPresentationID() && ! NimpresObjects.currentPresentation.isPaused()) //This id matches the one being viewed so we will update its slide
+	                if(NimpresObjects.currentPresentation != null && recvStatus.getPresentationID() == NimpresObjects.currentPresentation.getPresentationID() && ! NimpresObjects.currentPresentation.isPaused()) //This id matches the one being viewed so we will update its slide
 	                	NimpresObjects.currentPresentation.setCurrentSlide(recvStatus.getSlideNumber());
 	                
 	                for(int i=0;i<advertisingPeers.size();i++){
-	                	if(advertisingPeers.get(i).getPeerIP().equals(inPkt.getRemoteIP()))
+	                	if(advertisingPeers.get(i).getPeerIP().equals(inPkt.getRemoteIP())){
 	                		advertisingPeers.remove(i); //check list and remove peer status if already in, so we can update it
+	                		Log.d("LANListener","peer existed, refreshing...");
+	                	}
 	                }
-	                advertisingPeers.add(recvStatus); //add peer to list	                	
+	                advertisingPeers.add(recvStatus); //add peer to list
+	                Log.d("LANListener","Added peer to list");
+	                Log.d("LANListener","Peer List Current Size: "+advertisingPeers.size());
 				}else
 					Log.d("LANListener","received improper message: "+inPkt.getType()); 
 	        }catch(Exception e){

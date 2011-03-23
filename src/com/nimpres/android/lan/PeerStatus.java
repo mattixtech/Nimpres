@@ -39,7 +39,7 @@ public class PeerStatus {
 	private String presenterName = "";
 	private int presentationID = 0;
 	private int slideNumber = 0;
-	
+	private String source = ""; //internet or lan
 	/**
 	 * Default empty constructor
 	 */
@@ -71,7 +71,7 @@ public class PeerStatus {
 		int firstSeperatorIndex = dataStr.indexOf(NimpresSettings.STATUS_SEPERATOR);
 		int secondSeperatorIndex = dataStr.indexOf(NimpresSettings.STATUS_SEPERATOR,firstSeperatorIndex+seperatorLength);
 		int thirdSeperatorIndex = dataStr.indexOf(NimpresSettings.STATUS_SEPERATOR,secondSeperatorIndex+seperatorLength);
-		Log.d("PeerStatus","first_index:"+firstSeperatorIndex+", second_index:"+secondSeperatorIndex+", third_index:"+thirdSeperatorIndex);
+		//Log.d("PeerStatus","first_index:"+firstSeperatorIndex+", second_index:"+secondSeperatorIndex+", third_index:"+thirdSeperatorIndex);
 		peerIP = message.remoteIP;
 		presentationName = dataStr.substring(0, firstSeperatorIndex);
 		slideNumber = Integer.parseInt(dataStr.substring(firstSeperatorIndex+seperatorLength,secondSeperatorIndex));
@@ -154,6 +154,20 @@ public class PeerStatus {
 	 */
 	public void setPresentationID(int presentationID) {
 		this.presentationID = presentationID;
+	}
+
+	/**
+	 * @return the source
+	 */
+	public String getSource() {
+		return source;
+	}
+
+	/**
+	 * @param source the source to set
+	 */
+	public void setSource(String source) {
+		this.source = source;
 	}
 	
 	

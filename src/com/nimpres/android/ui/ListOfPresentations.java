@@ -32,9 +32,13 @@ public class ListOfPresentations extends ListActivity {
 		searchButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
+				Log.d("ListOfPresentations","search clicked");
 				EditText presenterID = (EditText) findViewById(R.id.lopPresenterID);
 				String presenterIDString = presenterID.getText().toString();
+				Log.d("ListOfPresentations","presenter searching: "+presenterIDString);
+				Log.d("ListOfPresentations","peer list size: "+NimpresObjects.peerPresentations.size());
 				for (int i = 0; i < NimpresObjects.peerPresentations.size(); i++) {
+					Log.d("ListOfPresentations","checking: "+NimpresObjects.peerPresentations.get(i).getPresenterName());
 					if (presenterIDString.equals(NimpresObjects.peerPresentations.get(i).getPresenterName())) {
 						item.add(NimpresObjects.peerPresentations.get(i).getPresentationID());
 						Log.d("ListOfPresentations","added item to list"+ NimpresObjects.peerPresentations.get(i).getPresentationName());
