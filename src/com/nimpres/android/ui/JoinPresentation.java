@@ -8,17 +8,22 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.nimpres.R;
 import com.nimpres.android.NimpresObjects;
 import com.nimpres.android.dps.DPS;
 
 public class JoinPresentation extends Activity {
+	static TextView updateIDBox = null;
+	
 	@Override
 	public void onCreate(Bundle created) {
 		super.onCreate(created);
 		setContentView(R.layout.join_presentation);
-
+		
+		updateIDBox = (TextView) findViewById(R.id.jpID);
+		
 		// setup Find button listener
 		Button findButton = (Button) findViewById(R.id.jpFind);
 		findButton.setOnClickListener(new OnClickListener() {
@@ -70,6 +75,11 @@ public class JoinPresentation extends Activity {
 				finish();
 			}
 		});
+	}
+	
+	public static void updateID() {	
+		if(JoinPresentation.updateIDBox != null && NimpresObjects.presentationID > 0)
+			JoinPresentation.updateIDBox.setText(NimpresObjects.presentationID);
 	}
 	
 	private Runnable loadTask = new Runnable() {
