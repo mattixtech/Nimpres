@@ -19,26 +19,25 @@ import com.nimpres.R;
 import com.nimpres.android.NimpresClient;
 import com.nimpres.android.NimpresObjects;
 
-public class FileExplorer extends ListActivity {
+public class ListOfPresentations extends ListActivity {
 	private List<String> item = null;
-	private List<String> path = null;
-	private String root = NimpresObjects.ctx.getFilesDir().toString();
-	private TextView myPath;
+	
+
+
 
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.file_explorer);
-		myPath = (TextView) findViewById(R.id.fePath);
-		getDir(root);
+
 	}
 
 	private void getDir(String dirPath) {
 		myPath.setText("Location: " + dirPath);
 
 		item = new ArrayList<String>();
-		path = new ArrayList<String>();
+
 
 		File f = new File(dirPath);
 		File[] files = f.listFiles();
