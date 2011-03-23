@@ -50,7 +50,7 @@ public class HostPresentation extends Activity {
 				e.printStackTrace();
 			}
 			
-			Intent launchview = new Intent(view.getContext(),PresentationHost.class);
+			Intent launchview = new Intent(view.getContext(),LoadingScreen.class); //TODO verify that loading screen works
 			startActivity(launchview);
 			}
 		});

@@ -29,11 +29,12 @@ public class JoinPresentation extends Activity {
 				// TODO need way of entering the presentation for the entered
 				// presentation ID
 				Intent launchview = new Intent(view.getContext(),
-						PresentationView.class);
+						ListOfPresentations.class);
 				startActivity(launchview);
 			}
 		});
 		// setup Join button listener
+		//TODO grey out join button until presentation id and/or password is filled in
 		Button joinButton = (Button) findViewById(R.id.jpJoin);
 		joinButton.setOnClickListener(new OnClickListener() {
 			@Override
@@ -47,7 +48,7 @@ public class JoinPresentation extends Activity {
 				
 				
 				Intent launchview = new Intent(view.getContext(),
-						PresentationView.class); //TODO change this to loading screen
+						LoadingScreen.class);
 				startActivity(launchview);
 			}
 		});

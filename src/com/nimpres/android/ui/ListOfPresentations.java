@@ -1,110 +1,68 @@
 package com.nimpres.android.ui;
 
-import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.nimpres.R;
-import com.nimpres.android.NimpresClient;
 import com.nimpres.android.NimpresObjects;
 
 public class ListOfPresentations extends ListActivity {
-	private List<String> item = null;
-	
-
-
+	private ArrayList<String> item = new ArrayList<String>();
 
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.file_explorer);
+		setContentView(R.layout.list_of_presentations);
 
-	}
+		// setup Search button listener
+		Button searchButton = (Button) findViewById(R.id.lopSearch);
+		searchButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				EditText presenterID = (EditText) findViewById(R.id.lopPresenterID);
+				String presenterIDString = presenterID.getText().toString();
 
-	private void getDir(String dirPath) {
-		myPath.setText("Location: " + dirPath);
-
-		item = new ArrayList<String>();
-
-
-		File f = new File(dirPath);
-		File[] files = f.listFiles();
-
-		if (!dirPath.equals(root)) {
-
-			item.add(root);
-			path.add(root);
-
-			item.add("../");
-			path.add(f.getParent());
-
-		}
-
-		for (int i = 0; i < files.length; i++) {
-			File file = files[i];
-			path.add(file.getPath());
-			if (file.isDirectory())
-				item.add(file.getName() + "/");
-			else
-				item.add(file.getName());
-		}
-
-		ArrayAdapter<String> fileList = new ArrayAdapter<String>(this,
-				R.layout.row, item);
-		setListAdapter(fileList);
+				for (int i = 0; i < NimpresObjects.peerPresentations.size(); i++) {
+					if (presenterIDString.equals(NimpresObjects.peerPresentations.get(i).getPresenterName())) {
+						item.add(NimpresObjects.peerPresentations.get(i).getPresentationName());
+						Log.d("ListOfPresentations","added item to list"+ NimpresObjects.peerPresentations.get(i).getPresentationName());
+					}
+				}
+		    	ArrayAdapter<String> presentationList =
+		    		new ArrayAdapter<String>(view.getContext(), R.layout.row, item);
+		    	setListAdapter(presentationList);				
+			}
+		});
 	}
 
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 
-		File file = new File(path.get(position));
+		String presentationName = item.get(position);
 
-		if (file.isDirectory()) {
-			if (file.canRead())
-				getDir(path.get(position));
-			else {
-				new AlertDialog.Builder(this)
-						.setIcon(R.drawable.icon)
-						.setTitle(
-								"[" + file.getName()
-										+ "] folder can't be read!")
-						.setPositiveButton("OK",
-								new DialogInterface.OnClickListener() {
-
-									@Override
-									public void onClick(DialogInterface dialog,
-											int which) {
-										// TODO Auto-generated method stub
-										dialog.dismiss();
-									}
-								}).show();
-			}
-		} else {
-			new AlertDialog.Builder(this)
-					.setIcon(R.drawable.icon)
-					.setTitle("[" + file.getName() + "]")
-					.setPositiveButton("OK",
-							new DialogInterface.OnClickListener() {
-
-								@Override
-								public void onClick(DialogInterface dialog,
-										int which) {
-									// TODO Auto-generated method stub
-									dialog.dismiss();
-								}
-							}).show();
-		}
+		new AlertDialog.Builder(this)
+		.setIcon(R.drawable.icon)
+		.setTitle("[" + presentationName + "]")
+		.setPositiveButton("OK", 
+				new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						// TODO Auto-generated method stub
+						//TODO send info back to join presentation class
+					}
+				}).show();
 	}
 }

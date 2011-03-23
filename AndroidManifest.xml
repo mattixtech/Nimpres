@@ -50,5 +50,8 @@
 		<activity android:name="com.nimpres.android.ui.FileExplorer"
 			android:configChanges="orientation|keyboardHidden" android:label="@string/app_name">
 		</activity>
+		<activity android:name="com.nimpres.android.ui.ListOfPresentations"
+			android:configChanges="orientation|keyboardHidden" android:label="@string/app_name">
+		</activity>
 	</application>
 </manifest>
