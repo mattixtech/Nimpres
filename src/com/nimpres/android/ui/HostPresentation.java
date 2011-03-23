@@ -71,6 +71,8 @@ public class HostPresentation extends Activity {
 				@Override
 				public void onClick(View view) {
 				//TODO choose file code
+					Intent launchview = new Intent(view.getContext(),FileExplorer.class);
+					startActivity(launchview);
 				}
 			});
 	}
