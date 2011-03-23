@@ -3,9 +3,10 @@
 	android:orientation="vertical" android:layout_width="fill_parent"
 	android:layout_height="fill_parent">
 	<TextView android:layout_width="fill_parent"
-		android:layout_height="wrap_content" android:text="You are about to end a presentation" />
+		android:layout_height="wrap_content" android:id="@+id/epPrompt"
+		android:text="You are about to end a presentation" />
 	<TextView android:text="Would you like to remove the presentation from the host?"
-		android:id="@+id/textView1" android:layout_width="wrap_content"
+		android:id="@+id/epQuestion" android:layout_width="wrap_content"
 		android:layout_height="wrap_content"></TextView>
 	<Button android:layout_width="wrap_content" android:id="@+id/epYes"
 		android:text="Yes" android:layout_height="wrap_content"></Button>

@@ -1,7 +1,7 @@
 /**
  * Project:			Nimpres Android Client
  * File name: 		NimpresSettings.java
- * Date modified:	2011-03-17
+ * Date modified:	2011-03-18
  * Description:		Static settings shared throughout app
  * 
  * License:			Copyright (c) 2011 (Matthew Brooks, Jordan Emmons, William Kong)
@@ -74,7 +74,8 @@ public class NimpresSettings {
 	public static final int SERVER_QUE_SIZE = 32;
 	public static final String API_DOWNLOAD_PREFIX = "tmp_api-download_";
 	public static final int MAX_PRESENTATION_SIZE = 1024*1024*100; //in bytes
-	
+	public static final String UPDATE_SOURCE_INTERNET = "internet";
+	public static final String UPDATE_SOURCE_LAN = "lan";
 	/*
      * Messages
      */

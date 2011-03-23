@@ -1,7 +1,7 @@
 /**
  * Project:			Nimpres Android Client
  * File name: 		UDPMessage.java
- * Date modified:	2011-03-16
+ * Date modified:	2011-03-18
  * Description:		UDP Message sending/receiving
  * 
  * License:			Copyright (c) 2010 (Matthew Brooks, Jordan Emmons, William Kong)
@@ -29,8 +29,7 @@ package com.nimpres.android.lan;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-
-import com.nimpres.android.utilities.Utilities;
+import java.net.InetSocketAddress;
 
 import android.util.Log;
 
@@ -56,7 +55,7 @@ public class UDPMessage {
 		this.type = type;
 		this.data = new byte[data.length];
 		this.data = data;
-		this.length = this.type.length() + this.data.length + "#$".length();
+		this.length = this.type.getBytes().length + this.data.length + "#$".getBytes().length;
 	}
 	
 	/**
@@ -107,13 +106,20 @@ public class UDPMessage {
 	        	String messageHead = "#"+type+"$";
 	        	InetAddress ipAddress = InetAddress.getByName(ip);
 	        	DatagramSocket outputSocket = new DatagramSocket();
-        		DatagramPacket pkt = new DatagramPacket(data,data.length,ipAddress,port);
+	        	
+	        	//The code below concatenates the byte arrays of the type and data together as one byte array
+	        	byte[] messageHeadBytes = messageHead.getBytes();
+	        	byte[] dataToSend = mergeBytes(messageHeadBytes, data);
+       	
+	        	
+        		DatagramPacket pkt = new DatagramPacket(dataToSend,dataToSend.length,ipAddress,port);
         		if(isBroadcast()){
         			outputSocket.setBroadcast(true);
         			outputSocket.setReuseAddress(true);
         		}
+        		Log.d("UDPMessage","Sent message: "+new String(pkt.getData()));
                 outputSocket.send(pkt);
-	            Log.d("UDPMessage","Sent message: "+messageHead);
+	           
 	        }catch(Exception e){
 	        	Log.d("UDPMessage","error: "+e.getMessage());
 	            e.printStackTrace();
@@ -130,15 +136,17 @@ public class UDPMessage {
 	public void getMessage(int port, int size){
 		try{
 			//DatagramSocket inputSocket = new DatagramSocket(port,InetAddress.getByName(Utilities.getLocalIpAddress()));
-			DatagramSocket inputSocket = new DatagramSocket(port);
+			DatagramSocket inputSocket = new DatagramSocket(null);
 			inputSocket.setReuseAddress(true);
+			inputSocket.bind(new InetSocketAddress(port));
 			byte[] inputBuff = new byte[size];
 			DatagramPacket pkt = new DatagramPacket(inputBuff,size);			
 			inputSocket.receive(pkt);
 			this.remoteIP = pkt.getAddress();
-            type = parseType(inputBuff);            
-            data = parseData(type,inputBuff);            
-            Log.d("UDPMessage","Received message: "+type);
+			Log.d("UDPMessage","received udp packet: "+ new String(pkt.getData()));
+            type = parseType(pkt.getData());            
+            data = parseData(type,pkt.getData());            
+            Log.d("UDPMessage","Received message: "+type+", with data: "+new String(data));
         }catch(Exception e){
         	Log.d("UDPMessage","error: "+e.getMessage());
             e.printStackTrace();            
@@ -168,6 +176,19 @@ public class UDPMessage {
         for(int i=(type.length()+"$#".length());i<length;i++)
             data[count++] = message[i];
         return data;
+    }
+    
+    /**
+     * 
+     * @param a
+     * @param b
+     * @return
+     */
+    private byte[] mergeBytes(byte[] a, byte[] b){
+    	byte[] c = new byte[a.length + b.length];
+    	System.arraycopy(a,0,c,0,a.length);
+    	System.arraycopy(b,0,c,a.length,b.length);
+    	return c;
     }
     
     /**

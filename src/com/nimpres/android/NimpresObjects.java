@@ -1,7 +1,7 @@
 /**
  * Project:			Nimpres Android Client
  * File name: 		NimpresObjects.java
- * Date modified:	2011-03-16
+ * Date modified:	2011-03-18
  * Description:		Provides a static reference to many of the currently used objectss
  * 
  * License:			Copyright (c) 2010 (Matthew Brooks, Jordan Emmons, William Kong)
@@ -27,14 +27,33 @@
 
 package com.nimpres.android;
 
-import com.nimpres.android.dps.DPS;
-import com.nimpres.android.presentation.Presentation;
+import java.util.ArrayList;
 
 import android.content.Context;
+
+import com.nimpres.android.dps.DPS;
+import com.nimpres.android.lan.PeerStatus;
+import com.nimpres.android.presentation.Presentation;
 
 public class NimpresObjects {
 	public static DPS currentDPS;
 	public static Presentation currentPresentation;
 	public static Context ctx;
+	
+	public static String loadType = "";
+	public static boolean finishedLoading = false;
+	
+	public static int presentationID = 0;
+	public static String presentationPassword = "";
+	
 	public static boolean currentlyViewing = false;
+	public static boolean currentlyPresenting = false;
+	
+	public static String presenterName = "test";			//TODO this should be loaded from local config
+	public static String presenterPassword = "test1234";  	//TODO this should be loaded from local config
+	
+	
+	public static String updateSource = "";	//This will be either "lan" or "internet"
+	public static ArrayList<PeerStatus> peerPresentations = new ArrayList<PeerStatus>();
+	
 }

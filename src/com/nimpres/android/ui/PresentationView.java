@@ -50,120 +50,39 @@ public class PresentationView extends Activity {
 
 	private Handler mHandler = new Handler();
 	private Menu controlMenu = null;
-
+	private int viewedPresentationID = 0;
+	private String viewedPresentationPassword = "";
 	@Override
 	public void onCreate(Bundle created) {
 		super.onCreate(created);
 		setContentView(R.layout.presentation_viewer);
+		viewedPresentationID = NimpresObjects.presentationID;
+		viewedPresentationPassword = NimpresObjects.presentationPassword;		
 		
-		//TODO we should show a loading screen before we do this download and then return to this screen after download is done
-		
-		
-		NimpresObjects.currentDPS = new DPS("api","internet","99","test","downloaded",NimpresObjects.ctx);
-		NimpresObjects.currentPresentation = NimpresObjects.currentDPS.getDpsPres();
-		NimpresObjects.currentlyViewing = true;
-		
-		if(NimpresObjects.currentPresentation.getNumSlides()>0)
-		{
+		if (NimpresObjects.currentPresentation.getNumSlides() > 0) {
 			mHandler.removeCallbacks(viewerUpdateTask);
 			mHandler.postDelayed(viewerUpdateTask, 1);
 		}
-		
-		// setup button listener
-
-		// Button leaveButton = (Button) findViewById(R.id.pvmLeave);
-		// leaveButton.setOnClickListener(new OnClickListener() {
-		// @Override
-		// public void onClick(View view) {
-		// Intent myIntent = new Intent(view.getContext(),NimpresClient.class);
-		// startActivityForResult(myIntent, 0);
-
-		// }
-		// });
 	}
-	
+
 	/**
 	 * 
 	 */
-	public void onConfigurationChanged(){
-		
-	}
-	
+	public void onConfigurationChanged(){}
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.pv_menu, menu);
 		this.controlMenu = menu;
-		//controlMenu.removeItem(R.id.pvmPause);
+		// controlMenu.removeItem(R.id.pvmPause);
 		resumeUI();
 		return true;
 	}
 
-	private float initialX = 0;
-	private float initialY = 0;
-	private float deltaX = 0;
-	private float deltaY = 0;
-
-	@Override
-	public boolean onTouchEvent(MotionEvent event) {
-		// This avoids touchscreen events flooding the main thread
-
-		synchronized (event) {
-			try {
-				// Waits 16ms.
-				event.wait(16);
-
-				// when user touches the screen
-				if (event.getAction() == MotionEvent.ACTION_DOWN) {
-					// reset deltaX and deltaY
-					deltaX = deltaY = 0;
-
-					// get initial positions
-					initialX = event.getRawX();
-					initialY = event.getRawY();
-				}
-
-				// when screen is released
-				if (event.getAction() == MotionEvent.ACTION_UP) {
-					deltaX = event.getRawX() - initialX;
-					deltaY = event.getRawY() - initialY;
-
-					// swiped up
-					if (deltaY < 0) {
-						// change to next slide
-						NimpresObjects.currentPresentation.nextSlide();
-						updateSlide();
-					} else // swiped down
-					{ // change to previous slide
-						NimpresObjects.currentPresentation.previousSlide();
-						updateSlide();
-					}
-
-					// swiped right
-					if (deltaX > 0) {
-						// change to next slide
-						NimpresObjects.currentPresentation.previousSlide();
-						updateSlide();
-					} else { // swiped left
-						// change to previous slide
-						NimpresObjects.currentPresentation.nextSlide();
-						updateSlide();
-					}
-
-					return true;
-				}
-			}
-
-			catch (InterruptedException e) {
-				return true;
-			}
-		}
-		return true;
-	}
-	
-	
-	public void resumeUI(){	
-		//Perform an update request to the api immediatly and then change the menu
+	public void resumeUI() {
+		// Perform an update request to the api immediatly and then change the
+		// menu
 		mHandler.removeCallbacks(viewerUpdateTask);
 		mHandler.postDelayed(viewerUpdateTask, 1);
 		controlMenu.getItem(0).setTitle("Pause");
@@ -171,20 +90,20 @@ public class PresentationView extends Activity {
 		controlMenu.getItem(3).setEnabled(false);
 		controlMenu.getItem(4).setEnabled(false);
 	}
-	
-	public void pauseUI(){
+
+	public void pauseUI() {
 		controlMenu.getItem(0).setTitle("Resume");
 		controlMenu.getItem(2).setEnabled(true);
 		controlMenu.getItem(3).setEnabled(true);
 		controlMenu.getItem(4).setEnabled(true);
 	}
-	
-	public void pauseButton(){
-		boolean isPaused = NimpresObjects.currentPresentation.isPaused();		
-		if(isPaused){
+
+	public void pauseButton() {
+		boolean isPaused = NimpresObjects.currentPresentation.isPaused();
+		if (isPaused) {
 			NimpresObjects.currentPresentation.setPaused(false);
 			resumeUI();
-		}else{
+		} else {
 			NimpresObjects.currentPresentation.setPaused(true);
 			pauseUI();
 		}
@@ -195,13 +114,13 @@ public class PresentationView extends Activity {
 		// Handle item selection
 		switch (item.getItemId()) {
 		case R.id.pvmBack:
-			if(NimpresObjects.currentPresentation.isPaused()){
+			if (NimpresObjects.currentPresentation.isPaused()) {
 				NimpresObjects.currentPresentation.previousSlide();
 				updateSlide();
 			}
-			return true;			
+			return true;
 		case R.id.pvmNext:
-			if(NimpresObjects.currentPresentation.isPaused()){
+			if (NimpresObjects.currentPresentation.isPaused()) {
 				NimpresObjects.currentPresentation.nextSlide();
 				updateSlide();
 			}
@@ -212,16 +131,16 @@ public class PresentationView extends Activity {
 			leave();
 			return true;
 		case R.id.pvmPause:
-			pauseButton();			
+			pauseButton();
 			return true;
-		/*case R.id.pvmResume:
-			resumeUI();
-			NimpresObjects.currentPresentation.setPaused(false);
-			return true;*/
+			/*
+			 * case R.id.pvmResume: resumeUI();
+			 * NimpresObjects.currentPresentation.setPaused(false); return true;
+			 */
 		case R.id.pvmJump:
-			if(NimpresObjects.currentPresentation.isPaused()){
+			if (NimpresObjects.currentPresentation.isPaused()) {
 				NimpresObjects.currentPresentation.setPaused(true);
-				//TODO prompt for slide number
+				// TODO prompt for slide number
 			}
 			return true;
 		default:
@@ -241,49 +160,39 @@ public class PresentationView extends Activity {
 		TextView slideTitle = (TextView) findViewById(R.id.pvSlideTitle);
 		TextView slideNotes = (TextView) findViewById(R.id.pvNotes);
 		title.setText(NimpresObjects.currentPresentation.getTitle());
-		slideTitle.setText(NimpresObjects.currentPresentation.getCurrentSlideFile().getSlideTitle());
-		slideNotes.setText(NimpresObjects.currentPresentation.getCurrentSlideFile().getSlideComments());
-		slide.setImageBitmap(BitmapFactory.decodeFile(NimpresObjects.currentPresentation.getPath()
-				+ NimpresObjects.currentPresentation.getCurrentSlideFile().getFileName()));
+		slideTitle.setText(NimpresObjects.currentPresentation
+				.getCurrentSlideFile().getSlideTitle());
+		slideNotes.setText(NimpresObjects.currentPresentation
+				.getCurrentSlideFile().getSlideComments());
+		slide.setImageBitmap(BitmapFactory
+				.decodeFile(NimpresObjects.currentPresentation.getPath()
+						+ NimpresObjects.currentPresentation
+								.getCurrentSlideFile().getFileName()));
 	}
-
-
 
 	/**
 	 * This task is responsible for updating the image displayed during viewing
 	 */
 	private Runnable viewerUpdateTask = new Runnable() {
 		public void run() {
-			if (!NimpresObjects.currentPresentation.isPaused()) { // Check to make sure the user has not
-										// paused the presentation
-				if (Utilities.isOnline(NimpresObjects.ctx)) { // Check to make sure that the
-												// device is connected to the
-												// network
-					// TODO change to get the correct slide number for the
-					// current presentation rather then hard coded
-					int slideNum = APIContact.getSlideNumber("2", "test");
-					// Make sure slide was not negative (error code -1)
-					if (slideNum >= 0)
-						NimpresObjects.currentPresentation.setCurrentSlide(slideNum); // Update slide
-															// number of
-															// presentation
+			Log.d("PresentationView","Update Tick");
+			if (!NimpresObjects.currentPresentation.isPaused()) {
+				if (Utilities.isOnline(NimpresObjects.ctx)) {
+					//TODO we should do something here to make resuming while on LAN quicker, currently we have to wait for a new status message
+					if(NimpresObjects.updateSource.equals(NimpresSettings.UPDATE_SOURCE_INTERNET)){
+						// TODO change to get the correct slide number for the
+						// current presentation rather then hard coded
+						int slideNum = APIContact.getSlideNumber(viewedPresentationID, viewedPresentationPassword);
+						// Make sure slide was not negative (error code -1)
+						if (slideNum >= 0)
+							NimpresObjects.currentPresentation.setCurrentSlide(slideNum); // Update slide number of presentation
+					}
 				} else
 					Log.d("NimpresClient",
 							"internet connection not present, api contact cancelled");
 				updateSlide();
 			}
-			mHandler.postDelayed(this, NimpresSettings.API_PULL_DELAY); // Add
-																		// this
-																		// task
-																		// to
-																		// the
-																		// queue
-																		// again,
-																		// calls
-																		// itself
-																		// over
-																		// and
-																		// over...
+			mHandler.postDelayed(this, NimpresSettings.API_PULL_DELAY);
 		}
 	};
 }

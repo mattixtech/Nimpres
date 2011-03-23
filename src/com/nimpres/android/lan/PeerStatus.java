@@ -1,7 +1,7 @@
 /**
  * Project:			Nimpres Android Client
  * File name: 		PeerStatus.java
- * Date modified:	2011-03-16
+ * Date modified:	2011-03-18
  * Description:		Status message from peer
  * 
  * License:			Copyright (c) 2010 (Matthew Brooks, Jordan Emmons, William Kong)
@@ -28,13 +28,17 @@ package com.nimpres.android.lan;
 
 import java.net.InetAddress;
 
+import android.util.Log;
+
 import com.nimpres.android.settings.NimpresSettings;
 
 
 public class PeerStatus {
-	InetAddress peerIP = null;
-	String presentationName = "";
-	int slideNumber = 0;
+	private InetAddress peerIP = null;
+	private String presentationName = "";
+	private String presenterName = "";
+	private int presentationID = 0;
+	private int slideNumber = 0;
 	
 	/**
 	 * Default empty constructor
@@ -46,11 +50,15 @@ public class PeerStatus {
 	 * @param peerIP
 	 * @param presentationName
 	 * @param slideNumber
+	 * @param presenterName
+	 * @param presentationID
 	 */
-	public PeerStatus(InetAddress peerIP, String presentationName, int slideNumber){
+	public PeerStatus(InetAddress peerIP, String presentationName, int slideNumber, String presenterName, int presentationID){
 		this.peerIP = peerIP;
 		this.presentationName = presentationName;
 		this.slideNumber = slideNumber;
+		this.presenterName = presenterName;
+		this.presentationID = presentationID;
 	}
 	
 	/**
@@ -59,13 +67,23 @@ public class PeerStatus {
 	 */
 	public PeerStatus(UDPMessage message){
 		String dataStr = message.getDataAsString();
-		int seperatorIndex = dataStr.indexOf(NimpresSettings.STATUS_SEPERATOR);
-		String title = dataStr.substring(0, seperatorIndex);
-		int slide = Integer.parseInt(dataStr.substring(seperatorIndex+NimpresSettings.STATUS_SEPERATOR.length()));
-		
-		this.peerIP = message.remoteIP;
-		this.presentationName = title;
-		this.slideNumber = slide;
+		int seperatorLength = NimpresSettings.STATUS_SEPERATOR.length();
+		int firstSeperatorIndex = dataStr.indexOf(NimpresSettings.STATUS_SEPERATOR);
+		int secondSeperatorIndex = dataStr.indexOf(NimpresSettings.STATUS_SEPERATOR,firstSeperatorIndex+seperatorLength);
+		int thirdSeperatorIndex = dataStr.indexOf(NimpresSettings.STATUS_SEPERATOR,secondSeperatorIndex+seperatorLength);
+		Log.d("PeerStatus","first_index:"+firstSeperatorIndex+", second_index:"+secondSeperatorIndex+", third_index:"+thirdSeperatorIndex);
+		peerIP = message.remoteIP;
+		presentationName = dataStr.substring(0, firstSeperatorIndex);
+		slideNumber = Integer.parseInt(dataStr.substring(firstSeperatorIndex+seperatorLength,secondSeperatorIndex));
+		presenterName = dataStr.substring(secondSeperatorIndex+seperatorLength, thirdSeperatorIndex);
+		presentationID = Integer.parseInt(dataStr.substring(thirdSeperatorIndex+seperatorLength).trim()); //Need to trim off all of the trailing 0 bytes 
+	}
+	
+	public String getDataString(){
+		return presentationName + NimpresSettings.STATUS_SEPERATOR +
+		String.valueOf(slideNumber) + NimpresSettings.STATUS_SEPERATOR +
+		presenterName + NimpresSettings.STATUS_SEPERATOR +
+		String.valueOf(presentationID);
 	}
 
 	/**
@@ -108,6 +126,34 @@ public class PeerStatus {
 	 */
 	public void setSlideNumber(int slideNumber) {
 		this.slideNumber = slideNumber;
+	}
+
+	/**
+	 * @return the presenterName
+	 */
+	public String getPresenterName() {
+		return presenterName;
+	}
+
+	/**
+	 * @param presenterName the presenterName to set
+	 */
+	public void setPresenterName(String presenterName) {
+		this.presenterName = presenterName;
+	}
+
+	/**
+	 * @return the presentationID
+	 */
+	public int getPresentationID() {
+		return presentationID;
+	}
+
+	/**
+	 * @param presentationID the presentationID to set
+	 */
+	public void setPresentationID(int presentationID) {
+		this.presentationID = presentationID;
 	}
 	
 	

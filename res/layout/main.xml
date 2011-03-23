@@ -9,8 +9,8 @@
     android:layout_height="wrap_content" 
     android:text="Nimble Presenter"
     />
-<Button android:layout_width="wrap_content" android:id="@+id/mCreate" android:text="Create Account" android:layout_height="wrap_content"></Button>
-<Button android:layout_width="wrap_content" android:id="@+id/mLogin" android:text="Use Existing Account" android:layout_height="wrap_content"></Button>
+<!-- <Button android:layout_width="wrap_content" android:id="@+id/mCreate" android:text="Create Account" android:layout_height="wrap_content"></Button> -->
+<Button android:layout_width="wrap_content" android:id="@+id/mLogin" android:text="Login" android:layout_height="wrap_content"></Button>
 <Button android:layout_width="wrap_content" android:id="@+id/mJoin" android:text="Join" android:layout_height="wrap_content"></Button>
 <Button android:text="Host" android:id="@+id/mHost" android:layout_width="wrap_content" android:layout_height="wrap_content"></Button>
 <Button android:id="@+id/mSettings" android:text="Settings" android:layout_width="wrap_content" android:layout_height="wrap_content"></Button>

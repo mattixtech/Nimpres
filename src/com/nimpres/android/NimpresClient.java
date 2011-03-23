@@ -43,7 +43,14 @@ import com.nimpres.android.lan.DPSServer;
 import com.nimpres.android.lan.LANAdvertiser;
 import com.nimpres.android.lan.LANListener;
 import com.nimpres.android.presentation.Presentation;
+import com.nimpres.android.ui.CreateAccount;
+import com.nimpres.android.ui.ExistingAccount;
+import com.nimpres.android.ui.HostPresentation;
+import com.nimpres.android.ui.JoinPresentation;
+import com.nimpres.android.ui.LoadingScreen;
+import com.nimpres.android.ui.PresentationHost;
 import com.nimpres.android.ui.PresentationView;
+import com.nimpres.android.ui.Settings;
 import com.nimpres.android.utilities.Utilities;
 import com.nimpres.android.web.APIContact;
 
@@ -67,13 +74,13 @@ public class NimpresClient extends Activity {
 		 */
 
 		//setContentView(R.layout.presentation_viewer); //TODO call the main view from here and have UI elements to access the other views
-		testListing();
+		// testListing();
 		// testSlideNum();
 		// testUpdateSlide();
 		// testPresentation();
 		// testPresentation();
 		// testLoginAPI();
-		// testLANAdvertising();
+		 testLANAdvertising();
 		// testLANListening();
 		// testDPSDownload(ctx);
 		// testDPSHosting("tmpdps_down.dps", ctx);
@@ -83,19 +90,57 @@ public class NimpresClient extends Activity {
 		// testDPSHosting("tmpdps_down.dps",ctx);
 		// testCreate();
 
-		// this.finish();
-
 		/*
 		 * End of testing code
 		 */
-
-		// setup button listener
-		 Button startButton = (Button) findViewById(R.id.mJoin);
-		 startButton.setOnClickListener(new OnClickListener() {
+/*
+		// setup Create Account button listener
+		 Button createAccountButton = (Button) findViewById(R.id.mCreate);
+		 createAccountButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				Intent launchview = new Intent(view.getContext(),
-						PresentationView.class);
+				Intent launchview = new Intent(view.getContext(),CreateAccount.class);
+				startActivity(launchview);
+			}
+		});
+*/
+		// setup Login button listener
+		 Button loginButton = (Button) findViewById(R.id.mLogin);
+		 loginButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				Intent launchview = new Intent(view.getContext(),ExistingAccount.class);
+				startActivity(launchview);
+			}
+		});
+		 
+		// setup Join button listener
+		 Button joinButton = (Button) findViewById(R.id.mJoin);
+		 joinButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				Intent launchview = new Intent(view.getContext(),JoinPresentation.class); 
+				//Intent launchview = new Intent(view.getContext(),PresentationView.class);
+				startActivity(launchview);
+			}
+		});
+		 
+		// setup Host button listener
+		 Button hostButton = (Button) findViewById(R.id.mHost);
+		 hostButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				Intent launchview = new Intent(view.getContext(),HostPresentation.class);
+				startActivity(launchview);
+			}
+		});
+		 
+		// setup Settings button listener
+		 Button settingsButton = (Button) findViewById(R.id.mSettings);
+		 settingsButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				Intent launchview = new Intent(view.getContext(),Settings.class);
 				startActivity(launchview);
 			}
 		});
@@ -112,11 +157,11 @@ public class NimpresClient extends Activity {
 	}
 
 	public static void testUpdateSlide(){
-		APIContact.updateSlideNumber("win", "testing1", "25", "test", "1337");
+		APIContact.updateSlideNumber("win", "testing1", 25, "test", 1337);
 	}
 	
 	public static void testSlideNum() {
-		int slideNum = APIContact.getSlideNumber("25", "test");
+		int slideNum = APIContact.getSlideNumber(25, "test");
 		Log.d("NimpresClient", "slide # " + slideNum);
 	}
 	
@@ -127,7 +172,10 @@ public class NimpresClient extends Activity {
 	public static void testLANAdvertising() {
 		Presentation Pres = new Presentation();
 		Pres.setTitle("Test");
+		Pres.setOwner("Matt");
+		Pres.setNumSlides(50);
 		Pres.setCurrentSlide(5);
+		Pres.setPresentationID(25);
 		Thread LANAdvert;
 		try {
 			LANAdvert = new Thread(new LANAdvertiser(Pres,Utilities.getBroadcastAddress(NimpresObjects.ctx)));
@@ -149,14 +197,16 @@ public class NimpresClient extends Activity {
 	}
 
 	public static void testDPSDownload(Context ctx) {
-		DPS lanDPS = new DPS("192.168.1.4", "lan", "123", "pass","testing_dps", ctx);
+		APIContact.downloadPresentation(26, "test");
+		DPS netDPS = new DPS("api","internet",26,"test","test",NimpresObjects.ctx);
+		//DPS lanDPS = new DPS("192.168.1.4", "lan", "123", "pass","testing_dps", ctx);
 		Log.d("NimpresClient", "DPS fully created");
-		Log.d("NimpresClient", "DPS presentation title:"+ lanDPS.getDpsPres().getTitle());
+		Log.d("NimpresClient", "DPS presentation title:"+ netDPS.getDpsPres().getTitle());
 	}
 	
 	public static void testCreate()
 	{
-		if(APIContact.createPresentation("win", "testing1", "MattTesting", "test", "1", "will.dps"))
+		if(APIContact.createPresentation("win", "testing1", "MattTesting", "test", 1, "will.dps") > 0)
 			Log.d("NimpresClient","presentation created successfully");
 		else
 			Log.d("NimpresClient","presentation creation failed");

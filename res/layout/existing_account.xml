@@ -9,12 +9,10 @@
     android:layout_height="wrap_content" 
     android:text="Create Account"
     />
-<TextView android:text="E-mail address:" android:id="@+id/textView1" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
-<EditText android:text="" android:layout_width="match_parent" android:id="@+id/editText1" android:layout_height="wrap_content"></EditText>
-<TextView android:text="Password:" android:id="@+id/textView2" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
-<EditText android:text="" android:layout_width="match_parent" android:id="@+id/editText2" android:layout_height="wrap_content"></EditText>
-<TextView android:text="Repeat Password:" android:id="@+id/textView3" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
-<EditText android:text="" android:layout_width="match_parent" android:id="@+id/editText3" android:layout_height="wrap_content"></EditText>
-<Button android:text="Back" android:id="@+id/button4" android:layout_width="wrap_content" android:layout_height="wrap_content"></Button>
-<Button android:id="@+id/button3" android:text="Create" android:layout_width="wrap_content" android:layout_height="wrap_content"></Button>
+<TextView android:text="E-mail address:" android:id="@+id/eaEmailPrompt" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+<EditText android:text="" android:layout_width="match_parent" android:id="@+id/eaEmail" android:layout_height="wrap_content"></EditText>
+<TextView android:text="Password:" android:id="@+id/eaPasswordPrompt" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+<EditText android:text="" android:layout_width="match_parent" android:id="@+id/eaPassword" android:layout_height="wrap_content"></EditText>
+<Button android:id="@+id/eaLogin" android:text="Login" android:layout_width="wrap_content" android:layout_height="wrap_content"></Button>
+<Button android:layout_height="wrap_content" android:id="@+id/eaBack" android:layout_width="wrap_content" android:text="Back"></Button>
 </LinearLayout>
