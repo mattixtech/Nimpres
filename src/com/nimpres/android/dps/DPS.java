@@ -230,7 +230,7 @@ public class DPS {
 	private String dpsPath = ""; 			//Stores the the on-disk path of where the extracted dps content is located
 	private Presentation dpsPres = null; 	//Stores a presentation representation of the DPS file's contents
 	private boolean isRemote = false; 		//Specifies whether this dps project originiated on device or was downloaded via LAN/Internet
-	private String remoteType = "";			//"lan" or "internet"
+	private String remoteType = "";			//UPDATE_SOURCE_LAN or UPDATE_SOURCE_INTERNET
 	
 	private String dpsOrigin = ""; 			//Stores the URL origin or IP Address of the DPS file's original location
 	
@@ -269,15 +269,15 @@ public class DPS {
 		this.dpsID = dpsID;
 		this.dpsPassword = dpsPassword;
 		if(Utilities.isOnline(ctx)){
-			if(remoteType.equalsIgnoreCase("internet")){
-				this.remoteType = "internet";
+			if(remoteType.equalsIgnoreCase(NimpresSettings.UPDATE_SOURCE_INTERNET)){
+				this.remoteType = NimpresSettings.UPDATE_SOURCE_INTERNET;
 				try {
 					dpsPath = downloadFromAPI(dpsID,dpsPassword,NimpresSettings.API_DOWNLOAD_PREFIX+desiredFolderName,desiredFolderName,ctx);
 				} catch (Exception e) {
 					Log.d("DPS","Error: "+e.getMessage());
 				}
-			}else if(remoteType.equalsIgnoreCase("lan")){
-				this.remoteType = "lan";
+			}else if(remoteType.equalsIgnoreCase(NimpresSettings.UPDATE_SOURCE_LAN)){
+				this.remoteType = NimpresSettings.UPDATE_SOURCE_LAN;
 				try {
 					dpsPath = downloadFromLAN(dpsLocation, dpsID, dpsPassword, desiredFolderName, ctx);
 				} catch (Exception e) {

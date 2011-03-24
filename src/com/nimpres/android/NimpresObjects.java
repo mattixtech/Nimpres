@@ -30,6 +30,7 @@ package com.nimpres.android;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.os.Handler;
 
 import com.nimpres.android.dps.DPS;
 import com.nimpres.android.lan.PeerStatus;
@@ -39,6 +40,7 @@ public class NimpresObjects {
 	public static DPS currentDPS;
 	public static Presentation currentPresentation;
 	public static Context ctx;
+	public static Handler messagingThread = new Handler();
 	
 	public static String loadType = "";
 	public static boolean finishedLoading = false;
@@ -53,7 +55,7 @@ public class NimpresObjects {
 	public static String presenterPassword = "test1234";  	//TODO this should be loaded from local config
 	
 	
-	public static String updateSource = "";	//This will be either "lan" or "internet"
+	public static String updateSource = "";	//This will be either UPDATE_SOURCE_LAN or UPDATE_SOURCE_INTERNET
 	public static ArrayList<PeerStatus> peerPresentations = new ArrayList<PeerStatus>();
 	
 }

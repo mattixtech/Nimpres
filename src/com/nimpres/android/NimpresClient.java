@@ -43,6 +43,7 @@ import com.nimpres.android.lan.DPSServer;
 import com.nimpres.android.lan.LANAdvertiser;
 import com.nimpres.android.lan.LANListener;
 import com.nimpres.android.presentation.Presentation;
+import com.nimpres.android.settings.NimpresSettings;
 import com.nimpres.android.ui.ExistingAccount;
 import com.nimpres.android.ui.HostPresentation;
 import com.nimpres.android.ui.JoinPresentation;
@@ -61,8 +62,8 @@ public class NimpresClient extends Activity {
 	}
 	public static void testDPSDownload(Context ctx) {
 		APIContact.downloadPresentation(26, "test");
-		DPS netDPS = new DPS("api","internet",26,"test","test",NimpresObjects.ctx);
-		//DPS lanDPS = new DPS("192.168.1.4", "lan", "123", "pass","testing_dps", ctx);
+		DPS netDPS = new DPS("api",NimpresSettings.UPDATE_SOURCE_INTERNET,26,"test","test",NimpresObjects.ctx);
+		//DPS lanDPS = new DPS("192.168.1.4", UPDATE_SOURCE_LAN, "123", "pass","testing_dps", ctx);
 		Log.d("NimpresClient", "DPS fully created");
 		Log.d("NimpresClient", "DPS presentation title:"+ netDPS.getDpsPres().getTitle());
 	}

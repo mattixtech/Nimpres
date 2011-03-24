@@ -1,6 +1,8 @@
 package com.nimpres.android.ui;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -28,7 +30,13 @@ public class HostPresentation extends Activity {
 			String dpsPath = Utilities.unzip(dpsFileName, "testpres", NimpresObjects.ctx);
 			Presentation hostedPresentation = DPSReader.makePresentation(dpsPath);
 			
-			int presID = APIContact.createPresentation("test", "test1234", "TestPres", "test", hostedPresentation.getNumSlides(), dpsFileName);
+			int presID = 0;
+			
+			try {
+				presID = APIContact.createPresentation("test", "test1234", URLEncoder.encode(hostedPresentation.getTitle(),"UTF-8"), "test", hostedPresentation.getNumSlides(), dpsFileName);
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
 			hostedPresentation.setPresentationID(presID);
 			
 			Looper.prepare();

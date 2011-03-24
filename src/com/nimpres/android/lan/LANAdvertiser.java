@@ -26,12 +26,11 @@
  */
 package com.nimpres.android.lan;
 
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 
 import com.nimpres.android.NimpresObjects;
@@ -39,7 +38,7 @@ import com.nimpres.android.presentation.Presentation;
 import com.nimpres.android.settings.NimpresSettings;
 import com.nimpres.android.utilities.Utilities;
 
-public class LANAdvertiser implements Runnable{
+public class LANAdvertiser extends Thread{
 
 	/**
 	 * 
@@ -49,9 +48,7 @@ public class LANAdvertiser implements Runnable{
 	}
 	private Presentation pres;
 	private String broadcastAddress = null;
-	private boolean isStopped = false;
-    private DatagramSocket outputSocket;
-    private DatagramPacket pkt;
+
     private Handler mHandler = new Handler();
     private byte[] outputBuff = null;
 	
@@ -63,22 +60,21 @@ public class LANAdvertiser implements Runnable{
 	private Runnable lanAdvertiseTask = new Runnable() {
 		public void run() {			
 			try{
-				if( ! isStopped()){
-					try {
-						advStatus = new PeerStatus(InetAddress.getByName(Utilities.getLocalIpAddress()),
-								pres.getTitle(),pres.getCurrentSlide(),NimpresObjects.presenterName,pres.getPresentationID());
-					} catch (UnknownHostException e) {
-						
-						e.printStackTrace();
-					}
-					outputBuff = advStatus.getDataString().getBytes();
-					UDPMessage outPkt = new UDPMessage(NimpresSettings.MSG_PRESENTATION_STATUS, outputBuff, broadcastAddress, NimpresSettings.SERVER_PEER_PORT,true);
-                    Log.d("LANAdvertiser"," sent presentation status message to: "+broadcastAddress);               	                    
-	            }
+				try {
+					advStatus = new PeerStatus(InetAddress.getByName(Utilities.getLocalIpAddress()),
+							pres.getTitle(),pres.getCurrentSlide(),NimpresObjects.presenterName,pres.getPresentationID());
+				} catch (UnknownHostException e) {
+					
+					e.printStackTrace();
+				}
+				outputBuff = advStatus.getDataString().getBytes();
+				UDPMessage outPkt = new UDPMessage(NimpresSettings.MSG_PRESENTATION_STATUS, outputBuff, broadcastAddress, NimpresSettings.SERVER_PEER_PORT,true);
+                Log.d("LANAdvertiser"," sent presentation status message to: "+broadcastAddress);               	                    
 	        }catch(Exception e){
 	        	 Log.d("LANAdvertiser"," Exception: "+e.toString());
-	        }	        
-			mHandler.postDelayed(this, NimpresSettings.LAN_ADVERTISE_DELAY); //Add this task to the queue again, calls itself over and over...
+	        }
+	        NimpresObjects.messagingThread.postDelayed(lanAdvertiseTask,NimpresSettings.LAN_ADVERTISE_DELAY);
+			//mHandler.postDelayed(this, NimpresSettings.LAN_ADVERTISE_DELAY); //Add this task to the queue again, calls itself over and over...
 		}
 	};
     
@@ -98,21 +94,16 @@ public class LANAdvertiser implements Runnable{
 		return pres;
 	}
 	
-	/**
-	 * 
-	 * @return
-	 */
-	public boolean isStopped(){
-        return isStopped;
-    }
 	
 	/**
 	 * 
 	 */
 	public void run(){
 		initMessage();
-		mHandler.removeCallbacks(lanAdvertiseTask);
-		mHandler.postDelayed(lanAdvertiseTask, 100);        
+		Looper.prepare();
+		//mHandler.postDelayed(lanAdvertiseTask, 100);
+		NimpresObjects.messagingThread.post(lanAdvertiseTask);
+		Looper.loop();
 	}
 
 	/**
@@ -122,11 +113,6 @@ public class LANAdvertiser implements Runnable{
 		this.pres = pres;
 	}
 
-	/**
-	 * 
-	 */
-	public void stop(){
-        isStopped = true;
-    }
+
 	
 }

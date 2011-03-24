@@ -28,6 +28,7 @@ package com.nimpres.android.lan;
 
 import java.util.ArrayList;
 
+import android.os.Looper;
 import android.util.Log;
 
 import com.nimpres.android.NimpresObjects;
@@ -72,6 +73,7 @@ public class LANListener implements Runnable{
 	 */
 	public void run(){
 		initMessage();
+		Looper.prepare();
 		while( ! isStopped()){
 			try{
 				Log.d("LANListener","attempting to receive peer status update: "); 
