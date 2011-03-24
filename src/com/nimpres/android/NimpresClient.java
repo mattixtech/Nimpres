@@ -102,7 +102,7 @@ public class NimpresClient extends Activity {
 	}
 	
 	public static void testListing(){
-		APIContact.listPresentations("win", "testing1", "win");
+		APIContact.listPresentations("test", "test1234", "test");
 	}
 	
 	public static void testLoginAPI() {
@@ -137,7 +137,7 @@ public class NimpresClient extends Activity {
 		 */
 
 		//setContentView(R.layout.presentation_viewer);
-		// testListing();
+		 testListing();
 		// testSlideNum();
 		// testUpdateSlide();
 		// testPresentation();

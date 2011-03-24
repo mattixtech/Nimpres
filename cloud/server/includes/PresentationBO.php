@@ -2,7 +2,7 @@
 /**
  * Project:			Nimpres Server API
  * File name: 		PresentationBO.php
- * Date modified:	2011-03-17
+ * Date modified:	2011-03-24
  * Description:		Contains functions called by the API scripts for interaction with PresentationDTO objects
  * 
  * License:			Copyright (c) 2011 (Matthew Brooks, Jordan Emmons, William Kong)
@@ -63,39 +63,45 @@
 			$xmlPresList = '';
 			$xmlPresList.= '<presentation_user>';
 			$xmlPresList.= $Presentations[0]->user;
-			$xmlPresList.= '</presentation_user>';
+			$xmlPresList.= '</presentation_user>' . "\n\n" . "\n\n";
 			$presNum = 1;
 			
 			foreach($Presentations as $presentation){
 
 				$xmlPresList.= '<presentation number="';
 				$xmlPresList.= $presNum;
-				$xmlPresList.= '">';
+				$xmlPresList.= '">' . "\n\n";
 				$xmlPresList.= '<title>';
 				$xmlPresList.= $presentation->title;
-				$xmlPresList.= '</title>';
+				$xmlPresList.= '</title>' . "\n\n";
+				
+				//Added id field -Matt
+				$xmlPresList.= '<id>';
+				$xmlPresList.= $presentation->pid;
+				$xmlPresList.= '</id>' . "\n\n";
+				
 				$xmlPresList.= '<length>';
 				$xmlPresList.= $presentation->length;
-				$xmlPresList.= '</length>';
+				$xmlPresList.= '</length>' . "\n\n";
 				$xmlPresList.= '<size>';
 				$xmlPresList.= $presentation->size;
-				$xmlPresList.= '</size>';
+				$xmlPresList.= '</size>' . "\n\n";
 				$xmlPresList.= '<slide_num>';
 				$xmlPresList.= $presentation->slide_num;
-				$xmlPresList.= '</slide_num>';
+				$xmlPresList.= '</slide_num>' . "\n\n";
 				$xmlPresList.= '<created>';
 				$xmlPresList.= $presentation->created;
-				$xmlPresList.= '</created>';
+				$xmlPresList.= '</created>' . "\n\n";
 				$xmlPresList.= '<updated_time>';
 				$xmlPresList.= $presentation->updated_time;
-				$xmlPresList.= '</updated_time>';
+				$xmlPresList.= '</updated_time>' . "\n\n";
 				$xmlPresList.= '<status>';
 				$xmlPresList.= $presentation->status;
-				$xmlPresList.= '</status>';
+				$xmlPresList.= '</status>' . "\n\n";
 				$xmlPresList.= '<over>';
 				$xmlPresList.= $presentation->over;
-				$xmlPresList.= '</over>';
-				$xmlPresList.= '</presentation>';
+				$xmlPresList.= '</over>' . "\n\n";
+				$xmlPresList.= '</presentation>' . "\n\n" . "\n\n";
 				$presNum++;
 			}
 			return $xmlPresList;
