@@ -33,7 +33,7 @@ public class HostPresentation extends Activity {
 			int presID = 0;
 			
 			try {
-				presID = APIContact.createPresentation("test", "test1234", URLEncoder.encode(hostedPresentation.getTitle(),"UTF-8"), "test", hostedPresentation.getNumSlides(), dpsFileName);
+				presID = APIContact.createPresentation(URLEncoder.encode(NimpresObjects.presenterName,"UTF-8"), URLEncoder.encode(NimpresObjects.presenterPassword,"UTF-8"), URLEncoder.encode(hostedPresentation.getTitle(),"UTF-8"), "test", hostedPresentation.getNumSlides(), dpsFileName);
 			} catch (UnsupportedEncodingException e) {
 				e.printStackTrace();
 			}

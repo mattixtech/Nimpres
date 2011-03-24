@@ -56,6 +56,7 @@ public class NimpresObjects {
 	
 	
 	public static String updateSource = "";	//This will be either UPDATE_SOURCE_LAN or UPDATE_SOURCE_INTERNET
-	public static ArrayList<PeerStatus> peerPresentations = new ArrayList<PeerStatus>();
+	public static ArrayList<PeerStatus> peerPresentations = new ArrayList<PeerStatus>(); //LAN peers	
+	public static ArrayList<PeerStatus> internetPresentations = new ArrayList<PeerStatus>(); //Internet peers
 	
 }

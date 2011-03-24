@@ -44,7 +44,7 @@ public class PeerStatus {
 	public PeerStatus(){}
 	
 	/**
-	 * Standard new PeerStatus with known values
+	 * Standard new PeerStatus with known values for LAN source
 	 * @param peerIP
 	 * @param presentationName
 	 * @param slideNumber
@@ -55,6 +55,18 @@ public class PeerStatus {
 		this.peerIP = peerIP;
 		this.presentationName = presentationName;
 		this.slideNumber = slideNumber;
+		this.presenterName = presenterName;
+		this.presentationID = presentationID;
+	}
+	
+	/**
+	 * Standard constructor for known values from Internet Source
+	 * @param presentationName
+	 * @param presenterName
+	 * @param presentationID
+	 */
+	public PeerStatus(String presentationName, String presenterName, int presentationID){
+		this.presentationName = presentationName;
 		this.presenterName = presenterName;
 		this.presentationID = presentationID;
 	}
