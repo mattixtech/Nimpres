@@ -60,8 +60,7 @@ public class PresentationView extends Activity {
 				if (Utilities.isOnline(NimpresObjects.ctx)) {
 					//TODO we should do something here to make resuming while on LAN quicker, currently we have to wait for a new status message
 					if(NimpresObjects.updateSource.equals(NimpresSettings.UPDATE_SOURCE_INTERNET)){
-						// TODO change to get the correct slide number for the
-						// current presentation rather then hard coded
+
 						int slideNum = APIContact.getSlideNumber(viewedPresentationID, viewedPresentationPassword);
 						// Make sure slide was not negative (error code -1)
 						if (slideNum >= 0)

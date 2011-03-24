@@ -37,8 +37,6 @@ public class PresentationHost extends Activity {
 		super.onCreate(created);
 		setContentView(R.layout.presentation);
 
-		// TODO we should show a loading screen before we do this download and
-		// then return to this screen after download is done
 		NimpresObjects.currentlyPresenting = true;
 		hostedPresentation = NimpresObjects.currentPresentation;
 		updateSlide();

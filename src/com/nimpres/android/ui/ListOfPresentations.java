@@ -76,7 +76,6 @@ public class ListOfPresentations extends ListActivity {
 					
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						// TODO Auto-generated method stub
 						//TODO send info back to join presentation class
 						
 						NimpresObjects.updateSource = ListOfPresentations.peerStatus.getSource();
@@ -90,7 +89,6 @@ public class ListOfPresentations extends ListActivity {
 			
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				// TODO Auto-generated method stub
 				//TODO send info back to join presentation class
 				dialog.dismiss();
 			}

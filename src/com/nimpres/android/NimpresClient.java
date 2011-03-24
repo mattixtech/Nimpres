@@ -127,8 +127,8 @@ public class NimpresClient extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		// Set to main view
-		setContentView(R.layout.main); // TODO call the main view from here and
-		// have UI elements to access the other views
+		setContentView(R.layout.main); 
+
 		
 		// Use this object if you need to pass Context to something
 		NimpresObjects.ctx = this.getApplicationContext();
@@ -136,7 +136,7 @@ public class NimpresClient extends Activity {
 		 * Testing Code Below
 		 */
 
-		//setContentView(R.layout.presentation_viewer); //TODO call the main view from here and have UI elements to access the other views
+		//setContentView(R.layout.presentation_viewer);
 		// testListing();
 		// testSlideNum();
 		// testUpdateSlide();
