@@ -21,6 +21,17 @@ public class PresentationHost extends Activity {
 	Menu controlMenu;
 	
 	private Presentation hostedPresentation;
+	private float initialX = 0;
+
+
+	private float initialY = 0;
+
+	private float deltaX = 0;
+
+	private float deltaY = 0;
+	
+	public void onConfigurationChanged(){
+	}
 	@Override
 	public void onCreate(Bundle created) {
 		super.onCreate(created);
@@ -32,79 +43,12 @@ public class PresentationHost extends Activity {
 		hostedPresentation = NimpresObjects.currentPresentation;
 		updateSlide();
 	}
-
-
-	public void onConfigurationChanged(){
-	}
-
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.pvh_menu, menu);
 		this.controlMenu = menu;
 		// controlMenu.removeItem(R.id.pvmPause);
-		return true;
-	}
-
-	private float initialX = 0;
-	private float initialY = 0;
-	private float deltaX = 0;
-	private float deltaY = 0;
-
-	@Override
-	public boolean onTouchEvent(MotionEvent event) {
-		// This avoids touchscreen events flooding the main thread
-
-		synchronized (event) {
-			try {
-				// Waits 500ms.
-				event.wait(500);
-
-				// when user touches the screen
-				if (event.getAction() == MotionEvent.ACTION_DOWN) {
-					// reset deltaX and deltaY
-					deltaX = deltaY = 0;
-
-					// get initial positions
-					initialX = event.getRawX();
-					initialY = event.getRawY();
-				}
-
-				// when screen is released
-				if (event.getAction() == MotionEvent.ACTION_UP) {
-					deltaX = event.getRawX() - initialX;
-					deltaY = event.getRawY() - initialY;
-
-					// swiped up
-					if (deltaY < 0) {
-						// change to next slide
-						hostedPresentation.nextSlide();
-						updateSlide();
-					} else // swiped down
-					{ // change to previous slide
-						hostedPresentation.previousSlide();
-						updateSlide();
-					}
-
-					// swiped right
-					if (deltaX > 0) {
-						// change to next slide
-						hostedPresentation.previousSlide();
-						updateSlide();
-					} else { // swiped left
-						// change to previous slide
-						hostedPresentation.nextSlide();
-						updateSlide();
-					}
-
-					return true;
-				}
-			}
-
-			catch (InterruptedException e) {
-				return true;
-			}
-		}
 		return true;
 	}
 
@@ -125,7 +69,53 @@ public class PresentationHost extends Activity {
 		}
 	}
 
-	public void updateSlide() { // TODO create setSlide() method?
+	@Override
+	public boolean onTouchEvent(MotionEvent event) {
+		// This avoids touchscreen events flooding the main thread
+
+		synchronized (event) {
+			try {
+				// Waits 500ms.
+				event.wait(1);
+				// when user touches the screen
+				if (event.getAction() == MotionEvent.ACTION_DOWN) {
+					// reset deltaX and deltaY
+					deltaX = deltaY = 0;
+					
+					// get initial positions
+					initialX = event.getRawX();
+					initialY = event.getRawY();
+					
+				}
+
+				// when screen is released
+				if (event.getAction() == MotionEvent.ACTION_UP) {
+					deltaX = event.getRawX() - initialX;
+					deltaY = event.getRawY() - initialY;
+
+					
+					if (deltaX < 0){
+						// Swiped left
+						hostedPresentation.nextSlide();
+						updateSlide();
+					}else if(deltaX > 0){
+						// Swiped right
+						hostedPresentation.previousSlide();
+						updateSlide();
+					}
+
+					return true;
+				}
+			}
+
+			catch (InterruptedException e) {
+				return true;
+			}
+		}
+		return true;
+	}
+
+	public void updateSlide() {
 		ImageView slide = (ImageView) findViewById(R.id.phvSlide);
 		TextView title = (TextView) findViewById(R.id.phvTitle);
 

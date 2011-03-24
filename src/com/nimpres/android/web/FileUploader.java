@@ -32,10 +32,10 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import android.util.Log;
+
 import com.nimpres.android.NimpresObjects;
 import com.nimpres.android.settings.NimpresSettings;
-
-import android.util.Log;
 
 public class FileUploader {
 

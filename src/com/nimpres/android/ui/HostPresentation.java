@@ -13,7 +13,6 @@ import android.widget.ImageView;
 
 import com.nimpres.R;
 import com.nimpres.android.NimpresObjects;
-import com.nimpres.android.dps.DPS;
 import com.nimpres.android.dps.DPSReader;
 import com.nimpres.android.lan.LANAdvertiser;
 import com.nimpres.android.presentation.Presentation;
@@ -22,6 +21,32 @@ import com.nimpres.android.web.APIContact;
 
 public class HostPresentation extends Activity {
 	
+	
+	private Runnable loadTask = new Runnable() {
+		public void run() {
+			String dpsFileName = "tmp_api-download_downloaded";
+			String dpsPath = Utilities.unzip(dpsFileName, "testpres", NimpresObjects.ctx);
+			Presentation hostedPresentation = DPSReader.makePresentation(dpsPath);
+			
+			int presID = APIContact.createPresentation("test", "test1234", "TestPres", "test", hostedPresentation.getNumSlides(), dpsFileName);
+			hostedPresentation.setPresentationID(presID);
+			
+			Looper.prepare();
+			Thread LANAdvert;
+			try {
+				LANAdvert = new Thread(new LANAdvertiser(hostedPresentation,Utilities.getBroadcastAddress(NimpresObjects.ctx)));
+				LANAdvert.start();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+			NimpresObjects.currentPresentation = hostedPresentation;
+			NimpresObjects.currentlyPresenting = true;
+			
+			Intent intent = new Intent(NimpresObjects.ctx,PresentationHost.class);
+			startActivity(intent);
+		}
+	};
 	
 	@Override
 	public void onCreate(Bundle created) {
@@ -65,30 +90,4 @@ public class HostPresentation extends Activity {
 				}
 			});
 	}
-	
-	private Runnable loadTask = new Runnable() {
-		public void run() {
-			String dpsFileName = "test.dps";
-			String dpsPath = Utilities.unzip(dpsFileName, "testpres", NimpresObjects.ctx);
-			Presentation hostedPresentation = DPSReader.makePresentation(dpsPath);
-			
-			int presID = APIContact.createPresentation("test", "test1234", "TestPres", "test", hostedPresentation.getNumSlides(), dpsFileName);
-			hostedPresentation.setPresentationID(presID);
-			
-			Looper.prepare();
-			Thread LANAdvert;
-			try {
-				LANAdvert = new Thread(new LANAdvertiser(hostedPresentation,Utilities.getBroadcastAddress(NimpresObjects.ctx)));
-				LANAdvert.start();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			
-			NimpresObjects.currentPresentation = hostedPresentation;
-			
-			
-			Intent intent = new Intent(NimpresObjects.ctx,PresentationHost.class);
-			startActivity(intent);
-		}
-	};
 }

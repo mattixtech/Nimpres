@@ -38,59 +38,17 @@ public class Presentation {
 	private int presentationID = 0;
 	
 	/**
-	 * @return the owner
+	 * @return the currentSlide
 	 */
-	public String getOwner() {
-		return owner;
+	public int getCurrentSlide() {
+		return currentSlide;
 	}
 
-	/**
-	 * @param owner the owner to set
-	 */
-	public void setOwner(String owner) {
-		this.owner = owner;
-	}
-
-	/**
-	 * @return the path
-	 */
-	public String getPath() {
-		return path;
-	}
-
-	/**
-	 * @param path the path to set
-	 */
-	public void setPath(String path) {
-		this.path = path;
-	}
-
-	/**
-	 * @return the timestamp
-	 */
-	public int getTimestamp() {
-		return timestamp;
-	}
-
-	/**
-	 * @param timestamp the timestamp to set
-	 */
-	public void setTimestamp(int timestamp) {
-		this.timestamp = timestamp;
-	}	
-	
-	/**
-	 * @return the presentationName
-	 */
-	public String getTitle() {
-		return title;
-	}
-
-	/**
-	 * @param presentationName the presentationName to set
-	 */
-	public void setTitle(String title) {
-		this.title = title;
+	public Slide getCurrentSlideFile(){
+		if(numSlides > 0)
+			return slideFiles[currentSlide];
+		else
+			return new Slide(); //TODO we should probably create an error dps package and preload it, showing an error image here
 	}
 
 	/**
@@ -101,17 +59,62 @@ public class Presentation {
 	}
 
 	/**
-	 * @param numSlides the numSlides to set
+	 * @return the owner
 	 */
-	public void setNumSlides(int numSlides) {
-		this.numSlides = numSlides;
+	public String getOwner() {
+		return owner;
 	}
 
 	/**
-	 * @return the currentSlide
+	 * @return the path
 	 */
-	public int getCurrentSlide() {
-		return currentSlide;
+	public String getPath() {
+		return path;
+	}
+
+	/**
+	 * @return the presentationID
+	 */
+	public int getPresentationID() {
+		return presentationID;
+	}	
+	
+	/**
+	 * @return the slideFiles
+	 */
+	public Slide[] getSlideFiles() {
+		return slideFiles;
+	}
+
+	/**
+	 * @return the timestamp
+	 */
+	public int getTimestamp() {
+		return timestamp;
+	}
+
+	/**
+	 * @return the presentationName
+	 */
+	public String getTitle() {
+		return title;
+	}
+
+	/**
+	 * @return the paused
+	 */
+	public boolean isPaused() {
+		return paused;
+	}
+
+	public void nextSlide(){
+		if(currentSlide < (numSlides-1))
+			currentSlide++;
+	}
+
+	public void previousSlide(){
+		if(currentSlide>0)
+			currentSlide--;
 	}
 
 	/**
@@ -124,10 +127,38 @@ public class Presentation {
 	}
 
 	/**
-	 * @return the slideFiles
+	 * @param numSlides the numSlides to set
 	 */
-	public Slide[] getSlideFiles() {
-		return slideFiles;
+	public void setNumSlides(int numSlides) {
+		this.numSlides = numSlides;
+	}
+
+	/**
+	 * @param owner the owner to set
+	 */
+	public void setOwner(String owner) {
+		this.owner = owner;
+	}
+	
+	/**
+	 * @param path the path to set
+	 */
+	public void setPath(String path) {
+		this.path = path;
+	}
+	
+	/**
+	 * @param paused the paused to set
+	 */
+	public void setPaused(boolean paused) {
+		this.paused = paused;
+	}
+
+	/**
+	 * @param presentationID the presentationID to set
+	 */
+	public void setPresentationID(int presentationID) {
+		this.presentationID = presentationID;
 	}
 
 	/**
@@ -137,49 +168,18 @@ public class Presentation {
 		this.slideFiles = slideFiles;
 	}
 
-	public Slide getCurrentSlideFile(){
-		if(numSlides > 0)
-			return slideFiles[currentSlide];
-		else
-			return new Slide(); //TODO we should probably create an error dps package and preload it, showing an error image here
-	}
-	
-	public void nextSlide(){
-		if(currentSlide < (numSlides-1))
-			currentSlide++;
-	}
-	
-	public void previousSlide(){
-		if(currentSlide>0)
-			currentSlide--;
+	/**
+	 * @param timestamp the timestamp to set
+	 */
+	public void setTimestamp(int timestamp) {
+		this.timestamp = timestamp;
 	}
 
 	/**
-	 * @return the paused
+	 * @param presentationName the presentationName to set
 	 */
-	public boolean isPaused() {
-		return paused;
-	}
-
-	/**
-	 * @param paused the paused to set
-	 */
-	public void setPaused(boolean paused) {
-		this.paused = paused;
-	}
-
-	/**
-	 * @return the presentationID
-	 */
-	public int getPresentationID() {
-		return presentationID;
-	}
-
-	/**
-	 * @param presentationID the presentationID to set
-	 */
-	public void setPresentationID(int presentationID) {
-		this.presentationID = presentationID;
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
 }

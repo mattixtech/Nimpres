@@ -28,22 +28,44 @@ package com.nimpres.android.lan;
 
 import java.util.ArrayList;
 
+import android.util.Log;
+
 import com.nimpres.android.NimpresObjects;
 import com.nimpres.android.settings.NimpresSettings;
 
-import android.util.Log;
-
 public class LANListener implements Runnable{
 	
+	/**
+	 * 
+	 */
+	public static void initMessage(){
+		Log.d("LANListener","init");
+	}
 	ArrayList<PeerStatus> advertisingPeers; 	//stores the list of the LAN IP Addresses of all advertising peers
-	boolean isStopped = false;
 	
-    /**
+    boolean isStopped = false;	
+	
+	/**
      * 
      */
 	public LANListener(){
 		advertisingPeers = NimpresObjects.peerPresentations;
-	}	
+	}
+	
+	/**
+	 * @return the advertisingPeers
+	 */
+	public ArrayList<PeerStatus> getAdvertisingPeers() {
+		return advertisingPeers;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public boolean isStopped(){
+        return isStopped;
+    }
 	
 	/**
 	 * Continues checking for advertisements until told to stop
@@ -80,33 +102,11 @@ public class LANListener implements Runnable{
 	        }
 		}      
 	}
-	
-	/**
-	 * 
-	 */
-	public static void initMessage(){
-		Log.d("LANListener","init");
-	}
-	
-	/**
-	 * 
-	 * @return
-	 */
-	public boolean isStopped(){
-        return isStopped;
-    }
-	
+
 	/**
 	 * Stops execution of the LANListener
 	 */
 	public void stop(){
         isStopped = true;
     }
-
-	/**
-	 * @return the advertisingPeers
-	 */
-	public ArrayList<PeerStatus> getAdvertisingPeers() {
-		return advertisingPeers;
-	}
 }

@@ -40,6 +40,14 @@ public class TCPMessage {
 	}
 	
 	/**
+	 * Constructor that reads in and creates a message
+	 * @param in
+	 */
+	public TCPMessage(DataInputStream in){
+		getMessage(in);
+	}
+	
+	/**
 	 * Standard constructor to create a message
 	 * @param type
 	 * @param data
@@ -49,14 +57,6 @@ public class TCPMessage {
 		this.data = new byte[data.length];
 		this.data = data;
 		this.length = this.type.length() + this.data.length + "#$".length();
-	}
-	
-	/**
-	 * Constructor that reads in and creates a message
-	 * @param in
-	 */
-	public TCPMessage(DataInputStream in){
-		getMessage(in);
 	}
 	
 	/**
@@ -73,6 +73,81 @@ public class TCPMessage {
 		sendMessage(out);
 	}
 	
+	/**
+	 * @return the data
+	 */
+	public byte[] getData() {
+		return data;
+	}
+	
+	/**
+	 * 
+	 * @return the data as a String
+	 */
+	public String getDataAsString(){
+		String strMsg = new String(data);
+		return strMsg;
+	}
+
+	/**
+	 * @return the length
+	 */
+	public int getLength() {
+		return length;
+	}
+
+    /**
+	 * Manually read a message in
+	 * @param in
+	 */
+	public void getMessage(DataInputStream in){
+		try{
+            int len = in.readInt(); //Read the expected length of the messsage
+            byte[] buff = new byte[len]; //Create a buffer to store the message
+            in.readFully(buff);
+            type = parseType(buff);
+            data = parseData(type,buff,len);
+            length = len;
+            Log.d("TCPMessage","Received message: "+type);
+        }catch(Exception e){
+        	Log.d("TCPMessage","error: "+e.getMessage());
+            e.printStackTrace();            
+        }
+    }
+    
+    /**
+	 * @return the type
+	 */
+	public String getType() {
+		return type;
+	}
+
+	/**
+     * 
+     * @param message
+     * @return
+     */
+    private byte[] parseData(String type,byte[] message,int length){
+        //String strMsg = new String(message);
+        //int dataLoc = strMsg.indexOf("$")+1;
+        //String dataPortion = strMsg.substring(dataLoc);
+        byte[] data = new byte[length - (type.length()+"$#".length())];
+        int count=0;
+        for(int i=(type.length()+"$#".length());i<length;i++)
+            data[count++] = message[i];
+        return data;
+    }
+	
+	/**
+	 * 
+	 * @param msg
+	 * @return
+	 */
+    private String parseType(byte[] msg){
+        String strMsg = new String(msg);
+        return strMsg.substring(strMsg.indexOf("#")+1,strMsg.indexOf("$"));
+    }
+
 	/**
 	 * Manually send the message
 	 * @param out
@@ -93,75 +168,6 @@ public class TCPMessage {
 		}else
 			Log.d("TCPMessage","attempted to send empty message");
     }
-	
-	/**
-	 * Manually read a message in
-	 * @param in
-	 */
-	public void getMessage(DataInputStream in){
-		try{
-            int len = in.readInt(); //Read the expected length of the messsage
-            byte[] buff = new byte[len]; //Create a buffer to store the message
-            in.readFully(buff);
-            type = parseType(buff);
-            data = parseData(type,buff,len);
-            length = len;
-            Log.d("TCPMessage","Received message: "+type);
-        }catch(Exception e){
-        	Log.d("TCPMessage","error: "+e.getMessage());
-            e.printStackTrace();            
-        }
-    }
-
-	/**
-	 * 
-	 * @param msg
-	 * @return
-	 */
-    private String parseType(byte[] msg){
-        String strMsg = new String(msg);
-        return strMsg.substring(strMsg.indexOf("#")+1,strMsg.indexOf("$"));
-    }
-
-    /**
-     * 
-     * @param message
-     * @return
-     */
-    private byte[] parseData(String type,byte[] message,int length){
-        //String strMsg = new String(message);
-        //int dataLoc = strMsg.indexOf("$")+1;
-        //String dataPortion = strMsg.substring(dataLoc);
-        byte[] data = new byte[length - (type.length()+"$#".length())];
-        int count=0;
-        for(int i=(type.length()+"$#".length());i<length;i++)
-            data[count++] = message[i];
-        return data;
-    }
-    
-    /**
-     * Returns the message as a string "TCPMessage(Type: <type>, Data: <data>)
-     */
-    public String toString(){
-    	 String strMsg = new String(data);
-    	 return "TCPMessage (Type: "+type+", Data: "+strMsg+")";
-    }
-
-	/**
-	 * @return the data
-	 */
-	public byte[] getData() {
-		return data;
-	}
-	
-	/**
-	 * 
-	 * @return the data as a String
-	 */
-	public String getDataAsString(){
-		String strMsg = new String(data);
-		return strMsg;
-	}
 
 	/**
 	 * @param data the data to set
@@ -172,10 +178,10 @@ public class TCPMessage {
 	}
 
 	/**
-	 * @return the type
+	 * @param length the length to set
 	 */
-	public String getType() {
-		return type;
+	public void setLength(int length) {
+		this.length = length;
 	}
 
 	/**
@@ -186,16 +192,10 @@ public class TCPMessage {
 	}
 
 	/**
-	 * @return the length
-	 */
-	public int getLength() {
-		return length;
-	}
-
-	/**
-	 * @param length the length to set
-	 */
-	public void setLength(int length) {
-		this.length = length;
-	}
+     * Returns the message as a string "TCPMessage(Type: <type>, Data: <data>)
+     */
+    public String toString(){
+    	 String strMsg = new String(data);
+    	 return "TCPMessage (Type: "+type+", Data: "+strMsg+")";
+    }
 }

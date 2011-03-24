@@ -1,15 +1,14 @@
 package com.nimpres.android.ui;
 
-import com.nimpres.R;
-import com.nimpres.android.NimpresClient;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.ImageView;
+
+import com.nimpres.R;
+import com.nimpres.android.NimpresClient;
 
 public class HostEnd extends Activity {
 	@Override

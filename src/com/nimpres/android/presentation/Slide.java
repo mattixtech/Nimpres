@@ -61,10 +61,10 @@ public class Slide {
 
 
 	/**
-	 * @param fileName the fileName to set
+	 * @return the slideComments
 	 */
-	public void setFileName(String fileName) {
-		this.fileName = fileName;
+	public String getSlideComments() {
+		return slideComments;
 	}
 
 
@@ -77,18 +77,18 @@ public class Slide {
 
 
 	/**
-	 * @param slideNumber the slideNumber to set
+	 * @return the slideTitle
 	 */
-	public void setSlideNumber(int slideNumber) {
-		this.slideNumber = slideNumber;
+	public String getSlideTitle() {
+		return slideTitle;
 	}
 
 
 	/**
-	 * @return the slideComments
+	 * @param fileName the fileName to set
 	 */
-	public String getSlideComments() {
-		return slideComments;
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
 	}
 
 
@@ -101,10 +101,10 @@ public class Slide {
 
 
 	/**
-	 * @return the slideTitle
+	 * @param slideNumber the slideNumber to set
 	 */
-	public String getSlideTitle() {
-		return slideTitle;
+	public void setSlideNumber(int slideNumber) {
+		this.slideNumber = slideNumber;
 	}
 
 

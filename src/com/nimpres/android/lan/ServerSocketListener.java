@@ -29,10 +29,10 @@ package com.nimpres.android.lan;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 
+import android.util.Log;
+
 import com.nimpres.android.settings.NimpresSettings;
 import com.nimpres.android.utilities.Utilities;
-
-import android.util.Log;
 
 public class ServerSocketListener implements Runnable{
     private ConnectionReceiver receiver;
@@ -43,6 +43,22 @@ public class ServerSocketListener implements Runnable{
     public ServerSocketListener(ConnectionReceiver receiver){
     	this.receiver = receiver;
     	this.receiver.enable();
+    }
+
+    /**
+     * 
+     */
+    private void initMessage(){
+    	Log.d("ServerSocketListener","now listening for transfer requests on port:"+NimpresSettings.SERVER_FILE_PORT);
+    }
+
+    
+    /**
+     * 
+     * @return
+     */
+    public boolean isStopped(){
+        return isStopped;
     }
 
     public void run(){
@@ -81,22 +97,6 @@ public class ServerSocketListener implements Runnable{
         //If socket listener is stopped then exit program
         Log.d("ServerSocketListener","Exiting");
         System.exit(1);
-    }
-
-    
-    /**
-     * 
-     */
-    private void initMessage(){
-    	Log.d("ServerSocketListener","now listening for transfer requests on port:"+NimpresSettings.SERVER_FILE_PORT);
-    }
-
-    /**
-     * 
-     * @return
-     */
-    public boolean isStopped(){
-        return isStopped;
     }
 
     /**

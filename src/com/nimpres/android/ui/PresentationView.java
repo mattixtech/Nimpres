@@ -35,13 +35,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.nimpres.R;
 import com.nimpres.android.NimpresObjects;
-import com.nimpres.android.dps.DPS;
 import com.nimpres.android.settings.NimpresSettings;
 import com.nimpres.android.utilities.Utilities;
 import com.nimpres.android.web.APIContact;
@@ -52,6 +50,43 @@ public class PresentationView extends Activity {
 	private Menu controlMenu = null;
 	private int viewedPresentationID = 0;
 	private String viewedPresentationPassword = "";
+	/**
+	 * This task is responsible for updating the image displayed during viewing
+	 */
+	private Runnable viewerUpdateTask = new Runnable() {
+		public void run() {
+			Log.d("PresentationView","Update Tick");
+			if (!NimpresObjects.currentPresentation.isPaused()) {
+				if (Utilities.isOnline(NimpresObjects.ctx)) {
+					//TODO we should do something here to make resuming while on LAN quicker, currently we have to wait for a new status message
+					if(NimpresObjects.updateSource.equals(NimpresSettings.UPDATE_SOURCE_INTERNET)){
+						// TODO change to get the correct slide number for the
+						// current presentation rather then hard coded
+						int slideNum = APIContact.getSlideNumber(viewedPresentationID, viewedPresentationPassword);
+						// Make sure slide was not negative (error code -1)
+						if (slideNum >= 0)
+							NimpresObjects.currentPresentation.setCurrentSlide(slideNum); // Update slide number of presentation
+					}
+				} else
+					Log.d("NimpresClient",
+							"internet connection not present, api contact cancelled");
+				updateSlide();
+			}
+			mHandler.postDelayed(this, NimpresSettings.API_PULL_DELAY);
+		}
+	};
+
+	public void leave() {
+		Intent intent = new Intent();
+		setResult(RESULT_OK, intent);
+		finish();
+	}
+
+	/**
+	 * 
+	 */
+	public void onConfigurationChanged(){}
+
 	@Override
 	public void onCreate(Bundle created) {
 		super.onCreate(created);
@@ -65,11 +100,6 @@ public class PresentationView extends Activity {
 		}
 	}
 
-	/**
-	 * 
-	 */
-	public void onConfigurationChanged(){}
-
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
@@ -78,35 +108,6 @@ public class PresentationView extends Activity {
 		// controlMenu.removeItem(R.id.pvmPause);
 		resumeUI();
 		return true;
-	}
-
-	public void resumeUI() {
-		// Perform an update request to the api immediatly and then change the
-		// menu
-		mHandler.removeCallbacks(viewerUpdateTask);
-		mHandler.postDelayed(viewerUpdateTask, 1);
-		controlMenu.getItem(0).setTitle("Pause");
-		controlMenu.getItem(2).setEnabled(false);
-		controlMenu.getItem(3).setEnabled(false);
-		controlMenu.getItem(4).setEnabled(false);
-	}
-
-	public void pauseUI() {
-		controlMenu.getItem(0).setTitle("Resume");
-		controlMenu.getItem(2).setEnabled(true);
-		controlMenu.getItem(3).setEnabled(true);
-		controlMenu.getItem(4).setEnabled(true);
-	}
-
-	public void pauseButton() {
-		boolean isPaused = NimpresObjects.currentPresentation.isPaused();
-		if (isPaused) {
-			NimpresObjects.currentPresentation.setPaused(false);
-			resumeUI();
-		} else {
-			NimpresObjects.currentPresentation.setPaused(true);
-			pauseUI();
-		}
 	}
 
 	@Override
@@ -148,10 +149,33 @@ public class PresentationView extends Activity {
 		}
 	}
 
-	public void leave() {
-		Intent intent = new Intent();
-		setResult(RESULT_OK, intent);
-		finish();
+	public void pauseButton() {
+		boolean isPaused = NimpresObjects.currentPresentation.isPaused();
+		if (isPaused) {
+			NimpresObjects.currentPresentation.setPaused(false);
+			resumeUI();
+		} else {
+			NimpresObjects.currentPresentation.setPaused(true);
+			pauseUI();
+		}
+	}
+
+	public void pauseUI() {
+		controlMenu.getItem(0).setTitle("Resume");
+		controlMenu.getItem(2).setEnabled(true);
+		controlMenu.getItem(3).setEnabled(true);
+		controlMenu.getItem(4).setEnabled(true);
+	}
+
+	public void resumeUI() {
+		// Perform an update request to the api immediatly and then change the
+		// menu
+		mHandler.removeCallbacks(viewerUpdateTask);
+		mHandler.postDelayed(viewerUpdateTask, 1);
+		controlMenu.getItem(0).setTitle("Pause");
+		controlMenu.getItem(2).setEnabled(false);
+		controlMenu.getItem(3).setEnabled(false);
+		controlMenu.getItem(4).setEnabled(false);
 	}
 
 	public void updateSlide() {
@@ -169,30 +193,4 @@ public class PresentationView extends Activity {
 						+ NimpresObjects.currentPresentation
 								.getCurrentSlideFile().getFileName()));
 	}
-
-	/**
-	 * This task is responsible for updating the image displayed during viewing
-	 */
-	private Runnable viewerUpdateTask = new Runnable() {
-		public void run() {
-			Log.d("PresentationView","Update Tick");
-			if (!NimpresObjects.currentPresentation.isPaused()) {
-				if (Utilities.isOnline(NimpresObjects.ctx)) {
-					//TODO we should do something here to make resuming while on LAN quicker, currently we have to wait for a new status message
-					if(NimpresObjects.updateSource.equals(NimpresSettings.UPDATE_SOURCE_INTERNET)){
-						// TODO change to get the correct slide number for the
-						// current presentation rather then hard coded
-						int slideNum = APIContact.getSlideNumber(viewedPresentationID, viewedPresentationPassword);
-						// Make sure slide was not negative (error code -1)
-						if (slideNum >= 0)
-							NimpresObjects.currentPresentation.setCurrentSlide(slideNum); // Update slide number of presentation
-					}
-				} else
-					Log.d("NimpresClient",
-							"internet connection not present, api contact cancelled");
-				updateSlide();
-			}
-			mHandler.postDelayed(this, NimpresSettings.API_PULL_DELAY);
-		}
-	};
 }

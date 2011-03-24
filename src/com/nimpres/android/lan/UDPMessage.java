@@ -47,6 +47,16 @@ public class UDPMessage {
 	
 	
 	/**
+	 * Get a new UDPMessage
+	 * @param port The port to listen on for the packet
+	 * @param size The size of the buffer to use receiving, a message bigger than the buffer size will be truncated
+	 */
+	public UDPMessage(int port, int size){
+		getMessage(port,size);
+		this.length = this.type.length() + this.data.length + "#$".length();
+	}
+	
+	/**
 	 * Standard constructor to create a message
 	 * @param type
 	 * @param data
@@ -70,6 +80,7 @@ public class UDPMessage {
 		sendMessage(ip,port);
 	}
 	
+
 	/**
 	 * Create UDPMessage and send right away as broadcast
 	 * @param type
@@ -83,17 +94,113 @@ public class UDPMessage {
 		setBroadcast(brodcastMessage);
 		sendMessage(ip,port);
 	}
-	
 
 	/**
-	 * Get a new UDPMessage
+	 * @return the data
+	 */
+	public byte[] getData() {
+		return data;
+	}
+	
+	/**
+	 * 
+	 * @return the data as a String
+	 */
+	public String getDataAsString(){
+		String strMsg = new String(data);
+		return strMsg;
+	}
+	
+	/**
+	 * @return the length
+	 */
+	public int getLength() {
+		return length;
+	}
+    
+	/**
+	 * Manually read a message
 	 * @param port The port to listen on for the packet
 	 * @param size The size of the buffer to use receiving, a message bigger than the buffer size will be truncated
 	 */
-	public UDPMessage(int port, int size){
-		getMessage(port,size);
-		this.length = this.type.length() + this.data.length + "#$".length();
+	public void getMessage(int port, int size){
+		try{
+			//DatagramSocket inputSocket = new DatagramSocket(port,InetAddress.getByName(Utilities.getLocalIpAddress()));
+			DatagramSocket inputSocket = new DatagramSocket(null);
+			inputSocket.setReuseAddress(true);
+			inputSocket.bind(new InetSocketAddress(port));
+			byte[] inputBuff = new byte[size];
+			DatagramPacket pkt = new DatagramPacket(inputBuff,size);			
+			inputSocket.receive(pkt);
+			this.remoteIP = pkt.getAddress();
+			Log.d("UDPMessage","received udp packet: "+ new String(pkt.getData()));
+            type = parseType(pkt.getData());            
+            data = parseData(type,pkt.getData());            
+            Log.d("UDPMessage","Received message: "+type+", with data: "+new String(data));
+        }catch(Exception e){
+        	Log.d("UDPMessage","error: "+e.getMessage());
+            e.printStackTrace();            
+        }
+    }
+    
+    /**
+	 * @return the remoteIP
+	 */
+	public InetAddress getRemoteIP() {
+		return remoteIP;
 	}
+    
+    /**
+	 * @return the type
+	 */
+	public String getType() {
+		return type;
+	}
+    
+    /**
+	 * @return the broadcast
+	 */
+	public boolean isBroadcast() {
+		return broadcast;
+	}
+	
+	/**
+     * 
+     * @param a
+     * @param b
+     * @return
+     */
+    private byte[] mergeBytes(byte[] a, byte[] b){
+    	byte[] c = new byte[a.length + b.length];
+    	System.arraycopy(a,0,c,0,a.length);
+    	System.arraycopy(b,0,c,a.length,b.length);
+    	return c;
+    }
+
+	/**
+	 * Retrieve the data
+	 * @param type
+	 * @param message
+	 * @return
+	 */
+    private byte[] parseData(String type,byte[] message){
+    	int length = message.length;
+        byte[] data = new byte[length - (type.length()+"$#".length())];
+        int count=0;
+        for(int i=(type.length()+"$#".length());i<length;i++)
+            data[count++] = message[i];
+        return data;
+    }
+
+	/**
+	 * Retrieve the type
+	 * @param msg
+	 * @return
+	 */
+    private String parseType(byte[] msg){
+        String strMsg = new String(msg);
+        return strMsg.substring(strMsg.indexOf("#")+1,strMsg.indexOf("$"));
+    }
 
 	/**
 	 * Manually send the message
@@ -127,92 +234,12 @@ public class UDPMessage {
 		}else
 			Log.d("UDPMessage","attempted to send empty message");
     }
-	
+
 	/**
-	 * Manually read a message
-	 * @param port The port to listen on for the packet
-	 * @param size The size of the buffer to use receiving, a message bigger than the buffer size will be truncated
+	 * @param isBroadcast the isBroadcast to set
 	 */
-	public void getMessage(int port, int size){
-		try{
-			//DatagramSocket inputSocket = new DatagramSocket(port,InetAddress.getByName(Utilities.getLocalIpAddress()));
-			DatagramSocket inputSocket = new DatagramSocket(null);
-			inputSocket.setReuseAddress(true);
-			inputSocket.bind(new InetSocketAddress(port));
-			byte[] inputBuff = new byte[size];
-			DatagramPacket pkt = new DatagramPacket(inputBuff,size);			
-			inputSocket.receive(pkt);
-			this.remoteIP = pkt.getAddress();
-			Log.d("UDPMessage","received udp packet: "+ new String(pkt.getData()));
-            type = parseType(pkt.getData());            
-            data = parseData(type,pkt.getData());            
-            Log.d("UDPMessage","Received message: "+type+", with data: "+new String(data));
-        }catch(Exception e){
-        	Log.d("UDPMessage","error: "+e.getMessage());
-            e.printStackTrace();            
-        }
-    }
-	
-	/**
-	 * Retrieve the type
-	 * @param msg
-	 * @return
-	 */
-    private String parseType(byte[] msg){
-        String strMsg = new String(msg);
-        return strMsg.substring(strMsg.indexOf("#")+1,strMsg.indexOf("$"));
-    }
-    
-	/**
-	 * Retrieve the data
-	 * @param type
-	 * @param message
-	 * @return
-	 */
-    private byte[] parseData(String type,byte[] message){
-    	int length = message.length;
-        byte[] data = new byte[length - (type.length()+"$#".length())];
-        int count=0;
-        for(int i=(type.length()+"$#".length());i<length;i++)
-            data[count++] = message[i];
-        return data;
-    }
-    
-    /**
-     * 
-     * @param a
-     * @param b
-     * @return
-     */
-    private byte[] mergeBytes(byte[] a, byte[] b){
-    	byte[] c = new byte[a.length + b.length];
-    	System.arraycopy(a,0,c,0,a.length);
-    	System.arraycopy(b,0,c,a.length,b.length);
-    	return c;
-    }
-    
-    /**
-     * Returns the message as a string "UDPMessage(Type: <type>, Data: <data>)
-     */
-    public String toString(){
-    	 String strMsg = new String(data);
-    	 return "UDPMessage (Type: "+type+", Data: "+strMsg+")";
-    }
-    
-    /**
-	 * @return the data
-	 */
-	public byte[] getData() {
-		return data;
-	}
-	
-	/**
-	 * 
-	 * @return the data as a String
-	 */
-	public String getDataAsString(){
-		String strMsg = new String(data);
-		return strMsg;
+	public void setBroadcast(boolean broadcast) {
+		this.broadcast = broadcast;
 	}
 
 	/**
@@ -223,40 +250,12 @@ public class UDPMessage {
 		this.data = data;
 	}
 
-	/**
-	 * @return the type
-	 */
-	public String getType() {
-		return type;
-	}
-
-	/**
-	 * @param type the type to set
-	 */
-	public void setType(String type) {
-		this.type = type;
-	}
-
-	/**
-	 * @return the length
-	 */
-	public int getLength() {
-		return length;
-	}
 
 	/**
 	 * @param length the length to set
 	 */
 	public void setLength(int length) {
 		this.length = length;
-	}
-
-
-	/**
-	 * @return the remoteIP
-	 */
-	public InetAddress getRemoteIP() {
-		return remoteIP;
 	}
 
 
@@ -269,17 +268,18 @@ public class UDPMessage {
 
 
 	/**
-	 * @return the broadcast
+	 * @param type the type to set
 	 */
-	public boolean isBroadcast() {
-		return broadcast;
+	public void setType(String type) {
+		this.type = type;
 	}
 
 
 	/**
-	 * @param isBroadcast the isBroadcast to set
-	 */
-	public void setBroadcast(boolean broadcast) {
-		this.broadcast = broadcast;
-	}
+     * Returns the message as a string "UDPMessage(Type: <type>, Data: <data>)
+     */
+    public String toString(){
+    	 String strMsg = new String(data);
+    	 return "UDPMessage (Type: "+type+", Data: "+strMsg+")";
+    }
 }

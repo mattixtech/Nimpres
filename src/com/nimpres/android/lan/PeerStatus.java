@@ -28,8 +28,6 @@ package com.nimpres.android.lan;
 
 import java.net.InetAddress;
 
-import android.util.Log;
-
 import com.nimpres.android.settings.NimpresSettings;
 
 
@@ -94,10 +92,10 @@ public class PeerStatus {
 	}
 
 	/**
-	 * @param peerIP the peerIP to set
+	 * @return the presentationID
 	 */
-	public void setPeerIP(InetAddress peerIP) {
-		this.peerIP = peerIP;
+	public int getPresentationID() {
+		return presentationID;
 	}
 
 	/**
@@ -108,10 +106,10 @@ public class PeerStatus {
 	}
 
 	/**
-	 * @param presentationName the presentationName to set
+	 * @return the presenterName
 	 */
-	public void setPresentationName(String presentationName) {
-		this.presentationName = presentationName;
+	public String getPresenterName() {
+		return presenterName;
 	}
 
 	/**
@@ -122,31 +120,17 @@ public class PeerStatus {
 	}
 
 	/**
-	 * @param slideNumber the slideNumber to set
+	 * @return the source
 	 */
-	public void setSlideNumber(int slideNumber) {
-		this.slideNumber = slideNumber;
+	public String getSource() {
+		return source;
 	}
 
 	/**
-	 * @return the presenterName
+	 * @param peerIP the peerIP to set
 	 */
-	public String getPresenterName() {
-		return presenterName;
-	}
-
-	/**
-	 * @param presenterName the presenterName to set
-	 */
-	public void setPresenterName(String presenterName) {
-		this.presenterName = presenterName;
-	}
-
-	/**
-	 * @return the presentationID
-	 */
-	public int getPresentationID() {
-		return presentationID;
+	public void setPeerIP(InetAddress peerIP) {
+		this.peerIP = peerIP;
 	}
 
 	/**
@@ -157,10 +141,24 @@ public class PeerStatus {
 	}
 
 	/**
-	 * @return the source
+	 * @param presentationName the presentationName to set
 	 */
-	public String getSource() {
-		return source;
+	public void setPresentationName(String presentationName) {
+		this.presentationName = presentationName;
+	}
+
+	/**
+	 * @param presenterName the presenterName to set
+	 */
+	public void setPresenterName(String presenterName) {
+		this.presenterName = presenterName;
+	}
+
+	/**
+	 * @param slideNumber the slideNumber to set
+	 */
+	public void setSlideNumber(int slideNumber) {
+		this.slideNumber = slideNumber;
 	}
 
 	/**

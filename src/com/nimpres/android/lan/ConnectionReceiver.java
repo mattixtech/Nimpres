@@ -31,9 +31,9 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
 
-import com.nimpres.android.settings.NimpresSettings;
-
 import android.util.Log;
+
+import com.nimpres.android.settings.NimpresSettings;
 
 public class ConnectionReceiver {
 	private boolean isDisabled = false;
@@ -44,15 +44,21 @@ public class ConnectionReceiver {
     }
     
     /**
-     * Puts a socket into the queue
-     * @param s
-     * @return
+     * Destroys this queue and all connections currently in it
      */
-    public boolean put(Socket s){
-    	//TODO I think this should probably be a synchronized method but it was causing problems so I removed the synchronized keyword
-        return socketQue.offer(s);
+    public synchronized void destroy(){
+        socketQue.clear();
+        isDisabled = true;
     }
 
+    /**
+     * Enables the receiver
+     */
+    public synchronized void enable(){
+    	Log.d("ConnectionReceiver","Enabled");
+        isDisabled = false;
+    }
+    
     /**
      * Gets a socket from the queue if there is one
      * @return
@@ -64,14 +70,6 @@ public class ConnectionReceiver {
             e.printStackTrace();
             return null;
         }
-    }
-    
-    /**
-     * Destroys this queue and all connections currently in it
-     */
-    public synchronized void destroy(){
-        socketQue.clear();
-        isDisabled = true;
     }
     
     /**
@@ -91,10 +89,12 @@ public class ConnectionReceiver {
     }
     
     /**
-     * Enables the receiver
+     * Puts a socket into the queue
+     * @param s
+     * @return
      */
-    public synchronized void enable(){
-    	Log.d("ConnectionReceiver","Enabled");
-        isDisabled = false;
+    public boolean put(Socket s){
+    	//TODO I think this should probably be a synchronized method but it was causing problems so I removed the synchronized keyword
+        return socketQue.offer(s);
     }
 }

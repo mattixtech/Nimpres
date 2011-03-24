@@ -41,23 +41,21 @@ import com.nimpres.android.utilities.Utilities;
 
 public class LANAdvertiser implements Runnable{
 
+	/**
+	 * 
+	 */
+	public static void initMessage(){
+		Log.d("LANAdvertiser","init");
+	}
 	private Presentation pres;
 	private String broadcastAddress = null;
 	private boolean isStopped = false;
-	private DatagramSocket outputSocket;
+    private DatagramSocket outputSocket;
     private DatagramPacket pkt;
     private Handler mHandler = new Handler();
     private byte[] outputBuff = null;
-    private PeerStatus advStatus = null;
 	
-    /**
-     * 
-     * @param pres
-     */
-    public LANAdvertiser(Presentation pres, String broadcastAddress){
-    	this.pres = pres;
-    	this.broadcastAddress = broadcastAddress;
-    }
+    private PeerStatus advStatus = null;
     
     /**
 	 * This task is responsible for advertising the name of the hosted presentation to LAN peers
@@ -85,19 +83,19 @@ public class LANAdvertiser implements Runnable{
 	};
     
 	/**
-	 * 
-	 */
-	public void run(){
-		initMessage();
-		mHandler.removeCallbacks(lanAdvertiseTask);
-		mHandler.postDelayed(lanAdvertiseTask, 100);        
-	}
+     * 
+     * @param pres
+     */
+    public LANAdvertiser(Presentation pres, String broadcastAddress){
+    	this.pres = pres;
+    	this.broadcastAddress = broadcastAddress;
+    }
 	
 	/**
-	 * 
+	 * @return the pres
 	 */
-	public static void initMessage(){
-		Log.d("LANAdvertiser","init");
+	public Presentation getPres() {
+		return pres;
 	}
 	
 	/**
@@ -111,15 +109,10 @@ public class LANAdvertiser implements Runnable{
 	/**
 	 * 
 	 */
-	public void stop(){
-        isStopped = true;
-    }
-
-	/**
-	 * @return the pres
-	 */
-	public Presentation getPres() {
-		return pres;
+	public void run(){
+		initMessage();
+		mHandler.removeCallbacks(lanAdvertiseTask);
+		mHandler.postDelayed(lanAdvertiseTask, 100);        
 	}
 
 	/**
@@ -128,5 +121,12 @@ public class LANAdvertiser implements Runnable{
 	public void setPres(Presentation pres) {
 		this.pres = pres;
 	}
+
+	/**
+	 * 
+	 */
+	public void stop(){
+        isStopped = true;
+    }
 	
 }

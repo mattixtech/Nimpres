@@ -36,7 +36,6 @@ import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-import android.app.Activity;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.DhcpInfo;
@@ -46,6 +45,42 @@ import android.util.Log;
 
 public class Utilities {
 
+	/**
+	 * Deletes the requested directory and all files inside of it.
+	 * @param path
+	 * @return
+	 */
+	static public boolean deleteDirectory(File path) {
+		if (path.exists()) {
+			File[] files = path.listFiles();
+			for (int i = 0; i < files.length; i++) {
+				if (files[i].isDirectory()) {
+					deleteDirectory(files[i]);
+				} else {
+					files[i].delete();
+				}
+			}
+		}
+		return (path.delete());
+	}
+	
+	/**
+	 * Retrieve the appropriate broadcast address for this device
+	 * @return
+	 * @throws IOException
+	 */
+	public static String getBroadcastAddress(Context ctx) throws IOException {
+	    WifiManager wifi = (WifiManager) ctx.getSystemService(Context.WIFI_SERVICE);
+	    DhcpInfo dhcp = wifi.getDhcpInfo();
+	    //TODO handle null somehow
+
+	    int broadcast = (dhcp.ipAddress & dhcp.netmask) | ~dhcp.netmask;
+	    byte[] quads = new byte[4];
+	    for (int k = 0; k < 4; k++)
+	      quads[k] = (byte) ((broadcast >> k * 8) & 0xFF);
+	    return InetAddress.getByAddress(quads).getHostAddress();
+	}
+	
 	/**
 	 * This method gets the device's IP address
 	 * @return device's local IP address in dotted decimal as a String ex: "192.168.1.1"
@@ -68,20 +103,14 @@ public class Utilities {
 	}
 	
 	/**
-	 * Retrieve the appropriate broadcast address for this device
+	 * This method checks a location and determines if it is a valid download resource location on the internet
+	 * @param location
 	 * @return
-	 * @throws IOException
 	 */
-	public static String getBroadcastAddress(Context ctx) throws IOException {
-	    WifiManager wifi = (WifiManager) ctx.getSystemService(Context.WIFI_SERVICE);
-	    DhcpInfo dhcp = wifi.getDhcpInfo();
-	    //TODO handle null somehow
-
-	    int broadcast = (dhcp.ipAddress & dhcp.netmask) | ~dhcp.netmask;
-	    byte[] quads = new byte[4];
-	    for (int k = 0; k < 4; k++)
-	      quads[k] = (byte) ((broadcast >> k * 8) & 0xFF);
-	    return InetAddress.getByAddress(quads).getHostAddress();
+	public static boolean isInternetLocation(String location){
+		if(location.indexOf("http://") >= 0 || location.indexOf("https://") >= 0 || location.indexOf("ftp://") >= 0)
+			return true;
+		return false;
 	}
 	
 	/**
@@ -95,25 +124,6 @@ public class Utilities {
 	        return true;
 	    }
 	    return false;
-	}
-	
-	/**
-	 * Deletes the requested directory and all files inside of it.
-	 * @param path
-	 * @return
-	 */
-	static public boolean deleteDirectory(File path) {
-		if (path.exists()) {
-			File[] files = path.listFiles();
-			for (int i = 0; i < files.length; i++) {
-				if (files[i].isDirectory()) {
-					deleteDirectory(files[i]);
-				} else {
-					files[i].delete();
-				}
-			}
-		}
-		return (path.delete());
 	}
 	
 	/**
@@ -158,17 +168,6 @@ public class Utilities {
 			e.printStackTrace();
 		}
 		return ret;
-	}
-	
-	/**
-	 * This method checks a location and determines if it is a valid download resource location on the internet
-	 * @param location
-	 * @return
-	 */
-	public static boolean isInternetLocation(String location){
-		if(location.indexOf("http://") >= 0 || location.indexOf("https://") >= 0 || location.indexOf("ftp://") >= 0)
-			return true;
-		return false;
 	}
 	
 }

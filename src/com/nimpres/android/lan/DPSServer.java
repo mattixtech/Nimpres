@@ -32,16 +32,23 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.net.Socket;
 
-import com.nimpres.android.settings.NimpresSettings;
-
 import android.content.Context;
 import android.util.Log;
 
+import com.nimpres.android.settings.NimpresSettings;
+
 public class DPSServer implements Runnable{
+	/**
+	 * Displays the init message
+	 */
+	public static void initMessage(){
+		Log.d("DPSServer","init");
+	}
 	private boolean isStopped = false;
 	private String dpsFile;
 	private Socket connectionFromClient;
 	private ConnectionReceiver receiver;
+	
 	private Context ctx;
 	
 	/**
@@ -55,6 +62,24 @@ public class DPSServer implements Runnable{
 		receiver = new ConnectionReceiver();
 		receiver.enable();
 	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public boolean isStopped(){
+        return isStopped;
+    }
+	
+	/**
+	 * Opens the server socket for listening
+	 */
+	private void openServerSocket(){
+        Thread socketListener = new Thread(new ServerSocketListener(receiver));
+        Log.d("DPSServer","Attempting to start ServerSocketListener");
+        Log.d("DPSServer","Listener Object: "+socketListener);
+        socketListener.start();
+    }
 	
 	/**
 	 * 
@@ -118,31 +143,6 @@ public class DPSServer implements Runnable{
             }
         }
 	}
-	
-	/**
-	 * Opens the server socket for listening
-	 */
-	private void openServerSocket(){
-        Thread socketListener = new Thread(new ServerSocketListener(receiver));
-        Log.d("DPSServer","Attempting to start ServerSocketListener");
-        Log.d("DPSServer","Listener Object: "+socketListener);
-        socketListener.start();
-    }
-	
-	/**
-	 * Displays the init message
-	 */
-	public static void initMessage(){
-		Log.d("DPSServer","init");
-	}
-	
-	/**
-	 * 
-	 * @return
-	 */
-	public boolean isStopped(){
-        return isStopped;
-    }
 	
 	/**
 	 * Stops the DPSServer from listening for connections

@@ -36,11 +36,11 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import android.util.Log;
+
 import com.nimpres.android.presentation.Presentation;
 import com.nimpres.android.presentation.Slide;
 import com.nimpres.android.settings.NimpresSettings;
-
-import android.util.Log;
 
 /*This class offers methods to read a DSP file once it has been extracted*/
 

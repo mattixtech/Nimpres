@@ -17,6 +17,22 @@ import com.nimpres.android.dps.DPS;
 public class JoinPresentation extends Activity {
 	static TextView updateIDBox = null;
 	
+	public static void updateID() {	
+		if(JoinPresentation.updateIDBox != null && NimpresObjects.presentationID > 0)
+			JoinPresentation.updateIDBox.setText(NimpresObjects.presentationID);
+	}
+	
+	private Runnable loadTask = new Runnable() {
+		public void run() {
+			NimpresObjects.currentDPS = new DPS("api", "internet", NimpresObjects.presentationID, NimpresObjects.presentationPassword, "downloaded", NimpresObjects.ctx);
+			NimpresObjects.currentPresentation = NimpresObjects.currentDPS.getDpsPres();
+			NimpresObjects.currentPresentation.setPresentationID(NimpresObjects.presentationID);
+			NimpresObjects.currentlyViewing = true;
+			Intent intent = new Intent(NimpresObjects.ctx,PresentationView.class);
+			startActivity(intent);
+		}
+	};
+	
 	@Override
 	public void onCreate(Bundle created) {
 		super.onCreate(created);
@@ -76,20 +92,4 @@ public class JoinPresentation extends Activity {
 			}
 		});
 	}
-	
-	public static void updateID() {	
-		if(JoinPresentation.updateIDBox != null && NimpresObjects.presentationID > 0)
-			JoinPresentation.updateIDBox.setText(NimpresObjects.presentationID);
-	}
-	
-	private Runnable loadTask = new Runnable() {
-		public void run() {
-			NimpresObjects.currentDPS = new DPS("api", "internet", NimpresObjects.presentationID, NimpresObjects.presentationPassword, "downloaded", NimpresObjects.ctx);
-			NimpresObjects.currentPresentation = NimpresObjects.currentDPS.getDpsPres();
-			NimpresObjects.currentPresentation.setPresentationID(NimpresObjects.presentationID);
-			NimpresObjects.currentlyViewing = true;
-			Intent intent = new Intent(NimpresObjects.ctx,PresentationView.class);
-			startActivity(intent);
-		}
-	};
 }
