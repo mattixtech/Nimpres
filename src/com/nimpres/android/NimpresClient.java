@@ -26,137 +26,62 @@
  */
 package com.nimpres.android;
 
-import java.io.IOException;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
 import com.nimpres.R;
-import com.nimpres.android.dps.DPS;
 import com.nimpres.android.lan.DPSServer;
-import com.nimpres.android.lan.LANAdvertiser;
 import com.nimpres.android.lan.LANListener;
-import com.nimpres.android.presentation.Presentation;
-import com.nimpres.android.settings.NimpresSettings;
+import com.nimpres.android.presentation.PeerStatus;
 import com.nimpres.android.ui.ExistingAccount;
 import com.nimpres.android.ui.HostPresentation;
 import com.nimpres.android.ui.JoinPresentation;
 import com.nimpres.android.ui.Settings;
-import com.nimpres.android.utilities.Utilities;
 import com.nimpres.android.web.APIContact;
 
 public class NimpresClient extends Activity {
 
-	public static void testCreate()
-	{
-		if(APIContact.createPresentation("win", "testing1", "MattTesting", "test", 1, "will.dps") > 0)
-			Log.d("NimpresClient","presentation created successfully");
-		else
-			Log.d("NimpresClient","presentation creation failed");
-	}
-	public static void testDPSDownload(Context ctx) {
-		APIContact.downloadPresentation(26, "test");
-		DPS netDPS = new DPS("api",NimpresSettings.UPDATE_SOURCE_INTERNET,26,"test","test",NimpresObjects.ctx);
-		//DPS lanDPS = new DPS("192.168.1.4", UPDATE_SOURCE_LAN, "123", "pass","testing_dps", ctx);
-		Log.d("NimpresClient", "DPS fully created");
-		Log.d("NimpresClient", "DPS presentation title:"+ netDPS.getDpsPres().getTitle());
-	}
-
+	/*
+	 * Testing methods
+	 */
+	
 	public static void testDPSHosting(String fileToServe, Context ctx) {
 		Thread dpsServer = new Thread(new DPSServer(fileToServe, ctx));
 		dpsServer.start();
 	}
 
-
-	/*
-	 * Testing methods
-	 */
-
-
-	public static void testLANAdvertising() {
-		Presentation Pres = new Presentation();
-		Pres.setTitle("Test");
-		Pres.setOwner("Matt");
-		Pres.setNumSlides(50);
-		Pres.setCurrentSlide(5);
-		Pres.setPresentationID(25);
-		Thread LANAdvert;
-		try {
-			LANAdvert = new Thread(new LANAdvertiser(Pres,Utilities.getBroadcastAddress(NimpresObjects.ctx)));
-			LANAdvert.start();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-	}
-
-	public static void testLANListening() {
-		Thread LANListen = new Thread(new LANListener());
-		LANListen.start();
-	}
-	
 	public static void testListing(){
-		APIContact.listPresentations("test", "test1234", "test");
+		PeerStatus.getInternetPresentations(NimpresObjects.presenterName, NimpresObjects.presenterPassword, "test");
 	}
 	
 	public static void testLoginAPI() {
 		APIContact.validateLogin("Jordan", "testing");
 	}
 
-	public static void testSlideNum() {
-		int slideNum = APIContact.getSlideNumber(25, "test");
-		Log.d("NimpresClient", "slide # " + slideNum);
+	
+	/**
+	 * 
+	 */
+	public static void startup(){
+		//Startup the LAN listener thread
+		Thread LANListen = new Thread(new LANListener());
+		LANListen.start();
 	}
-
-	public static void testUpdateSlide(){
-		APIContact.updateSlideNumber("win", "testing1", 25, "test", 1337);
-	}
-
-	DPS testDPS = null;
-
-	Presentation testPres = null;
 	
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		// Set to main view
-		setContentView(R.layout.main); 
-
-		
-		// Use this object if you need to pass Context to something
-		NimpresObjects.ctx = this.getApplicationContext();
-		/*
-		 * Testing Code Below
-		 */
-
-		//setContentView(R.layout.presentation_viewer);
-		 testListing();
-		// testSlideNum();
-		// testUpdateSlide();
-		// testPresentation();
-		// testPresentation();
-		// testLoginAPI();
-		// testLANAdvertising();
-		// testLANListening();
-		// testDPSDownload(ctx);
-		// testDPSHosting("tmpdps_down.dps", ctx);
-		// testLANAdvertising();
-		// testLANListening();
-		// testDPSDownload(ctx);
-		// testDPSHosting("tmpdps_down.dps",ctx);
-		// testCreate();
+		super.onCreate(savedInstanceState);		
+		setContentView(R.layout.main); //Set to main view		
+		NimpresObjects.ctx = this.getApplicationContext(); //Record the application Context
+		startup(); //Perform the startup methods
 
 		/*
-		 * End of testing code
-		 */
-/*
 		// setup Create Account button listener
 		 Button createAccountButton = (Button) findViewById(R.id.mCreate);
 		 createAccountButton.setOnClickListener(new OnClickListener() {
@@ -166,7 +91,7 @@ public class NimpresClient extends Activity {
 				startActivity(launchview);
 			}
 		});
-*/
+ 		*/
 		// setup Login button listener
 		 Button loginButton = (Button) findViewById(R.id.mLogin);
 		 loginButton.setOnClickListener(new OnClickListener() {

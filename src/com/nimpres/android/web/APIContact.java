@@ -225,9 +225,8 @@ public class APIContact {
 	 * @param user
 	 * @return echos of xml code
 	 */
-	//TODO Return statement needs to be revised for XML output
-	public static boolean listPresentations(String userID, String userPass, String userSearch){
-		String result = "";
+	public static String listPresentations(String userID, String userPass, String userSearch){
+		String result = NimpresSettings.API_RESPONSE_NEGATIVE; //Default to negative
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
 		params.add(new BasicNameValuePair("user_id", userID));
 		params.add(new BasicNameValuePair("user_password", userPass));
@@ -238,9 +237,7 @@ public class APIContact {
 		}catch (Exception e) {
 	        e.printStackTrace();
 	    }
-		if(result.equals(NimpresSettings.API_RESPONSE_POSITIVE))
-			return true;
-		return false;
+		return result;
 	}
 	
 	/**

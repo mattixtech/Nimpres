@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import com.nimpres.R;
 import com.nimpres.android.NimpresObjects;
 import com.nimpres.android.dps.DPSReader;
+import com.nimpres.android.lan.DPSServer;
 import com.nimpres.android.lan.LANAdvertiser;
 import com.nimpres.android.presentation.Presentation;
 import com.nimpres.android.utilities.Utilities;
@@ -40,10 +41,14 @@ public class HostPresentation extends Activity {
 			hostedPresentation.setPresentationID(presID);
 			
 			Looper.prepare();
+			
+			Thread dpsServer = new Thread(new DPSServer(dpsFileName, NimpresObjects.ctx));
+			dpsServer.start(); //Start up the DPS Server
+			
 			Thread LANAdvert;
 			try {
 				LANAdvert = new Thread(new LANAdvertiser(hostedPresentation,Utilities.getBroadcastAddress(NimpresObjects.ctx)));
-				LANAdvert.start();
+				LANAdvert.start(); //Start advertising on the LAN
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

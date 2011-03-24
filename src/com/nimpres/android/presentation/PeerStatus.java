@@ -26,13 +26,70 @@
  */
 package com.nimpres.android.presentation;
 
+import java.io.ByteArrayInputStream;
 import java.net.InetAddress;
+import java.util.ArrayList;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+
+import android.util.Log;
 
 import com.nimpres.android.lan.UDPMessage;
 import com.nimpres.android.settings.NimpresSettings;
+import com.nimpres.android.web.APIContact;
 
 
 public class PeerStatus {
+	
+	/**
+	 * This method use the APIContact.listPresentations method to retrieve an XML list of all presentations
+	 * for a given user. It then parses this XML and creates a list of PeerStatus objects corresponding to the 
+	 * presentations of that user.
+	 * @param userID
+	 * @param userPass
+	 * @param userSearch
+	 * @return
+	 */
+	public static ArrayList<PeerStatus> getInternetPresentations(String userID, String userPass, String userSearch){
+		ArrayList<PeerStatus> internetPresentations = new ArrayList<PeerStatus>();
+		String xmlResponse = APIContact.listPresentations(userID, userPass, userSearch);
+		
+		if( ! xmlResponse.equals(NimpresSettings.API_RESPONSE_NEGATIVE)){
+			String user = userSearch;
+			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+			try {
+				DocumentBuilder db = dbf.newDocumentBuilder();
+				ByteArrayInputStream is = new ByteArrayInputStream(xmlResponse.getBytes("UTF-8")); //Convert the xml string to an InputStream
+				Document doc = db.parse(is);	//Parse the new InputStream into a Document
+				doc.getDocumentElement().normalize();
+				Element presentationsRootElement = (Element) doc.getElementsByTagName("presentations").item(0);	//Root element for all 'presentations'
+				
+				NodeList presentationElements = presentationsRootElement.getElementsByTagName("presentation");
+				
+				//Loop through all of the presentation elements
+				for(int i=0;i<presentationElements.getLength();i++){
+					Log.d("PeerStatus","parsing presentation #"+(i+1)+" from xml api response");
+					Element thisPresentation = (Element) presentationElements.item(i);
+					String thisPresentationTitle = thisPresentation.getElementsByTagName("title").item(0).getTextContent();
+					int thisPresentationID = Integer.parseInt(thisPresentation.getElementsByTagName("id").item(0).getTextContent());
+					PeerStatus thisPeerStatus = new PeerStatus(thisPresentationTitle,user,thisPresentationID);
+					Log.d("PeerStatus","adding internet peer status object: "+thisPeerStatus);
+					internetPresentations.add(thisPeerStatus);
+				}				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}else
+			return null;	//None found		
+		return internetPresentations;
+	}
+	
+	
 	private InetAddress peerIP = null;
 	private String presentationName = "";
 	private String presenterName = "";
@@ -181,5 +238,12 @@ public class PeerStatus {
 		this.source = source;
 	}
 	
+	/**
+	 * 
+	 */
+	@Override
+	public String toString(){
+		return "Presenter: "+this.presenterName+", Presentation Title: "+this.presentationName+", Presentation ID: "+this.presentationID;
+	}
 	
 }

@@ -110,9 +110,6 @@ public class DPSServer implements Runnable{
          */
 		Log.d("DPSServer","waiting for connection from peer");
         while(!isStopped()){            
-            //The following statement should always return null until
-            //a socket connection is actually received from the queue
-        	//Thread.sleep(1);
         	
             connectionFromClient = receiver.get();
             
