@@ -24,10 +24,11 @@
 					OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 					THE SOFTWARE.
  */
-package com.nimpres.android.lan;
+package com.nimpres.android.presentation;
 
 import java.net.InetAddress;
 
+import com.nimpres.android.lan.UDPMessage;
 import com.nimpres.android.settings.NimpresSettings;
 
 
@@ -82,7 +83,7 @@ public class PeerStatus {
 		int secondSeperatorIndex = dataStr.indexOf(NimpresSettings.STATUS_SEPERATOR,firstSeperatorIndex+seperatorLength);
 		int thirdSeperatorIndex = dataStr.indexOf(NimpresSettings.STATUS_SEPERATOR,secondSeperatorIndex+seperatorLength);
 		//Log.d("PeerStatus","first_index:"+firstSeperatorIndex+", second_index:"+secondSeperatorIndex+", third_index:"+thirdSeperatorIndex);
-		peerIP = message.remoteIP;
+		peerIP = message.getRemoteIP();
 		presentationName = dataStr.substring(0, firstSeperatorIndex);
 		slideNumber = Integer.parseInt(dataStr.substring(firstSeperatorIndex+seperatorLength,secondSeperatorIndex));
 		presenterName = dataStr.substring(secondSeperatorIndex+seperatorLength, thirdSeperatorIndex);

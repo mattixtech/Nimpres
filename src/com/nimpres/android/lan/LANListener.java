@@ -32,6 +32,7 @@ import android.os.Looper;
 import android.util.Log;
 
 import com.nimpres.android.NimpresObjects;
+import com.nimpres.android.presentation.PeerStatus;
 import com.nimpres.android.settings.NimpresSettings;
 
 public class LANListener implements Runnable{

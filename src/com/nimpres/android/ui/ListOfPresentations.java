@@ -18,7 +18,7 @@ import android.widget.TextView;
 
 import com.nimpres.R;
 import com.nimpres.android.NimpresObjects;
-import com.nimpres.android.lan.PeerStatus;
+import com.nimpres.android.presentation.PeerStatus;
 
 public class ListOfPresentations extends ListActivity {
 	private ArrayList<PeerStatus> item = new ArrayList<PeerStatus>();

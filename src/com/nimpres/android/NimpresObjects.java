@@ -33,7 +33,7 @@ import android.content.Context;
 import android.os.Handler;
 
 import com.nimpres.android.dps.DPS;
-import com.nimpres.android.lan.PeerStatus;
+import com.nimpres.android.presentation.PeerStatus;
 import com.nimpres.android.presentation.Presentation;
 
 public class NimpresObjects {
