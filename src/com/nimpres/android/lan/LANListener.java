@@ -89,6 +89,7 @@ public class LANListener implements Runnable{
 	                	NimpresObjects.currentPresentation.setCurrentSlide(recvStatus.getSlideNumber());
 	                
 	                for(int i=0;i<advertisingPeers.size();i++){
+	                	//TODO check each peer's timeout
 	                	if(advertisingPeers.get(i).getPeerIP().equals(inPkt.getRemoteIP())){
 	                		advertisingPeers.remove(i); //check list and remove peer status if already in, so we can update it
 	                		Log.d("LANListener","peer existed, refreshing...");

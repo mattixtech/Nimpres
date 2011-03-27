@@ -96,6 +96,8 @@ public class PeerStatus {
 	private int presentationID = 0;
 	private int slideNumber = 0;
 	private String source = ""; //internet or lan
+	private long advertisementTimestamp = 0;
+	
 	/**
 	 * Default empty constructor
 	 */
@@ -244,6 +246,20 @@ public class PeerStatus {
 	@Override
 	public String toString(){
 		return "Presenter: "+this.presenterName+", Presentation Title: "+this.presentationName+", Presentation ID: "+this.presentationID;
+	}
+
+	/**
+	 * @return the advertisementTimestamp
+	 */
+	public long getAdvertisementTimestamp() {
+		return advertisementTimestamp;
+	}
+
+	/**
+	 * @param advertisementTimestamp the advertisementTimestamp to set
+	 */
+	public void setAdvertisementTimestamp(long advertisementTimestamp) {
+		this.advertisementTimestamp = advertisementTimestamp;
 	}
 	
 }
