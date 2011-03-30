@@ -11,6 +11,7 @@ import android.os.Looper;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.nimpres.R;
@@ -31,10 +32,16 @@ public class HostPresentation extends Activity {
 			String dpsPath = Utilities.unzip(dpsFileName, "testpres", NimpresObjects.ctx);
 			Presentation hostedPresentation = DPSReader.makePresentation(dpsPath);
 			
+			EditText editTitle = (EditText) findViewById(R.id.hpTitle);
+			EditText editPassword = (EditText) findViewById(R.id.hpPassword);
+			
+			String newTitle = editTitle.getText().toString();
+			String newPassword = editPassword.getText().toString();
+			
 			int presID = 0;
 			
 			try {
-				presID = APIContact.createPresentation(URLEncoder.encode(NimpresObjects.presenterName,"UTF-8"), URLEncoder.encode(NimpresObjects.presenterPassword,"UTF-8"), URLEncoder.encode(hostedPresentation.getTitle(),"UTF-8"), "test", hostedPresentation.getNumSlides(), dpsFileName);
+				presID = APIContact.createPresentation(URLEncoder.encode(NimpresObjects.presenterName,"UTF-8"), URLEncoder.encode(NimpresObjects.presenterPassword,"UTF-8"), URLEncoder.encode(newTitle,"UTF-8"), URLEncoder.encode(newPassword,"UTF-8"), hostedPresentation.getNumSlides(), dpsFileName);
 			} catch (UnsupportedEncodingException e) {
 				e.printStackTrace();
 			}
