@@ -55,8 +55,9 @@ public class NimpresSettings {
      */
     public static final double HELLO_TIMER = 1; //Send hello every X seconds
     public static final double DEAD_TIMER = 5; //Wait X seconds before removing peer
-    public static final int API_PULL_DELAY = 1000; //Wait X miliseconds before performing another pull from the API
+    public static final int API_PULL_DELAY = 1500; //Wait X miliseconds before performing another pull from the API
     public static final int LAN_ADVERTISE_DELAY = 1000;
+    public static final long LAN_TIMEOUT_DELAY = 5000;
 	
 	/*
      * Ports

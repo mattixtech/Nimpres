@@ -245,7 +245,7 @@ public class PeerStatus {
 	 */
 	@Override
 	public String toString(){
-		return "Presenter: "+this.presenterName+", Presentation Title: "+this.presentationName+", Presentation ID: "+this.presentationID;
+		return this.presentationName+", ID: "+this.presentationID+", Source: "+this.source;
 	}
 
 	/**

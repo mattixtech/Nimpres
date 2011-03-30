@@ -50,7 +50,7 @@ public class NimpresObjects {
 	
 	public static boolean currentlyViewing = false;
 	public static boolean currentlyPresenting = false;
-	
+
 	public static String presenterName = "test";			//TODO this should be loaded from local config
 	public static String presenterPassword = "test1234";  	//TODO this should be loaded from local config
 	
