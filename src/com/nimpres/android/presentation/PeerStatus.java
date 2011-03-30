@@ -1,7 +1,7 @@
 /**
  * Project:			Nimpres Android Client
  * File name: 		PeerStatus.java
- * Date modified:	2011-03-23
+ * Date modified:	2011-03-30
  * Description:		Status message from peer
  * 
  * License:			Copyright (c) 2010 (Matthew Brooks, Jordan Emmons, William Kong)
@@ -78,6 +78,7 @@ public class PeerStatus {
 					String thisPresentationTitle = thisPresentation.getElementsByTagName("title").item(0).getTextContent();
 					int thisPresentationID = Integer.parseInt(thisPresentation.getElementsByTagName("id").item(0).getTextContent());
 					PeerStatus thisPeerStatus = new PeerStatus(thisPresentationTitle,user,thisPresentationID);
+					thisPeerStatus.setSource(NimpresSettings.UPDATE_SOURCE_INTERNET);
 					Log.d("PeerStatus","adding internet peer status object: "+thisPeerStatus);
 					internetPresentations.add(thisPeerStatus);
 				}				

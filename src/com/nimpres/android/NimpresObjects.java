@@ -1,7 +1,7 @@
 /**
  * Project:			Nimpres Android Client
  * File name: 		NimpresObjects.java
- * Date modified:	2011-03-18
+ * Date modified:	2011-03-30
  * Description:		Provides a static reference to many of the currently used objectss
  * 
  * License:			Copyright (c) 2010 (Matthew Brooks, Jordan Emmons, William Kong)

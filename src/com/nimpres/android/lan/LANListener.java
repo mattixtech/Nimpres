@@ -1,7 +1,7 @@
 /**
  * Project:			Nimpres Android Client
  * File name: 		LANListener.java
- * Date modified:	2011-03-23
+ * Date modified:	2011-03-30
  * Description:		Listens for updates about a presentation on the LAN
  * 
  * License:			Copyright (c) 2010 (Matthew Brooks, Jordan Emmons, William Kong)
@@ -97,6 +97,7 @@ public class LANListener implements Runnable{
 	                	}
 	                }
 	                recvStatus.setAdvertisementTimestamp(System.currentTimeMillis());
+	                recvStatus.setSource(NimpresSettings.UPDATE_SOURCE_LAN);
 	                advertisingPeers.add(recvStatus); //add peer to list
 	                Log.d("LANListener","Added peer to list");
 	                Log.d("LANListener","Peer List Current Size: "+advertisingPeers.size());
