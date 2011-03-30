@@ -90,11 +90,13 @@ public class LANListener implements Runnable{
 	                
 	                for(int i=0;i<advertisingPeers.size();i++){
 	                	//TODO check each peer's timeout
+	                	//TODO check for own IP address
 	                	if(advertisingPeers.get(i).getPeerIP().equals(inPkt.getRemoteIP())){
 	                		advertisingPeers.remove(i); //check list and remove peer status if already in, so we can update it
 	                		Log.d("LANListener","peer existed, refreshing...");
 	                	}
 	                }
+	                recvStatus.setAdvertisementTimestamp(System.currentTimeMillis());
 	                advertisingPeers.add(recvStatus); //add peer to list
 	                Log.d("LANListener","Added peer to list");
 	                Log.d("LANListener","Peer List Current Size: "+advertisingPeers.size());
