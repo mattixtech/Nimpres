@@ -102,14 +102,16 @@ public class HostPresentation extends Activity {
 			}
 		});
 		 
-			// setup Back button listener
-			Button backButton = (Button) findViewById(R.id.hpBack);
+			// setup Host on the Internet + LAN button listener
+			Button backButton = (Button) findViewById(R.id.hpHostInternet);
 			backButton.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View view) {
-					Intent intent = new Intent();
-					setResult(RESULT_OK, intent);
-					finish();
+					setContentView(R.layout.loading);
+					ImageView loadingImage = (ImageView) findViewById(R.id.loading);
+					loadingImage.setImageResource(R.drawable.loader);
+					Thread load = new Thread(loadTask);
+					load.start();
 				}
 			});
 			// setup Choose File button listener
