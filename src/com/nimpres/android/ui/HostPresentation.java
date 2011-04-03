@@ -110,6 +110,7 @@ public class HostPresentation extends Activity {
 					setContentView(R.layout.loading);
 					ImageView loadingImage = (ImageView) findViewById(R.id.loading);
 					loadingImage.setImageResource(R.drawable.loader);
+					NimpresObjects.hostOnInternet=true;
 					Thread load = new Thread(loadTask);
 					load.start();
 				}
