@@ -1,6 +1,8 @@
 package com.nimpres.android.ui;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -8,6 +10,8 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RemoteViews;
+import android.widget.TextView;
 
 import com.nimpres.R;
 import com.nimpres.android.NimpresObjects;
@@ -16,31 +20,40 @@ import com.nimpres.android.settings.NimpresSettings;
 
 public class JoinPresentation extends Activity {
 	static EditText updateIDBox = null;
-	
-	public static void updateID() {	
-		if(JoinPresentation.updateIDBox != null && NimpresObjects.presentationID > 0)
-			JoinPresentation.updateIDBox.setText(String.valueOf(NimpresObjects.presentationID));
+
+	public static void updateID() {
+		if (JoinPresentation.updateIDBox != null
+				&& NimpresObjects.presentationID > 0)
+			JoinPresentation.updateIDBox.setText(String
+					.valueOf(NimpresObjects.presentationID));
 	}
-	
+
 	private Runnable loadTask = new Runnable() {
 		public void run() {
-			NimpresObjects.currentDPS = new DPS("api", NimpresSettings.UPDATE_SOURCE_INTERNET, NimpresObjects.presentationID, NimpresObjects.presentationPassword, "downloaded", NimpresObjects.ctx);
-			NimpresObjects.currentPresentation = NimpresObjects.currentDPS.getDpsPres();
-			NimpresObjects.currentPresentation.setPresentationID(NimpresObjects.presentationID);
+			NimpresObjects.currentDPS = new DPS("api",
+					NimpresSettings.UPDATE_SOURCE_INTERNET,
+					NimpresObjects.presentationID,
+					NimpresObjects.presentationPassword, "downloaded",
+					NimpresObjects.ctx);
+			NimpresObjects.currentPresentation = NimpresObjects.currentDPS
+					.getDpsPres();
+			NimpresObjects.currentPresentation
+					.setPresentationID(NimpresObjects.presentationID);
 			NimpresObjects.currentlyViewing = true;
-			Intent intent = new Intent(NimpresObjects.ctx,PresentationView.class);
+			Intent intent = new Intent(NimpresObjects.ctx,
+					PresentationView.class);
 			startActivity(intent);
 		}
 	};
-	
+
 	@Override
 	public void onCreate(Bundle created) {
 		super.onCreate(created);
 		setContentView(R.layout.join_presentation);
-		
+
 		updateIDBox = (EditText) findViewById(R.id.jpID);
-		//JoinPresentation.updateIDBox.setText(String.valueOf(NimpresObjects.presentationID));
-		
+		// JoinPresentation.updateIDBox.setText(String.valueOf(NimpresObjects.presentationID));
+
 		// setup Find button listener
 		Button findButton = (Button) findViewById(R.id.jpFind);
 		findButton.setOnClickListener(new OnClickListener() {
@@ -58,28 +71,54 @@ public class JoinPresentation extends Activity {
 			}
 		});
 		// setup Join button listener
-		//TODO grey out join button until presentation id and/or password is filled in
+		// TODO grey out join button until presentation id and/or password is
+		// filled in
 		Button joinButton = (Button) findViewById(R.id.jpJoin);
 		joinButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
 				// TODO join presentation code
-				//Testing Code
-				
-				
-				
+				// Testing Code
+
 				EditText presenterID = (EditText) findViewById(R.id.jpID);
 				EditText presenterPassword = (EditText) findViewById(R.id.jpPassword);
-				NimpresObjects.presentationID = Integer.parseInt(presenterID.getText().toString());
-				NimpresObjects.presentationPassword = presenterPassword.getText().toString();
-				NimpresObjects.updateSource = NimpresSettings.UPDATE_SOURCE_INTERNET;	//TODO should check here to see if it should be LAN
-				
-				setContentView(R.layout.loading);
-				ImageView loadingImage = (ImageView) findViewById(R.id.loading);
-				loadingImage.setImageResource(R.drawable.loader);
-				Thread load = new Thread(loadTask);
-				load.start();
 
+				if (!presenterID.getText().toString().equals("")) {
+					RemoteViews getView = new RemoteViews(NimpresObjects.ctx
+							.getPackageName(), R.layout.join_presentation);
+					getView.setViewVisibility(R.id.jpJoin, View.VISIBLE);
+
+					NimpresObjects.presentationID = Integer
+							.parseInt(presenterID.getText().toString());
+					if (presenterPassword.getText().toString().equals(null)){
+						NimpresObjects.presentationPassword = "";
+					}
+					else {
+						NimpresObjects.presentationPassword = presenterPassword
+						.getText().toString();
+					}
+					NimpresObjects.updateSource = NimpresSettings.UPDATE_SOURCE_INTERNET; // TODO
+																							// should
+																							// check
+																							// here
+																							// to
+																							// see
+																							// if
+																							// it
+																							// should
+																							// be
+																							// LAN
+
+					setContentView(R.layout.loading);
+					ImageView loadingImage = (ImageView) findViewById(R.id.loading);
+					loadingImage.setImageResource(R.drawable.loader);
+					Thread load = new Thread(loadTask);
+					load.start();
+				}
+				else {
+					TextView loginError = (TextView) findViewById(R.id.jpNotice);
+					loginError.setText("You must enter the presentation ID as a minimum");
+				}
 			}
 		});
 		// setup Back button listener
