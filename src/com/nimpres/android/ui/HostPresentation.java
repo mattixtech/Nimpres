@@ -20,6 +20,7 @@ import com.nimpres.android.dps.DPSReader;
 import com.nimpres.android.lan.DPSServer;
 import com.nimpres.android.lan.LANAdvertiser;
 import com.nimpres.android.presentation.Presentation;
+import com.nimpres.android.settings.NimpresSettings;
 import com.nimpres.android.utilities.Utilities;
 import com.nimpres.android.web.APIContact;
 
@@ -28,8 +29,11 @@ public class HostPresentation extends Activity {
 	
 	private Runnable loadTask = new Runnable() {
 		public void run() {
-			String dpsFileName = "tmp_api-download_downloaded";
-			String dpsPath = Utilities.unzip(dpsFileName, "testpres", NimpresObjects.ctx);
+			
+			if(NimpresObjects.hostedPresentationFileName.equals(""))
+				NimpresObjects.hostedPresentationFileName = NimpresSettings.DEFAULT_DPS_FILE;
+			
+			String dpsPath = Utilities.unzip(NimpresObjects.hostedPresentationFileName, "testpres", NimpresObjects.ctx);
 			Presentation hostedPresentation = DPSReader.makePresentation(dpsPath);
 			
 			EditText editTitle = (EditText) findViewById(R.id.hpTitle);
@@ -41,7 +45,7 @@ public class HostPresentation extends Activity {
 			int presID = 0;
 			
 			try {
-				presID = APIContact.createPresentation(URLEncoder.encode(NimpresObjects.presenterName,"UTF-8"), URLEncoder.encode(NimpresObjects.presenterPassword,"UTF-8"), URLEncoder.encode(newTitle,"UTF-8"), URLEncoder.encode(newPassword,"UTF-8"), hostedPresentation.getNumSlides(), dpsFileName);
+				presID = APIContact.createPresentation(URLEncoder.encode(NimpresObjects.presenterName,"UTF-8"), URLEncoder.encode(NimpresObjects.presenterPassword,"UTF-8"), URLEncoder.encode(newTitle,"UTF-8"), URLEncoder.encode(newPassword,"UTF-8"), hostedPresentation.getNumSlides(), NimpresObjects.hostedPresentationFileName);
 			} catch (UnsupportedEncodingException e) {
 				e.printStackTrace();
 			}
@@ -49,7 +53,7 @@ public class HostPresentation extends Activity {
 			
 			Looper.prepare();
 			
-			Thread dpsServer = new Thread(new DPSServer(dpsFileName, NimpresObjects.ctx));
+			Thread dpsServer = new Thread(new DPSServer(NimpresObjects.hostedPresentationFileName, NimpresObjects.ctx));
 			dpsServer.start(); //Start up the DPS Server
 			
 			Thread LANAdvert;
