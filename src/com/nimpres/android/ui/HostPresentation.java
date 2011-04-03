@@ -36,21 +36,23 @@ public class HostPresentation extends Activity {
 			String dpsPath = Utilities.unzip(NimpresObjects.hostedPresentationFileName, "testpres", NimpresObjects.ctx);
 			Presentation hostedPresentation = DPSReader.makePresentation(dpsPath);
 			
-			EditText editTitle = (EditText) findViewById(R.id.hpTitle);
-			EditText editPassword = (EditText) findViewById(R.id.hpPassword);
+			//EditText editTitle = (EditText) findViewById(R.id.hpTitle);
+			//EditText editPassword = (EditText) findViewById(R.id.hpPassword);
 			
-			String newTitle = editTitle.getText().toString();
-			String newPassword = editPassword.getText().toString();
+			String newTitle = NimpresObjects.presentationTitle;
+			String newPassword = NimpresObjects.presentationPassword;
 			
 			int presID = 0;
-			
-			try {
-				presID = APIContact.createPresentation(URLEncoder.encode(NimpresObjects.presenterName,"UTF-8"), URLEncoder.encode(NimpresObjects.presenterPassword,"UTF-8"), URLEncoder.encode(newTitle,"UTF-8"), URLEncoder.encode(newPassword,"UTF-8"), hostedPresentation.getNumSlides(), NimpresObjects.hostedPresentationFileName);
-			} catch (UnsupportedEncodingException e) {
-				e.printStackTrace();
+			if(NimpresObjects.hostOnInternet){
+				try {
+					presID = APIContact.createPresentation(URLEncoder.encode(NimpresObjects.presenterName,"UTF-8"), URLEncoder.encode(NimpresObjects.presenterPassword,"UTF-8"), URLEncoder.encode(newTitle,"UTF-8"), URLEncoder.encode(newPassword,"UTF-8"), hostedPresentation.getNumSlides(), NimpresObjects.hostedPresentationFileName);
+				} catch (UnsupportedEncodingException e) {
+					e.printStackTrace();
+				}
+				hostedPresentation.setPresentationID(presID);
+			}else{
+				hostedPresentation.setPresentationID(1337);
 			}
-			hostedPresentation.setPresentationID(presID);
-			
 			Looper.prepare();
 			
 			Thread dpsServer = new Thread(new DPSServer(NimpresObjects.hostedPresentationFileName, NimpresObjects.ctx));
@@ -85,6 +87,13 @@ public class HostPresentation extends Activity {
 			//TODO code to create a presentation, taking title, password, and file	
 			//TODO checking algorithms for the password and file chosen
 			
+				//Find and store the entred title and password
+				EditText editTitle = (EditText) findViewById(R.id.hpTitle);
+				EditText editPassword = (EditText) findViewById(R.id.hpPassword);
+				
+				NimpresObjects.presentationTitle = editTitle.getText().toString();
+				NimpresObjects.presentationPassword = editPassword.getText().toString();
+				
 				setContentView(R.layout.loading);
 				ImageView loadingImage = (ImageView) findViewById(R.id.loading);
 				loadingImage.setImageResource(R.drawable.loader);

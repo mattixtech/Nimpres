@@ -42,6 +42,7 @@ import android.widget.TextView;
 import com.nimpres.R;
 import com.nimpres.android.NimpresClient;
 import com.nimpres.android.NimpresObjects;
+import com.nimpres.android.presentation.PeerStatus;
 import com.nimpres.android.settings.NimpresSettings;
 import com.nimpres.android.utilities.Utilities;
 import com.nimpres.android.web.APIContact;
@@ -57,20 +58,25 @@ public class PresentationView extends Activity {
 	 */
 	private Runnable viewerUpdateTask = new Runnable() {
 		public void run() {
+			int slideNum = -1;
 			Log.d("PresentationView","Update Tick");
 			if (!NimpresObjects.currentPresentation.isPaused()) {
 				if (Utilities.isOnline(NimpresObjects.ctx)) {
 					//TODO we should do something here to make resuming while on LAN quicker, currently we have to wait for a new status message
-					if(NimpresObjects.updateSource.equals(NimpresSettings.UPDATE_SOURCE_INTERNET)){
-
-						int slideNum = APIContact.getSlideNumber(viewedPresentationID, viewedPresentationPassword);
-						// Make sure slide was not negative (error code -1)
-						if (slideNum >= 0)
-							NimpresObjects.currentPresentation.setCurrentSlide(slideNum); // Update slide number of presentation
+					if(NimpresObjects.updateSource.equals(NimpresSettings.UPDATE_SOURCE_INTERNET))
+						slideNum = APIContact.getSlideNumber(viewedPresentationID, viewedPresentationPassword);						
+					else if(NimpresObjects.updateSource.equals(NimpresSettings.UPDATE_SOURCE_LAN))
+						slideNum = PeerStatus.getLANPresentationByID(viewedPresentationID).getSlideNumber();
+					else{
+						slideNum = 0;
+						Log.d("NimpresClient","could not determine update source for presentation");
 					}
-				} else
-					Log.d("NimpresClient",
-							"internet connection not present, api contact cancelled");
+				}else
+					Log.d("NimpresClient","internet connection not present, api contact cancelled");
+				
+				// Make sure slide was not negative (error code -1)
+				if (slideNum >= 0)
+					NimpresObjects.currentPresentation.setCurrentSlide(slideNum); // Update slide number of presentation
 				updateSlide();
 			}
 			mHandler.postDelayed(this, NimpresSettings.API_PULL_DELAY);

@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.nimpres.R;
 import com.nimpres.android.NimpresObjects;
 import com.nimpres.android.dps.DPS;
+import com.nimpres.android.presentation.PeerStatus;
 import com.nimpres.android.settings.NimpresSettings;
 
 public class JoinPresentation extends Activity {
@@ -30,15 +31,13 @@ public class JoinPresentation extends Activity {
 
 	private Runnable loadTask = new Runnable() {
 		public void run() {
-			NimpresObjects.currentDPS = new DPS("api",
-					NimpresSettings.UPDATE_SOURCE_INTERNET,
-					NimpresObjects.presentationID,
-					NimpresObjects.presentationPassword, "downloaded",
-					NimpresObjects.ctx);
-			NimpresObjects.currentPresentation = NimpresObjects.currentDPS
-					.getDpsPres();
-			NimpresObjects.currentPresentation
-					.setPresentationID(NimpresObjects.presentationID);
+			if(NimpresObjects.updateSource.equals(NimpresSettings.UPDATE_SOURCE_INTERNET))
+				NimpresObjects.currentDPS = new DPS("api", NimpresSettings.UPDATE_SOURCE_INTERNET, NimpresObjects.presentationID, NimpresObjects.presentationPassword, "downloaded", NimpresObjects.ctx);
+			else if(NimpresObjects.updateSource.equals(NimpresSettings.UPDATE_SOURCE_LAN))
+				NimpresObjects.currentDPS = new DPS(PeerStatus.getLANPresentationByID(NimpresObjects.presentationID).getPeerIP().getHostAddress(), NimpresSettings.UPDATE_SOURCE_LAN, NimpresObjects.presentationID, NimpresObjects.presentationPassword, "downloaded", NimpresObjects.ctx);
+			
+			NimpresObjects.currentPresentation = NimpresObjects.currentDPS.getDpsPres();
+			NimpresObjects.currentPresentation.setPresentationID(NimpresObjects.presentationID);
 			NimpresObjects.currentlyViewing = true;
 			Intent intent = new Intent(NimpresObjects.ctx,
 					PresentationView.class);
