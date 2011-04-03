@@ -35,10 +35,12 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.nimpres.R;
+import com.nimpres.android.NimpresClient;
 import com.nimpres.android.NimpresObjects;
 import com.nimpres.android.presentation.PeerStatus;
 import com.nimpres.android.settings.NimpresSettings;
@@ -82,9 +84,8 @@ public class PresentationView extends Activity {
 	};
 
 	public void leave() {
-		Intent intent = new Intent();
-		setResult(RESULT_OK, intent);
-		finish();
+		Intent launchview = new Intent(NimpresObjects.ctx,NimpresClient.class);
+		startActivity(launchview);
 	}
 
 	/**
@@ -98,7 +99,6 @@ public class PresentationView extends Activity {
 		setContentView(R.layout.presentation_viewer);
 		viewedPresentationID = NimpresObjects.presentationID;
 		viewedPresentationPassword = NimpresObjects.presentationPassword;		
-		
 		if (NimpresObjects.currentPresentation.getNumSlides() > 0) {
 			mHandler.removeCallbacks(viewerUpdateTask);
 			mHandler.postDelayed(viewerUpdateTask, 1);
