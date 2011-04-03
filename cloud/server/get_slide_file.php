@@ -36,7 +36,7 @@ $pid = $_GET['pres_id'];
 $pres_pass = $_GET['pres_password'];
 $slide_num = $_GET['slide_num'];
 
-if (!empty($pid) && !empty($user) && !empty($password) && $pres_pass === PresentationBO::getPresPass($pid) && userBO::validateLogin($user, $password)){
+if (!empty($pid) && !empty($user) && isset($_GET['pres_password']) && !empty($password) && $pres_pass === PresentationBO::getPresPass($pid) && userBO::validateLogin($user, $password)){
 	$filename=PresentationBO::getFilenameByID($pid, $slide_num);
 	
 	if (!empty($filename)){

@@ -34,6 +34,30 @@ function listByHost(){
 	}
 }
 
+function validatePass(pid, title){
+	var pres_pass = $("#pres_pass").val();
+	var outputText = "";
+	
+	$.ajax({//Perform the Ajax get query
+		  type: 'POST',
+		  url: "http://api.nimpres.com/validate_pres_pass.php",
+		  dataType: "text",
+		  data: {
+			  	pres_id: pid,
+			  	pres_password: pres_pass,
+			},
+		  success: function(data){
+			  if ((data)== 'OK')
+				  outputText += "<p><a href='http://api.nimpres.com/testing/pres_display.php?pres_id="+pid+"&title="+title+"&pres_password="+pres_pass+"'><strong>Your Presentation is ready!</a></strong></p><br/>";
+			  else
+				  outputText += "<p><strong>Incorrect Password...</strong></p><br/>";
+			  
+			  $("#outputText").html(outputText);
+		  }
+			
+	});	
+}
+
 function ajaxListPres(host){
 		
 	var outputText = "";
@@ -61,7 +85,7 @@ function ajaxListPres(host){
 					updated_time = $(this).find('updated_time').text();
 					status = $(this).find('status').text();
 					over = $(this).find('over').text();
-					outputText += "<p><a href='http://api.nimpres.com/testing/pres_display.php?pres_id="+pid+"'><strong>"+title+"</a></strong></p><br/>";
+					outputText += "<p><a href='http://api.nimpres.com/testing/pres_auth.php?pres_id="+pid+"&title="+title+"'><strong>"+title+"</a></strong></p><br/>";
 				});
 				$("#loading").hide();
 				$("#output_list").show();
