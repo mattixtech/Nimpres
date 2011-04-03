@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-	<item android:id="@+id/pvmPause" android:icon="@drawable/h72"
+	<item android:id="@+id/pvmPause" android:icon="@drawable/pauseplay"
 		android:title="Pause" />
 <!--  	<item android:id="@+id/pvmResume" android:icon="@drawable/h72"
 		android:title="Resume" /> -->
-	<item android:id="@+id/pvmLeave" android:icon="@drawable/h72"
+	<item android:id="@+id/pvmLeave" android:icon="@drawable/leave"
 		android:title="Leave" />
-	<item android:id="@+id/pvmBack" android:icon="@drawable/h72"
+	<item android:id="@+id/pvmBack" android:icon="@drawable/back"
 		android:title="Back" />
-	<item android:id="@+id/pvmNext" android:icon="@drawable/h72"
+	<item android:id="@+id/pvmNext" android:icon="@drawable/next"
 		android:title="Next" />	
-	<item android:id="@+id/pvmJump" android:icon="@drawable/h72"
+	<item android:id="@+id/pvmJump" android:icon="@drawable/jump"
 		android:title="Jump" />
 </menu>

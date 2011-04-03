@@ -39,14 +39,17 @@ import com.nimpres.android.presentation.Presentation;
 public class NimpresObjects {
 	public static DPS currentDPS;
 	public static Presentation currentPresentation;
+	public static String hostedPresentationFileName = "";
 	public static Context ctx;
 	public static Handler messagingThread = new Handler();
 	
 	public static String loadType = "";
 	public static boolean finishedLoading = false;
 	
+	public static String presentationTitle = "";
 	public static int presentationID = 0;
 	public static String presentationPassword = "";
+	
 	
 	public static boolean currentlyViewing = false;
 	public static boolean currentlyPresenting = false;

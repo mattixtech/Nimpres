@@ -1,5 +1,4 @@
 Pending Features / Bugs
-=======================
 
 =======================
 Pending
@@ -12,6 +11,10 @@ Android Client:
 		- Login to account (Unimplemented)
 		- Creating new DPS Presentation from scratch (Unimplemented)
 		- Deleting presentation from cloud (Unimplemented)
+	
+	Joining
+		- Improper presentation password (Bug #002)
+		- Improper presentation ID (Bug #003)
 		
 	Viewer
 		- Jump to slide (Unimplemented)
@@ -29,5 +32,6 @@ Server API:
 =======================	
 Bugs
 =======================
-#001 : Leaving a presentation currently does not end the presentation it just changes views.
-#002 : 
+#001 : Leaving a presentation currently does not end the presentation it just changes views
+#002 : Joining a presentation using the wrong password currently causes a crash
+#003 : Joining a presentation using the wrong ID currently causes a crash
