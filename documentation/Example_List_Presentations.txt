@@ -3,6 +3,7 @@
 	<user>WinTest</user>
 		<presentation number="1">
 			<title>Cars</title>
+			<id>12</id>
 			<created>1296269077</created>
 			<length>12</length>
 			<size>1024Bytes</size>

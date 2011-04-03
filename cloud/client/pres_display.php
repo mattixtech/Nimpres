@@ -1,16 +1,19 @@
+<?php
+$pid = $_GET['pres_id'];
+?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Testing Page</title>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
-<script type="text/javascript" src="scripts/testing.js"></script>
+<script type="text/javascript" src="scripts/pres_display.js"></script>
 
 <script type="text/javascript">
 
 $(document).ready(function()
 {
-	var t=setInterval("getSlideNum()",2000);
+	var t=setInterval("getSlideNum(<?php echo $pid; ?>)",2000);
 }
 );
 
@@ -19,13 +22,6 @@ $(document).ready(function()
 <body>
 
 <img src="" id="slide" />
-
-<form>
-User ID: <input type="text" name="user_id" /><br />
-Password: <input type="text" name="user_pass" /><br />
-Presentation ID: <input type="text" name="pres_id" /><br />
-Presentation Password: <input type="text" name="pres_pass" /><br />
-</form>
 
 </body>
 </html>

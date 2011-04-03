@@ -39,31 +39,37 @@ function ajaxListPres(host){
 	var outputText = "";
 	var count = 0;
 	$.ajax({//Perform the Ajax get query
-	  type: 'GET',
+	  type: 'POST',
 	  url: "http://api.nimpres.com/list_presentations.php",
 	  dataType: "xml",
+	  data: {
+		  	user_id: "test",
+		  	user_password: "test1234",
+		  	user_search: host,
+		},
 	  success: function(xml){		  
 		$(xml).find('presentations').each(function(){
-			$(this).find('user').each(function(){
+			$(this).find('presentation_user').each(function(){});
 				$(this).find('presentation').each(function(){
 					count++;
-					pid =  $(this).find('id').text();
 					title = $(this).find('title').text();
+					pid =  $(this).find('id').text();
 					created = $(this).find('created').text();
-					date = new Date(timestamp*1000);
-					email = $(this).find('comment_email').text();
-					comment_data = $(this).find('comment_data').text();
-					<a href="url">Link text</a>
-					outputText += "<p><span class='commName'><strong>"+name+"</strong></span> says: <br/><br/>"+comment_data+"<br/><br/><strong>Posted: "+date+"</strong></p><br/>"
+					length = $(this).find('length').text();
+					size = $(this).find('size').text();
+					slide_num = $(this).find('slide_num').text();
+					updated_time = $(this).find('updated_time').text();
+					status = $(this).find('status').text();
+					over = $(this).find('over').text();
+					outputText += "<p><a href='http://api.nimpres.com/testing/pres_display.php?pres_id="+pid+"'><strong>"+title+"</a></strong></p><br/>";
 				});
+				$("#loading").hide();
+				$("#output_list").show();
+				$("#output_list").html(outputText);
 				
-				outputText +='<span class="numcomment"># of Comments: <span class="normal">'+count+'</span></span>';
-				$("#labComments").html(outputText);
 			
-			
-		});
-	  }   
-	});
+	  });   
+	}
 		
-}
+	});
 }
