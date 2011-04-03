@@ -39,6 +39,7 @@ import org.w3c.dom.NodeList;
 
 import android.util.Log;
 
+import com.nimpres.android.NimpresObjects;
 import com.nimpres.android.lan.UDPMessage;
 import com.nimpres.android.settings.NimpresSettings;
 import com.nimpres.android.web.APIContact;
@@ -88,6 +89,24 @@ public class PeerStatus {
 		}else
 			return null;	//None found		
 		return internetPresentations;
+	}
+	
+	/**
+	 * Returns the requested status if it exists based on the presentation ID
+	 * @param id
+	 * @return
+	 */
+	public static PeerStatus getLANPresentationByID(int id){
+		
+		for(int i=0;i<NimpresObjects.peerPresentations.size();i++){
+			PeerStatus thisStatus = NimpresObjects.peerPresentations.get(i);
+			if(thisStatus.presentationID == id){
+				Log.d("PeerStatus","found requested status for id:"+id);
+				return thisStatus;
+			}
+		}
+		
+		return null;
 	}
 	
 	
