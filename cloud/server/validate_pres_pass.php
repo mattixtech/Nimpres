@@ -1,9 +1,9 @@
 <?php
 /**
  * Project:			Nimpres Server API
- * File name: 		get_slide_num.php
- * Date modified:	2011-03-17
- * Description:		Retrieves the current slide number of a presentation identified by the pid
+ * File name: 		validate_pres_pass.php
+ * Date modified:	2011-04-03
+ * Description:		Authenticates a presentation password for a specific presentation
  * 
  * License:			Copyright (c) 2011 (Matthew Brooks, Jordan Emmons, William Kong)
 					
@@ -33,10 +33,9 @@ require_once('./includes/init.php');
 $pid = $_POST['pres_id'];
 $pres_pass = $_POST['pres_password'];
 
-if (!empty($pid) && isset($_POST['pres_password']) && $pres_pass === PresentationBO::getPresPass($pid)){
-		echo PresentationBO::getSlideNum($pid);
+if (!empty($pid) && $pres_pass === PresentationBO::getPresPass($pid)){
+	echo 'OK';
 }
-else 
+else
 	echo 'FAIL';
-
 ?>

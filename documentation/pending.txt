@@ -26,12 +26,15 @@ Android Client:
 		- Ending presentation notification to currently connected clients (Unimplemented)
 
 AJAX Client:
-
+	Presentation Viewing
+		- Some presentations may be mis-ordered (Bug #004)
 Server API:
-
+	Presentation Creation
+		- Presentations with more than 9 slides will be mis-ordered (Bug #004)
 =======================	
 Bugs
 =======================
 #001 : Leaving a presentation currently does not end the presentation it just changes views
 #002 : Joining a presentation using the wrong password currently causes a crash
 #003 : Joining a presentation using the wrong ID currently causes a crash
+#004 : The presentation creation function does not currently examine the metafile to order its output, it instead reads in alphabetical order and outputs in that same order
