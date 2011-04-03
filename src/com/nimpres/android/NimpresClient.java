@@ -86,10 +86,10 @@ public class NimpresClient extends Activity {
 	 * 
 	 */
 	public static void startup(){
-		testAdvertising();
+		//testAdvertising();
 		//Startup the LAN listener thread
-		Thread LANListen = new Thread(new LANListener());
-		LANListen.start();
+		//Thread LANListen = new Thread(new LANListener());
+		//LANListen.start();
 	}
 	
 	/** Called when the activity is first created. */

@@ -46,6 +46,7 @@ public class NimpresObjects {
 	public static String loadType = "";
 	public static boolean finishedLoading = false;
 	
+	public static String presentationTitle = "";
 	public static int presentationID = 0;
 	public static String presentationPassword = "";
 	
