@@ -51,7 +51,12 @@ public class HostPresentation extends Activity {
 				}
 				hostedPresentation.setPresentationID(presID);
 			}else{
-				hostedPresentation.setPresentationID(1337);
+				//Set their ID to their current IP Address, should be unique on the network
+				String addressID = Utilities.getLocalIpAddress();
+				addressID = addressID.substring(addressID.indexOf("."));
+				addressID = addressID.replace(".", "");
+				addressID = addressID.trim();
+				hostedPresentation.setPresentationID(Integer.parseInt(addressID));
 			}
 			Looper.prepare();
 			
