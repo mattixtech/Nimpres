@@ -36,4 +36,34 @@ function listByHost(){
 
 function ajaxListPres(host){
 		
+	var outputText = "";
+	var count = 0;
+	$.ajax({//Perform the Ajax get query
+	  type: 'GET',
+	  url: "http://api.nimpres.com/list_presentations.php",
+	  dataType: "xml",
+	  success: function(xml){		  
+		$(xml).find('presentations').each(function(){
+			$(this).find('user').each(function(){
+				$(this).find('presentation').each(function(){
+					count++;
+					pid =  $(this).find('id').text();
+					title = $(this).find('title').text();
+					created = $(this).find('created').text();
+					date = new Date(timestamp*1000);
+					email = $(this).find('comment_email').text();
+					comment_data = $(this).find('comment_data').text();
+					<a href="url">Link text</a>
+					outputText += "<p><span class='commName'><strong>"+name+"</strong></span> says: <br/><br/>"+comment_data+"<br/><br/><strong>Posted: "+date+"</strong></p><br/>"
+				});
+				
+				outputText +='<span class="numcomment"># of Comments: <span class="normal">'+count+'</span></span>';
+				$("#labComments").html(outputText);
+			
+			
+		});
+	  }   
+	});
+		
+}
 }

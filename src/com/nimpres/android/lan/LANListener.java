@@ -34,6 +34,7 @@ import android.util.Log;
 import com.nimpres.android.NimpresObjects;
 import com.nimpres.android.presentation.PeerStatus;
 import com.nimpres.android.settings.NimpresSettings;
+import com.nimpres.android.utilities.Utilities;
 
 public class LANListener implements Runnable{
 	
@@ -98,7 +99,8 @@ public class LANListener implements Runnable{
 	                }
 	                recvStatus.setAdvertisementTimestamp(System.currentTimeMillis());
 	                recvStatus.setSource(NimpresSettings.UPDATE_SOURCE_LAN);
-	                advertisingPeers.add(recvStatus); //add peer to list
+	                if( ! recvStatus.getPeerIP().getHostAddress().equals(Utilities.getLocalIpAddress())) //Check to make sure this is not originating from ourselves
+	                	advertisingPeers.add(recvStatus); //add peer to list
 	                Log.d("LANListener","Added peer to list");
 	                Log.d("LANListener","Peer List Current Size: "+advertisingPeers.size());
 				}else

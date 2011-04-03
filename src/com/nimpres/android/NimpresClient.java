@@ -26,6 +26,8 @@
  */
 package com.nimpres.android;
 
+import java.io.IOException;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -36,12 +38,15 @@ import android.widget.Button;
 
 import com.nimpres.R;
 import com.nimpres.android.lan.DPSServer;
+import com.nimpres.android.lan.LANAdvertiser;
 import com.nimpres.android.lan.LANListener;
 import com.nimpres.android.presentation.PeerStatus;
+import com.nimpres.android.presentation.Presentation;
 import com.nimpres.android.ui.ExistingAccount;
 import com.nimpres.android.ui.HostPresentation;
 import com.nimpres.android.ui.JoinPresentation;
 import com.nimpres.android.ui.Settings;
+import com.nimpres.android.utilities.Utilities;
 import com.nimpres.android.web.APIContact;
 
 public class NimpresClient extends Activity {
@@ -62,12 +67,26 @@ public class NimpresClient extends Activity {
 	public static void testLoginAPI() {
 		APIContact.validateLogin("Jordan", "testing");
 	}
-
+	
+	public static void testAdvertising(){
+		Presentation pres = new Presentation();
+		pres.setTitle("LAN Test Presentation");
+		pres.setCurrentSlide(5);
+		pres.setPresentationID(500);
+		try {
+			Thread LANAdvert = new Thread(new LANAdvertiser(pres,Utilities.getBroadcastAddress(NimpresObjects.ctx)));
+			LANAdvert.start();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	
 	/**
 	 * 
 	 */
 	public static void startup(){
+		testAdvertising();
 		//Startup the LAN listener thread
 		Thread LANListen = new Thread(new LANListener());
 		LANListen.start();

@@ -70,6 +70,7 @@ public class NimpresSettings {
      * Settings
      */
     public static final String METAFILE_NAME = "meta-inf.xml";
+    public static final String DEFAULT_DPS_FILE = "tmp_api-download_downloaded";
 	public static final String PEER_BROADCAST_ADDRESS = "255.255.255.255";
 	public static final int SERVER_QUE_SIZE = 32;
 	public static final String API_DOWNLOAD_PREFIX = "tmp_api-download_";
