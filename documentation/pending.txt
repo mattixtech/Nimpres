@@ -1,2 +1,33 @@
 Pending Features / Bugs
 =======================
+
+=======================
+Pending
+=======================
+
+Android Client:
+	General
+		- Settings manager (Unimplemented)
+		- Account creation (Unimplemented)
+		- Login to account (Unimplemented)
+		- Creating new DPS Presentation from scratch (Unimplemented)
+		- Deleting presentation from cloud (Unimplemented)
+		
+	Viewer
+		- Jump to slide (Unimplemented)
+		- Leave presentation (Bug #001)
+		- Note viewing (Unimplemented)
+	
+	Hosting
+		- Stats (Unimplemented)
+		- Ending presentation notification to currently connected clients (Unimplemented)
+
+AJAX Client:
+
+Server API:
+
+=======================	
+Bugs
+=======================
+#001 : Leaving a presentation currently does not end the presentation it just changes views.
+#002 : 
