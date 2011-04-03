@@ -94,17 +94,7 @@ public class JoinPresentation extends Activity {
 						.getText().toString();
 						//TODO add password checking method
 					}
-					NimpresObjects.updateSource = NimpresSettings.UPDATE_SOURCE_INTERNET; // TODO
-																							// should
-																							// check
-																							// here
-																							// to
-																							// see
-																							// if
-																							// it
-																							// should
-																							// be
-																							// LAN
+
 
 					setContentView(R.layout.loading);
 					ImageView loadingImage = (ImageView) findViewById(R.id.loading);
