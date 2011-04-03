@@ -74,6 +74,15 @@ public class HostPresentation extends Activity {
 		}
 	};
 	
+	public void populateHostedTitleAndPassword(){
+		//Find and store the entred title and password
+		EditText editTitle = (EditText) findViewById(R.id.hpTitle);
+		EditText editPassword = (EditText) findViewById(R.id.hpPassword);
+		
+		NimpresObjects.presentationTitle = editTitle.getText().toString();
+		NimpresObjects.presentationPassword = editPassword.getText().toString();
+	}
+	
 	@Override
 	public void onCreate(Bundle created) {
 		super.onCreate(created);
@@ -84,16 +93,7 @@ public class HostPresentation extends Activity {
 		 hostButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
-			//TODO code to create a presentation, taking title, password, and file	
-			//TODO checking algorithms for the password and file chosen
-			
-				//Find and store the entred title and password
-				EditText editTitle = (EditText) findViewById(R.id.hpTitle);
-				EditText editPassword = (EditText) findViewById(R.id.hpPassword);
-				
-				NimpresObjects.presentationTitle = editTitle.getText().toString();
-				NimpresObjects.presentationPassword = editPassword.getText().toString();
-				
+				populateHostedTitleAndPassword();				
 				setContentView(R.layout.loading);
 				ImageView loadingImage = (ImageView) findViewById(R.id.loading);
 				loadingImage.setImageResource(R.drawable.loader);
@@ -103,10 +103,11 @@ public class HostPresentation extends Activity {
 		});
 		 
 			// setup Host on the Internet + LAN button listener
-			Button backButton = (Button) findViewById(R.id.hpHostInternet);
-			backButton.setOnClickListener(new OnClickListener() {
+			Button hostInternetButton = (Button) findViewById(R.id.hpHostInternet);
+			hostInternetButton.setOnClickListener(new OnClickListener() {
 				@Override
-				public void onClick(View view) {
+				public void onClick(View view) {					
+					populateHostedTitleAndPassword();					
 					setContentView(R.layout.loading);
 					ImageView loadingImage = (ImageView) findViewById(R.id.loading);
 					loadingImage.setImageResource(R.drawable.loader);
