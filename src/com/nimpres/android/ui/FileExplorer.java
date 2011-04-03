@@ -7,6 +7,7 @@ import java.util.List;
 import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -68,7 +69,7 @@ public class FileExplorer extends ListActivity {
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 
 		File file = new File(path.get(position));
-
+		
 		if (file.isDirectory()) {
 			if (file.canRead())
 				getDir(path.get(position));
@@ -89,6 +90,7 @@ public class FileExplorer extends ListActivity {
 								}).show();
 			}
 		} else {
+			NimpresObjects.hostedPresentationFileName = file.getName();
 			new AlertDialog.Builder(this)
 					.setIcon(R.drawable.icon)
 					.setTitle("[" + file.getName() + "]")
@@ -98,9 +100,14 @@ public class FileExplorer extends ListActivity {
 								@Override
 								public void onClick(DialogInterface dialog,
 										int which) {
+									HostPresentation.updateFileName();
 									dialog.dismiss();
+									Intent intent = new Intent();
+									setResult(RESULT_OK, intent);
+									finish();
 								}
 							}).show();
 		}
+
 	}
 }

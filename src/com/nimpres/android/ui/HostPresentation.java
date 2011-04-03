@@ -13,6 +13,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.nimpres.R;
 import com.nimpres.android.NimpresObjects;
@@ -26,6 +27,12 @@ import com.nimpres.android.web.APIContact;
 
 public class HostPresentation extends Activity {
 	
+	static TextView updateFileText = null;
+
+	public static void updateFileName() {
+		if (HostPresentation.updateFileText != null) {
+			HostPresentation.updateFileText.setText("Current File loaded: " + NimpresObjects.hostedPresentationFileName );
+	}}
 	
 	private Runnable loadTask = new Runnable() {
 		public void run() {
@@ -35,9 +42,6 @@ public class HostPresentation extends Activity {
 			
 			String dpsPath = Utilities.unzip(NimpresObjects.hostedPresentationFileName, "testpres", NimpresObjects.ctx);
 			Presentation hostedPresentation = DPSReader.makePresentation(dpsPath);
-			
-			//EditText editTitle = (EditText) findViewById(R.id.hpTitle);
-			//EditText editPassword = (EditText) findViewById(R.id.hpPassword);
 			
 			String newTitle = NimpresObjects.presentationTitle;
 			String newPassword = NimpresObjects.presentationPassword;
@@ -79,26 +83,38 @@ public class HostPresentation extends Activity {
 		super.onCreate(created);
 		setContentView(R.layout.host_presentation);
 		
+		updateFileText = (TextView) findViewById(R.id.hpFileName);
+		
 		// setup Host button listener
 		 Button hostButton = (Button) findViewById(R.id.hpHost);
 		 hostButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
-			//TODO code to create a presentation, taking title, password, and file	
-			//TODO checking algorithms for the password and file chosen
-			
-				//Find and store the entred title and password
+				EditText presentationTitle = (EditText) findViewById(R.id.hpTitle);
+				if (presentationTitle.getText().toString().equals("")) {
+					TextView hostingError = (TextView) findViewById(R.id.hpNotice);
+					hostingError.setText("You must enter a Presentation Title as a minimum");
+				} else {			
+				//Find and store the entered title and password
 				EditText editTitle = (EditText) findViewById(R.id.hpTitle);
 				EditText editPassword = (EditText) findViewById(R.id.hpPassword);
 				
 				NimpresObjects.presentationTitle = editTitle.getText().toString();
-				NimpresObjects.presentationPassword = editPassword.getText().toString();
+				if (editPassword.getText().toString().equals(null)){
+					NimpresObjects.presentationPassword = "";
+				}
+				else {
+					NimpresObjects.presentationPassword = editPassword
+					.getText().toString();
+					//TODO add password checking method
+				}
 				
 				setContentView(R.layout.loading);
 				ImageView loadingImage = (ImageView) findViewById(R.id.loading);
 				loadingImage.setImageResource(R.drawable.loader);
 				Thread load = new Thread(loadTask);
 				load.start();
+				}
 			}
 		});
 		 
@@ -107,12 +123,32 @@ public class HostPresentation extends Activity {
 			backButton.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View view) {
-					setContentView(R.layout.loading);
-					ImageView loadingImage = (ImageView) findViewById(R.id.loading);
-					loadingImage.setImageResource(R.drawable.loader);
-					NimpresObjects.hostOnInternet=true;
-					Thread load = new Thread(loadTask);
-					load.start();
+					EditText presentationTitle = (EditText) findViewById(R.id.hpTitle);
+					if (presentationTitle.getText().toString().equals("")) {
+						TextView hostingError = (TextView) findViewById(R.id.hpNotice);
+						hostingError.setText("You must enter a Presentation Title as a minimum");
+					} else {
+						//Find and store the entered title and password
+						EditText editTitle = (EditText) findViewById(R.id.hpTitle);
+						EditText editPassword = (EditText) findViewById(R.id.hpPassword);
+						
+						NimpresObjects.presentationTitle = editTitle.getText().toString();
+						
+						if (editPassword.getText().toString().equals(null)){
+							NimpresObjects.presentationPassword = "";
+						}
+						else {
+							NimpresObjects.presentationPassword = editPassword
+							.getText().toString();
+							//TODO add password checking method
+						}
+						setContentView(R.layout.loading);
+						ImageView loadingImage = (ImageView) findViewById(R.id.loading);
+						loadingImage.setImageResource(R.drawable.loader);
+						NimpresObjects.hostOnInternet=true;
+						Thread load = new Thread(loadTask);
+						load.start();
+					}
 				}
 			});
 			// setup Choose File button listener

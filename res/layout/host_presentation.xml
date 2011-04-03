@@ -13,9 +13,9 @@
 <EditText android:layout_height="wrap_content" android:id="@+id/hpTitle" android:text="" android:layout_width="match_parent"></EditText>
 <TextView android:text="Password: " android:id="@+id/hpPasswordLabel" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
 <EditText android:layout_height="wrap_content" android:id="@+id/hpPassword" android:text="" android:layout_width="match_parent"></EditText>
-<TextView android:text="File: " android:id="@+id/hpFileName" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+<TextView android:text="Current File Loaded: " android:id="@+id/hpFileName" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
 <Button android:layout_width="wrap_content" android:id="@+id/hpChooseFile" android:text="Choose File" android:layout_height="wrap_content"></Button>
 <Button android:text="Host : LAN+Web" android:id="@+id/hpHostInternet" android:layout_width="wrap_content" android:layout_height="wrap_content"></Button>
 <Button android:text="Host : LAN" android:id="@+id/hpHost" android:layout_width="wrap_content" android:layout_height="wrap_content"></Button>
-<Button android:text="Button" android:layout_height="wrap_content" android:id="@+id/button1" android:layout_width="wrap_content"></Button>
+<TextView android:text="" android:id="@+id/hpNotice" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
 </LinearLayout>

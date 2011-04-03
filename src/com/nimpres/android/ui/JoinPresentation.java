@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -20,7 +21,7 @@ import com.nimpres.android.presentation.PeerStatus;
 import com.nimpres.android.settings.NimpresSettings;
 
 public class JoinPresentation extends Activity {
-	static EditText updateIDBox = null;
+	static TextView updateIDBox = null;
 
 	public static void updateID() {
 		if (JoinPresentation.updateIDBox != null
@@ -50,7 +51,7 @@ public class JoinPresentation extends Activity {
 		super.onCreate(created);
 		setContentView(R.layout.join_presentation);
 
-		updateIDBox = (EditText) findViewById(R.id.jpID);
+		updateIDBox = (TextView) findViewById(R.id.jpID);
 		// JoinPresentation.updateIDBox.setText(String.valueOf(NimpresObjects.presentationID));
 
 		// setup Find button listener
@@ -77,16 +78,12 @@ public class JoinPresentation extends Activity {
 			@Override
 			public void onClick(View view) {
 				// TODO join presentation code
-				// Testing Code
 
-				EditText presenterID = (EditText) findViewById(R.id.jpID);
+				TextView presenterID = (TextView) findViewById(R.id.jpID);
 				EditText presenterPassword = (EditText) findViewById(R.id.jpPassword);
 
 				if (!presenterID.getText().toString().equals("")) {
-					RemoteViews getView = new RemoteViews(NimpresObjects.ctx
-							.getPackageName(), R.layout.join_presentation);
-					getView.setViewVisibility(R.id.jpJoin, View.VISIBLE);
-
+						
 					NimpresObjects.presentationID = Integer
 							.parseInt(presenterID.getText().toString());
 					if (presenterPassword.getText().toString().equals(null)){
@@ -95,6 +92,7 @@ public class JoinPresentation extends Activity {
 					else {
 						NimpresObjects.presentationPassword = presenterPassword
 						.getText().toString();
+						//TODO add password checking method
 					}
 					NimpresObjects.updateSource = NimpresSettings.UPDATE_SOURCE_INTERNET; // TODO
 																							// should

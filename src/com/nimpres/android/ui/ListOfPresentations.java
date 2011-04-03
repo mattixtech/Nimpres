@@ -39,6 +39,7 @@ public class ListOfPresentations extends ListActivity {
 				Log.d("ListOfPresentations", "search clicked");
 				EditText presenterID = (EditText) findViewById(R.id.lopPresenterID);
 				String presenterIDString = presenterID.getText().toString();
+				item.clear();
 				Log.d("ListOfPresentations", "presenter searching: "
 						+ presenterIDString);
 				Log.d("ListOfPresentations", "peer list size: "

@@ -11,7 +11,7 @@
     />
 <Button android:layout_width="wrap_content" android:id="@+id/jpFind" android:text="Find Presentation" android:layout_height="wrap_content"></Button>
 <TextView android:layout_width="wrap_content" android:text="Presentation ID: " android:id="@+id/jpPresentationID" android:layout_height="wrap_content"></TextView>
-<EditText android:layout_height="wrap_content" android:id="@+id/jpID" android:text="" android:layout_width="match_parent"></EditText>
+<TextView android:layout_height="wrap_content" android:id="@+id/jpID" android:text="" android:layout_width="match_parent"></TextView>
 <TextView android:text="Password:" android:id="@+id/jpPasswordField" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
 <EditText android:layout_width="match_parent" android:text="" android:id="@+id/jpPassword" android:layout_height="wrap_content"></EditText>
 <ListView android:layout_height="wrap_content" android:id="@+id/jpList" android:layout_width="match_parent"></ListView>
