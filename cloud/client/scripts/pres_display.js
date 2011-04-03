@@ -1,5 +1,4 @@
-function getSlideNum() {
-	var pres_id="73";
+function getSlideNum(pres_id) {
 	lastResponse = "0";
 	$.ajax({//Perform the Ajax get query
 		type: 'POST',
