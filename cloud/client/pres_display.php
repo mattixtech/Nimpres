@@ -45,7 +45,7 @@ body {
 
 $(document).ready(function()
 {
-	var t=setInterval("getSlideNum(<?php echo $pid;?>,'<?php echo $pres_pass;?>')",2000);
+	var t=setInterval("getSlideNum(<?php echo $pid;?>,'<?php echo $pres_pass;?>')",500);
 }
 );
 
@@ -60,6 +60,10 @@ $(document).ready(function()
 	</div>
 
 <img src="" id="slide" />
+<img src="" id="preload_1" style="display:none;"/>
+<img src="" id="preload_2" style="display:none;"/>
+<img src="" id="preload_3" style="display:none;"/>
+<img src="" id="preload_4" style="display:none;"/>
     
 </div>
 </body>
