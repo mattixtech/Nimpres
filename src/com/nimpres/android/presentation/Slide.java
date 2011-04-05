@@ -31,12 +31,13 @@ public class Slide {
 	private int slideNumber = 0;
 	private String slideComments = "";
 	private String slideTitle = "";
-	
+
 	/**
 	 * 
 	 */
-	public Slide(){}
-	
+	public Slide() {
+	}
+
 	/**
 	 * 
 	 * @param fileName
@@ -44,13 +45,12 @@ public class Slide {
 	 * @param slideComments
 	 * @param slideTitle
 	 */
-	public Slide(String fileName, int slideNumber, String slideComments, String slideTitle){
+	public Slide(String fileName, int slideNumber, String slideComments, String slideTitle) {
 		this.fileName = fileName;
 		this.slideNumber = slideNumber;
 		this.slideComments = slideComments;
 		this.slideTitle = slideTitle;
 	}
-
 
 	/**
 	 * @return the fileName
@@ -59,14 +59,12 @@ public class Slide {
 		return fileName;
 	}
 
-
 	/**
 	 * @return the slideComments
 	 */
 	public String getSlideComments() {
 		return slideComments;
 	}
-
 
 	/**
 	 * @return the slideNumber
@@ -75,7 +73,6 @@ public class Slide {
 		return slideNumber;
 	}
 
-
 	/**
 	 * @return the slideTitle
 	 */
@@ -83,33 +80,33 @@ public class Slide {
 		return slideTitle;
 	}
 
-
 	/**
-	 * @param fileName the fileName to set
+	 * @param fileName
+	 *            the fileName to set
 	 */
 	public void setFileName(String fileName) {
 		this.fileName = fileName;
 	}
 
-
 	/**
-	 * @param slideComments the slideComments to set
+	 * @param slideComments
+	 *            the slideComments to set
 	 */
 	public void setSlideComments(String slideComments) {
 		this.slideComments = slideComments;
 	}
 
-
 	/**
-	 * @param slideNumber the slideNumber to set
+	 * @param slideNumber
+	 *            the slideNumber to set
 	 */
 	public void setSlideNumber(int slideNumber) {
 		this.slideNumber = slideNumber;
 	}
 
-
 	/**
-	 * @param slideTitle the slideTitle to set
+	 * @param slideTitle
+	 *            the slideTitle to set
 	 */
 	public void setSlideTitle(String slideTitle) {
 		this.slideTitle = slideTitle;

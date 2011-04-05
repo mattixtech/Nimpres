@@ -51,37 +51,37 @@ public class DPSReader {
 	 * @param dpsPath
 	 * @return
 	 */
-	public static Presentation makePresentation(String dpsPath){
+	public static Presentation makePresentation(String dpsPath) {
 		File metaFile;
 		Presentation presCreated = null;
-		//TODO create a default meta information if there is none?
-		if( ! dpsPath.equals("")){
-			metaFile = new File(dpsPath +File.separator+NimpresSettings.METAFILE_NAME);
-			Log.d("DPSReader","attempting to create presentation from: "+metaFile);
-		}else{
+		// TODO create a default meta information if there is none?
+		if (!dpsPath.equals("")) {
+			metaFile = new File(dpsPath + File.separator + NimpresSettings.METAFILE_NAME);
+			Log.d("DPSReader", "attempting to create presentation from: " + metaFile);
+		}
+		else {
 			return null;
 		}
-		
-		
-		if(metaFile.exists()){
+
+		if (metaFile.exists()) {
 			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-			
-			try{
-				Log.d("DPSReader","parsing metafile");
+
+			try {
+				Log.d("DPSReader", "parsing metafile");
 				DocumentBuilder db = dbf.newDocumentBuilder();
 				Document doc = db.parse(metaFile);
 				doc.getDocumentElement().normalize();
 				Node presRootNode = doc.getElementsByTagName("presentation").item(0);
 				Element presElement = (Element) presRootNode;
 				int numberSlides = Integer.parseInt(presElement.getElementsByTagName("number_slides").item(0).getTextContent());
-					Log.d("DPSReader","found number_slides:"+numberSlides);
+				Log.d("DPSReader", "found number_slides:" + numberSlides);
 				String title = presElement.getElementsByTagName("presentation_title").item(0).getTextContent();
-					Log.d("DPSReader","found presentation_title:"+title);
+				Log.d("DPSReader", "found presentation_title:" + title);
 				String owner = presElement.getElementsByTagName("presentation_owner").item(0).getTextContent();
-					Log.d("DPSReader","found presentation_owner:"+owner);
+				Log.d("DPSReader", "found presentation_owner:" + owner);
 				int timestamp = Integer.parseInt(presElement.getElementsByTagName("presentation_timestamp").item(0).getTextContent());
-					Log.d("DPSReader","found presentation_timestamp:"+timestamp);
-				
+				Log.d("DPSReader", "found presentation_timestamp:" + timestamp);
+
 				presCreated = new Presentation();
 				presCreated.setCurrentSlide(0);
 				presCreated.setNumSlides(numberSlides);
@@ -89,34 +89,36 @@ public class DPSReader {
 				presCreated.setTimestamp(timestamp);
 				presCreated.setOwner(owner);
 				presCreated.setPath(dpsPath + "/");
-				
+
 				Slide[] slides = new Slide[numberSlides];
-				
+
 				NodeList slideElements = presElement.getElementsByTagName("slide");
-				
-				for(int i=0;i<slideElements.getLength();i++){
+
+				for (int i = 0; i < slideElements.getLength(); i++) {
 					Element thisSlide = (Element) slideElements.item(i);
 					int thisSlideNumber = Integer.parseInt(thisSlide.getAttribute("number"));
-					Log.d("DPSReader","found slide #:"+thisSlideNumber);
+					Log.d("DPSReader", "found slide #:" + thisSlideNumber);
 					String thisSlideTitle = thisSlide.getElementsByTagName("title").item(0).getTextContent();
-					Log.d("DPSReader","found slide title:"+thisSlideTitle);
+					Log.d("DPSReader", "found slide title:" + thisSlideTitle);
 					String thisSlideFile = thisSlide.getElementsByTagName("file").item(0).getTextContent();
-					Log.d("DPSReader","found slide file:"+thisSlideFile);
+					Log.d("DPSReader", "found slide file:" + thisSlideFile);
 					String thisSlideNotes = thisSlide.getElementsByTagName("notes").item(0).getTextContent();
-					Log.d("DPSReader","found slide notes:"+thisSlideNotes);
-					
-					slides[thisSlideNumber-1] = new Slide(thisSlideFile,thisSlideNumber,thisSlideNotes,thisSlideTitle);
+					Log.d("DPSReader", "found slide notes:" + thisSlideNotes);
+
+					slides[thisSlideNumber - 1] = new Slide(thisSlideFile, thisSlideNumber, thisSlideNotes, thisSlideTitle);
 				}
-				
-				presCreated.setSlideFiles(slides);				
-			}catch(Exception e){
-				Log.d("DPSReader","Exception:"+e);
+
+				presCreated.setSlideFiles(slides);
 			}
-			
+			catch (Exception e) {
+				Log.d("DPSReader", "Exception:" + e);
+			}
+
 			return presCreated;
-		}else{
-			//File did not exist
-			Log.d("DPSReader","file not found:"+metaFile.getPath());
+		}
+		else {
+			// File did not exist
+			Log.d("DPSReader", "file not found:" + metaFile.getPath());
 			return null;
 		}
 	}

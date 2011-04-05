@@ -1,3 +1,29 @@
+/**
+ * Project:			Nimpres Android Client
+ * File name: 		
+ * Date modified:	2011-04-4
+ * Description:		
+ * 
+ * License:			Copyright (c) 2011 (Matthew Brooks, Jordan Emmons, William Kong)
+					
+					Permission is hereby granted, free of charge, to any person obtaining a copy
+					of this software and associated documentation files (the "Software"), to deal
+					in the Software without restriction, including without limitation the rights
+					to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+					copies of the Software, and to permit persons to whom the Software is
+					furnished to do so, subject to the following conditions:
+					
+					The above copyright notice and this permission notice shall be included in
+					all copies or substantial portions of the Software.
+					
+					THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+					IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+					FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+					AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+					LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+					OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+					THE SOFTWARE.
+ */
 package com.nimpres.android.ui;
 
 import android.app.Activity;
@@ -24,24 +50,21 @@ public class JoinPresentation extends Activity {
 	static TextView updateIDBox = null;
 
 	public static void updateID() {
-		if (JoinPresentation.updateIDBox != null
-				&& NimpresObjects.presentationID > 0)
-			JoinPresentation.updateIDBox.setText(String
-					.valueOf(NimpresObjects.presentationID));
+		if (JoinPresentation.updateIDBox != null && NimpresObjects.presentationID > 0)
+			JoinPresentation.updateIDBox.setText(String.valueOf(NimpresObjects.presentationID));
 	}
 
 	private Runnable loadTask = new Runnable() {
 		public void run() {
-			if(NimpresObjects.updateSource.equals(NimpresSettings.UPDATE_SOURCE_INTERNET))
+			if (NimpresObjects.updateSource.equals(NimpresSettings.UPDATE_SOURCE_INTERNET))
 				NimpresObjects.currentDPS = new DPS("api", NimpresSettings.UPDATE_SOURCE_INTERNET, NimpresObjects.presentationID, NimpresObjects.presentationPassword, "downloaded", NimpresObjects.ctx);
-			else if(NimpresObjects.updateSource.equals(NimpresSettings.UPDATE_SOURCE_LAN))
+			else if (NimpresObjects.updateSource.equals(NimpresSettings.UPDATE_SOURCE_LAN))
 				NimpresObjects.currentDPS = new DPS(PeerStatus.getLANPresentationByID(NimpresObjects.presentationID).getPeerIP().getHostAddress(), NimpresSettings.UPDATE_SOURCE_LAN, NimpresObjects.presentationID, NimpresObjects.presentationPassword, "downloaded", NimpresObjects.ctx);
-			
+
 			NimpresObjects.currentPresentation = NimpresObjects.currentDPS.getDpsPres();
 			NimpresObjects.currentPresentation.setPresentationID(NimpresObjects.presentationID);
 			NimpresObjects.currentlyViewing = true;
-			Intent intent = new Intent(NimpresObjects.ctx,
-					PresentationView.class);
+			Intent intent = new Intent(NimpresObjects.ctx, PresentationView.class);
 			startActivity(intent);
 		}
 	};
@@ -65,8 +88,7 @@ public class JoinPresentation extends Activity {
 				// presentation
 				// TODO need way of entering the presentation for the entered
 				// presentation ID
-				Intent launchview = new Intent(view.getContext(),
-						ListOfPresentations.class);
+				Intent launchview = new Intent(view.getContext(), ListOfPresentations.class);
 				startActivity(launchview);
 			}
 		});
@@ -83,18 +105,15 @@ public class JoinPresentation extends Activity {
 				EditText presenterPassword = (EditText) findViewById(R.id.jpPassword);
 
 				if (!presenterID.getText().toString().equals("")) {
-						
-					NimpresObjects.presentationID = Integer
-							.parseInt(presenterID.getText().toString());
-					if (presenterPassword.getText().toString().equals(null)){
+
+					NimpresObjects.presentationID = Integer.parseInt(presenterID.getText().toString());
+					if (presenterPassword.getText().toString().equals(null)) {
 						NimpresObjects.presentationPassword = "";
 					}
 					else {
-						NimpresObjects.presentationPassword = presenterPassword
-						.getText().toString();
-						//TODO add password checking method
+						NimpresObjects.presentationPassword = presenterPassword.getText().toString();
+						// TODO add password checking method
 					}
-
 
 					setContentView(R.layout.loading);
 					ImageView loadingImage = (ImageView) findViewById(R.id.loading);

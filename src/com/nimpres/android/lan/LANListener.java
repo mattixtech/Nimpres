@@ -36,86 +36,88 @@ import com.nimpres.android.presentation.PeerStatus;
 import com.nimpres.android.settings.NimpresSettings;
 import com.nimpres.android.utilities.Utilities;
 
-public class LANListener implements Runnable{
-	
+public class LANListener implements Runnable {
+
 	/**
 	 * 
 	 */
-	public static void initMessage(){
-		Log.d("LANListener","init");
+	public static void initMessage() {
+		Log.d("LANListener", "init");
 	}
-	ArrayList<PeerStatus> advertisingPeers; 	//stores the list of the LAN IP Addresses of all advertising peers
-	
-    boolean isStopped = false;	
-	
+
+	ArrayList<PeerStatus> advertisingPeers; // stores the list of the LAN IP Addresses of all advertising peers
+
+	boolean isStopped = false;
+
 	/**
      * 
      */
-	public LANListener(){
+	public LANListener() {
 		advertisingPeers = NimpresObjects.peerPresentations;
 	}
-	
+
 	/**
 	 * @return the advertisingPeers
 	 */
 	public ArrayList<PeerStatus> getAdvertisingPeers() {
 		return advertisingPeers;
 	}
-	
+
 	/**
 	 * 
 	 * @return
 	 */
-	public boolean isStopped(){
-        return isStopped;
-    }
-	
+	public boolean isStopped() {
+		return isStopped;
+	}
+
 	/**
 	 * Continues checking for advertisements until told to stop
 	 */
-	public void run(){
+	public void run() {
 		initMessage();
 		Looper.prepare();
-		while( ! isStopped()){
-			try{
-				Log.d("LANListener","attempting to receive peer status update: "); 
-				UDPMessage inPkt = new UDPMessage(NimpresSettings.SERVER_PEER_PORT,1024);
-				if(inPkt.getType().equals(NimpresSettings.MSG_PRESENTATION_STATUS)){
+		while (!isStopped()) {
+			try {
+				Log.d("LANListener", "attempting to receive peer status update: ");
+				UDPMessage inPkt = new UDPMessage(NimpresSettings.SERVER_PEER_PORT, 1024);
+				if (inPkt.getType().equals(NimpresSettings.MSG_PRESENTATION_STATUS)) {
 					PeerStatus recvStatus = new PeerStatus(inPkt);
 					recvStatus.setSource(NimpresSettings.UPDATE_SOURCE_LAN);
-	                Log.d("LANListener","received message from peer: "+inPkt.getRemoteIP()+", id: "+recvStatus.getPresentationID()
-	                		+", presenter:"+recvStatus.getPresenterName()+", title:"+recvStatus.getPresenterName()+", current slide:"+recvStatus.getSlideNumber());	                
-	                
-	                if(NimpresObjects.currentPresentation != null && recvStatus.getPresentationID() == NimpresObjects.currentPresentation.getPresentationID() && ! NimpresObjects.currentPresentation.isPaused()) //This id matches the one being viewed so we will update its slide
-	                	NimpresObjects.currentPresentation.setCurrentSlide(recvStatus.getSlideNumber());
-	                
-	                for(int i=0;i<advertisingPeers.size();i++){
-	                	//TODO check each peer's timeout
-	                	//TODO check for own IP address
-	                	if(advertisingPeers.get(i).getPeerIP().equals(inPkt.getRemoteIP())){
-	                		advertisingPeers.remove(i); //check list and remove peer status if already in, so we can update it
-	                		Log.d("LANListener","peer existed, refreshing...");
-	                	}
-	                }
-	                recvStatus.setAdvertisementTimestamp(System.currentTimeMillis());
-	                recvStatus.setSource(NimpresSettings.UPDATE_SOURCE_LAN);
-	                if( ! recvStatus.getPeerIP().getHostAddress().equals(Utilities.getLocalIpAddress())) //Check to make sure this is not originating from ourselves
-	                	advertisingPeers.add(recvStatus); //add peer to list
-	                Log.d("LANListener","Added peer to list");
-	                Log.d("LANListener","Peer List Current Size: "+advertisingPeers.size());
-				}else
-					Log.d("LANListener","received improper message: "+inPkt.getType()); 
-	        }catch(Exception e){
-	        	 Log.d("LANListener"," Exception: "+e.toString());
-	        	 e.printStackTrace();
-	        }
-		}      
+					Log.d("LANListener", "received message from peer: " + inPkt.getRemoteIP() + ", id: " + recvStatus.getPresentationID() + ", presenter:" + recvStatus.getPresenterName() + ", title:" + recvStatus.getPresenterName() + ", current slide:" + recvStatus.getSlideNumber());
+
+					if (NimpresObjects.currentPresentation != null && recvStatus.getPresentationID() == NimpresObjects.currentPresentation.getPresentationID() && !NimpresObjects.currentPresentation.isPaused()) // This id matches the one being viewed so we will update its slide
+						NimpresObjects.currentPresentation.setCurrentSlide(recvStatus.getSlideNumber());
+
+					for (int i = 0; i < advertisingPeers.size(); i++) {
+						// TODO check each peer's timeout
+						// TODO check for own IP address
+						if (advertisingPeers.get(i).getPeerIP().equals(inPkt.getRemoteIP())) {
+							advertisingPeers.remove(i); // check list and remove peer status if already in, so we can update it
+							Log.d("LANListener", "peer existed, refreshing...");
+						}
+					}
+					recvStatus.setAdvertisementTimestamp(System.currentTimeMillis());
+					recvStatus.setSource(NimpresSettings.UPDATE_SOURCE_LAN);
+					if (!recvStatus.getPeerIP().getHostAddress().equals(Utilities.getLocalIpAddress())) // Check to make sure this is not originating from ourselves
+						advertisingPeers.add(recvStatus); // add peer to list
+					Log.d("LANListener", "Added peer to list");
+					Log.d("LANListener", "Peer List Current Size: " + advertisingPeers.size());
+				}
+				else
+					Log.d("LANListener", "received improper message: " + inPkt.getType());
+			}
+			catch (Exception e) {
+				Log.d("LANListener", " Exception: " + e.toString());
+				e.printStackTrace();
+			}
+		}
 	}
 
 	/**
 	 * Stops execution of the LANListener
 	 */
-	public void stop(){
-        isStopped = true;
-    }
+	public void stop() {
+		isStopped = true;
+	}
 }

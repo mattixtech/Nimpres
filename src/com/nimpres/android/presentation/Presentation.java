@@ -36,7 +36,7 @@ public class Presentation {
 	private Slide[] slideFiles;
 	private boolean paused = false;
 	private int presentationID = 0;
-	
+
 	/**
 	 * @return the currentSlide
 	 */
@@ -44,11 +44,11 @@ public class Presentation {
 		return currentSlide;
 	}
 
-	public Slide getCurrentSlideFile(){
-		if(numSlides > 0)
+	public Slide getCurrentSlideFile() {
+		if (numSlides > 0)
 			return slideFiles[currentSlide];
 		else
-			return new Slide(); //TODO we should probably create an error dps package and preload it, showing an error image here
+			return new Slide(); // TODO we should probably create an error dps package and preload it, showing an error image here
 	}
 
 	/**
@@ -77,8 +77,8 @@ public class Presentation {
 	 */
 	public int getPresentationID() {
 		return presentationID;
-	}	
-	
+	}
+
 	/**
 	 * @return the slideFiles
 	 */
@@ -107,76 +107,85 @@ public class Presentation {
 		return paused;
 	}
 
-	public void nextSlide(){
-		if(currentSlide < (numSlides-1))
+	public void nextSlide() {
+		if (currentSlide < (numSlides - 1))
 			currentSlide++;
 	}
 
-	public void previousSlide(){
-		if(currentSlide>0)
+	public void previousSlide() {
+		if (currentSlide > 0)
 			currentSlide--;
 	}
 
 	/**
-	 * @param currentSlide the currentSlide to set
+	 * @param currentSlide
+	 *            the currentSlide to set
 	 */
 	public void setCurrentSlide(int currentSlide) {
-		if(currentSlide < this.numSlides)
+		if (currentSlide < this.numSlides)
 			this.currentSlide = currentSlide;
-			
+
 	}
 
 	/**
-	 * @param numSlides the numSlides to set
+	 * @param numSlides
+	 *            the numSlides to set
 	 */
 	public void setNumSlides(int numSlides) {
 		this.numSlides = numSlides;
 	}
 
 	/**
-	 * @param owner the owner to set
+	 * @param owner
+	 *            the owner to set
 	 */
 	public void setOwner(String owner) {
 		this.owner = owner;
 	}
-	
+
 	/**
-	 * @param path the path to set
+	 * @param path
+	 *            the path to set
 	 */
 	public void setPath(String path) {
 		this.path = path;
 	}
-	
+
 	/**
-	 * @param paused the paused to set
+	 * @param paused
+	 *            the paused to set
 	 */
 	public void setPaused(boolean paused) {
 		this.paused = paused;
 	}
 
 	/**
-	 * @param presentationID the presentationID to set
+	 * @param presentationID
+	 *            the presentationID to set
 	 */
 	public void setPresentationID(int presentationID) {
 		this.presentationID = presentationID;
 	}
 
 	/**
-	 * @param slideFiles the slideFiles to set
+	 * @param slideFiles
+	 *            the slideFiles to set
 	 */
 	public void setSlideFiles(Slide[] slideFiles) {
 		this.slideFiles = slideFiles;
 	}
 
 	/**
-	 * @param timestamp the timestamp to set
+	 * @param timestamp
+	 *            the timestamp to set
 	 */
 	public void setTimestamp(int timestamp) {
 		this.timestamp = timestamp;
 	}
 
 	/**
-	 * @param presentationName the presentationName to set
+	 * @param presentationName
+	 *            the presentationName to set
 	 */
 	public void setTitle(String title) {
 		this.title = title;

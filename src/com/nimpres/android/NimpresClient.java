@@ -54,100 +54,94 @@ public class NimpresClient extends Activity {
 	/*
 	 * Testing methods
 	 */
-	
+
 	public static void testDPSHosting(String fileToServe, Context ctx) {
 		Thread dpsServer = new Thread(new DPSServer(fileToServe, ctx));
 		dpsServer.start();
 	}
 
-	public static void testListing(){
+	public static void testListing() {
 		PeerStatus.getInternetPresentations(NimpresObjects.presenterName, NimpresObjects.presenterPassword, "test");
 	}
-	
+
 	public static void testLoginAPI() {
 		APIContact.validateLogin("Jordan", "testing");
 	}
-	
-	public static void testAdvertising(){
+
+	public static void testAdvertising() {
 		Presentation pres = new Presentation();
 		pres.setTitle("LAN Test Presentation");
 		pres.setCurrentSlide(5);
 		pres.setPresentationID(500);
 		try {
-			Thread LANAdvert = new Thread(new LANAdvertiser(pres,Utilities.getBroadcastAddress(NimpresObjects.ctx)));
+			Thread LANAdvert = new Thread(new LANAdvertiser(pres, Utilities.getBroadcastAddress(NimpresObjects.ctx)));
 			LANAdvert.start();
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * 
 	 */
-	public static void startup(){
-		//testAdvertising();
-		//Startup the LAN listener thread
+	public static void startup() {
+		// testAdvertising();
+		// Startup the LAN listener thread
 		Thread LANListen = new Thread(new LANListener());
 		LANListen.start();
 	}
-	
+
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);		
-		setContentView(R.layout.main); //Set to main view		
-		NimpresObjects.ctx = this.getApplicationContext(); //Record the application Context
-		startup(); //Perform the startup methods
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.main); // Set to main view
+		NimpresObjects.ctx = this.getApplicationContext(); // Record the application Context
+		startup(); // Perform the startup methods
 
 		/*
-		// setup Create Account button listener
-		 Button createAccountButton = (Button) findViewById(R.id.mCreate);
-		 createAccountButton.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				Intent launchview = new Intent(view.getContext(),CreateAccount.class);
-				startActivity(launchview);
-			}
-		});
- 		*/
+		 * // setup Create Account button listener Button createAccountButton = (Button) findViewById(R.id.mCreate); createAccountButton.setOnClickListener(new OnClickListener() {
+		 * @Override public void onClick(View view) { Intent launchview = new Intent(view.getContext(),CreateAccount.class); startActivity(launchview); } });
+		 */
 		// setup Login button listener
-		 Button loginButton = (Button) findViewById(R.id.mLogin);
-		 loginButton.setOnClickListener(new OnClickListener() {
+		Button loginButton = (Button) findViewById(R.id.mLogin);
+		loginButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				Intent launchview = new Intent(view.getContext(),ExistingAccount.class);
+				Intent launchview = new Intent(view.getContext(), ExistingAccount.class);
 				startActivity(launchview);
 			}
 		});
-		 
+
 		// setup Join button listener
-		 Button joinButton = (Button) findViewById(R.id.mJoin);
-		 joinButton.setOnClickListener(new OnClickListener() {
+		Button joinButton = (Button) findViewById(R.id.mJoin);
+		joinButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				Intent launchview = new Intent(view.getContext(),JoinPresentation.class); 
-				//Intent launchview = new Intent(view.getContext(),PresentationView.class);
+				Intent launchview = new Intent(view.getContext(), JoinPresentation.class);
+				// Intent launchview = new Intent(view.getContext(),PresentationView.class);
 				startActivity(launchview);
 			}
 		});
-		 
+
 		// setup Host button listener
-		 Button hostButton = (Button) findViewById(R.id.mHost);
-		 hostButton.setOnClickListener(new OnClickListener() {
+		Button hostButton = (Button) findViewById(R.id.mHost);
+		hostButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				Intent launchview = new Intent(view.getContext(),HostPresentation.class);
+				Intent launchview = new Intent(view.getContext(), HostPresentation.class);
 				startActivity(launchview);
 			}
 		});
-		 
+
 		// setup Settings button listener
-		 Button settingsButton = (Button) findViewById(R.id.mSettings);
-		 settingsButton.setOnClickListener(new OnClickListener() {
+		Button settingsButton = (Button) findViewById(R.id.mSettings);
+		settingsButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				Intent launchview = new Intent(view.getContext(),Settings.class);
+				Intent launchview = new Intent(view.getContext(), Settings.class);
 				startActivity(launchview);
 			}
 		});

@@ -39,81 +39,81 @@ import com.nimpres.android.presentation.Presentation;
 import com.nimpres.android.settings.NimpresSettings;
 import com.nimpres.android.utilities.Utilities;
 
-public class LANAdvertiser extends Thread{
+public class LANAdvertiser extends Thread {
 
 	/**
 	 * 
 	 */
-	public static void initMessage(){
-		Log.d("LANAdvertiser","init");
+	public static void initMessage() {
+		Log.d("LANAdvertiser", "init");
 	}
+
 	private Presentation pres;
 	private String broadcastAddress = null;
 
-    private Handler mHandler = new Handler();
-    private byte[] outputBuff = null;
-	
-    private PeerStatus advStatus = null;
-    
-    /**
+	private Handler mHandler = new Handler();
+	private byte[] outputBuff = null;
+
+	private PeerStatus advStatus = null;
+
+	/**
 	 * This task is responsible for advertising the name of the hosted presentation to LAN peers
 	 */
 	private Runnable lanAdvertiseTask = new Runnable() {
-		public void run() {			
-			try{
+		public void run() {
+			try {
 				try {
-					advStatus = new PeerStatus(InetAddress.getByName(Utilities.getLocalIpAddress()),
-							pres.getTitle(),pres.getCurrentSlide(),NimpresObjects.presenterName,pres.getPresentationID());
-				} catch (UnknownHostException e) {
-					
+					advStatus = new PeerStatus(InetAddress.getByName(Utilities.getLocalIpAddress()), pres.getTitle(), pres.getCurrentSlide(), NimpresObjects.presenterName, pres.getPresentationID());
+				}
+				catch (UnknownHostException e) {
+
 					e.printStackTrace();
 				}
 				outputBuff = advStatus.getDataString().getBytes();
-				UDPMessage outPkt = new UDPMessage(NimpresSettings.MSG_PRESENTATION_STATUS, outputBuff, broadcastAddress, NimpresSettings.SERVER_PEER_PORT,true);
-                Log.d("LANAdvertiser"," sent presentation status message to: "+broadcastAddress);               	                    
-	        }catch(Exception e){
-	        	 Log.d("LANAdvertiser"," Exception: "+e.toString());
-	        }
-	        NimpresObjects.messagingThread.postDelayed(lanAdvertiseTask,NimpresSettings.LAN_ADVERTISE_DELAY);
-			//mHandler.postDelayed(this, NimpresSettings.LAN_ADVERTISE_DELAY); //Add this task to the queue again, calls itself over and over...
+				UDPMessage outPkt = new UDPMessage(NimpresSettings.MSG_PRESENTATION_STATUS, outputBuff, broadcastAddress, NimpresSettings.SERVER_PEER_PORT, true);
+				Log.d("LANAdvertiser", " sent presentation status message to: " + broadcastAddress);
+			}
+			catch (Exception e) {
+				Log.d("LANAdvertiser", " Exception: " + e.toString());
+			}
+			NimpresObjects.messagingThread.postDelayed(lanAdvertiseTask, NimpresSettings.LAN_ADVERTISE_DELAY);
+			// mHandler.postDelayed(this, NimpresSettings.LAN_ADVERTISE_DELAY); //Add this task to the queue again, calls itself over and over...
 		}
 	};
-    
+
 	/**
-     * 
-     * @param pres
-     */
-    public LANAdvertiser(Presentation pres, String broadcastAddress){
-    	this.pres = pres;
-    	this.broadcastAddress = broadcastAddress;
-    }
-	
+	 * 
+	 * @param pres
+	 */
+	public LANAdvertiser(Presentation pres, String broadcastAddress) {
+		this.pres = pres;
+		this.broadcastAddress = broadcastAddress;
+	}
+
 	/**
 	 * @return the pres
 	 */
 	public Presentation getPres() {
 		return pres;
 	}
-	
-	
+
 	/**
 	 * 
 	 */
-	public void run(){
+	public void run() {
 		initMessage();
 		Looper.prepare();
-		//mHandler.postDelayed(lanAdvertiseTask, 100);
+		// mHandler.postDelayed(lanAdvertiseTask, 100);
 		NimpresObjects.messagingThread.post(lanAdvertiseTask);
 		Looper.loop();
 	}
 
 	/**
-	 * @param pres the pres to set
+	 * @param pres
+	 *            the pres to set
 	 */
 	public void setPres(Presentation pres) {
 		this.pres = pres;
 	}
 
-
-	
 }

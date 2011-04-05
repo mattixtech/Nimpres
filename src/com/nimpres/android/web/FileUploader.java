@@ -41,37 +41,38 @@ public class FileUploader {
 
 	private URL connectURL;
 	private FileInputStream fileInputStream = null;
-	private String responseMessage = NimpresSettings.API_RESPONSE_NEGATIVE; //default to negative response
-	
-	public FileUploader(String urlString, String fileName ){
-		try{
+	private String responseMessage = NimpresSettings.API_RESPONSE_NEGATIVE; // default to negative response
+
+	public FileUploader(String urlString, String fileName) {
+		try {
 			connectURL = new URL(urlString);
-			Log.d("FileUploader","creating upload request to: "+urlString);
+			Log.d("FileUploader", "creating upload request to: " + urlString);
 			this.fileInputStream = NimpresObjects.ctx.openFileInput(fileName);
-		}catch(Exception e){
-			Log.d("FileUploader","Error: "+e.getMessage());
 		}
-	}	
-	
-	public String upload(){
+		catch (Exception e) {
+			Log.d("FileUploader", "Error: " + e.getMessage());
+		}
+	}
+
+	public String upload() {
 		String exsistingFileName = "NimpresFile.uploaded";
 		String lineEnd = "\r\n";
 		String twoHyphens = "--";
 		String boundary = "*****";
-		
-		try{
+
+		try {
 			HttpURLConnection conn = (HttpURLConnection) connectURL.openConnection();
 			conn.setDoInput(true);
 			conn.setDoOutput(true);
-			conn.setUseCaches(false);	
-			Log.d("FileUploader","starting post");
+			conn.setUseCaches(false);
+			Log.d("FileUploader", "starting post");
 			// Use a post method.
-			conn.setRequestMethod("POST");	
-			conn.setRequestProperty("Connection", "Keep-Alive");	
-			conn.setRequestProperty("Content-Type", "multipart/form-data;boundary="+boundary);	
+			conn.setRequestMethod("POST");
+			conn.setRequestProperty("Connection", "Keep-Alive");
+			conn.setRequestProperty("Content-Type", "multipart/form-data;boundary=" + boundary);
 			DataOutputStream dos = new DataOutputStream(conn.getOutputStream());
 			dos.writeBytes(twoHyphens + boundary + lineEnd);
-			dos.writeBytes("Content-Disposition: form-data; name=\"uploadedfile\";filename=\"" + exsistingFileName +"\"" + lineEnd);
+			dos.writeBytes("Content-Disposition: form-data; name=\"uploadedfile\";filename=\"" + exsistingFileName + "\"" + lineEnd);
 			dos.writeBytes(lineEnd);
 
 			int bytesAvailable = fileInputStream.available();
@@ -81,8 +82,7 @@ public class FileUploader {
 
 			int bytesRead = fileInputStream.read(buffer, 0, bufferSize);
 
-			while (bytesRead > 0)
-			{
+			while (bytesRead > 0) {
 				dos.write(buffer, 0, bufferSize);
 				bytesAvailable = fileInputStream.available();
 				bufferSize = Math.min(bytesAvailable, maxBufferSize);
@@ -91,27 +91,28 @@ public class FileUploader {
 
 			dos.writeBytes(lineEnd);
 			dos.writeBytes(twoHyphens + boundary + twoHyphens + lineEnd);
-			
+
 			fileInputStream.close();
 			dos.flush();
-			
+
 			InputStream is = conn.getInputStream();
 			// retrieve the response from server
 			int ch;
 
-			StringBuffer b =new StringBuffer();
-			while( ( ch = is.read() ) != -1 ){
-				b.append( (char)ch );
+			StringBuffer b = new StringBuffer();
+			while ((ch = is.read()) != -1) {
+				b.append((char) ch);
 			}
 			String s = b.toString();
 			responseMessage = s;
-			Log.d("FileUploader","response: "+s);
+			Log.d("FileUploader", "response: " + s);
 			dos.close();
-			
-		}catch(Exception e){
-			Log.d("FileUploader","Error: "+e.getMessage());
+
 		}
-		
+		catch (Exception e) {
+			Log.d("FileUploader", "Error: " + e.getMessage());
+		}
+
 		return responseMessage;
 	}
 }

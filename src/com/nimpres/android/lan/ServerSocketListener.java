@@ -34,75 +34,75 @@ import android.util.Log;
 import com.nimpres.android.settings.NimpresSettings;
 import com.nimpres.android.utilities.Utilities;
 
-public class ServerSocketListener implements Runnable{
-    private ConnectionReceiver receiver;
-    private boolean isStopped = false;
-    private ServerSocket serverSocket;
+public class ServerSocketListener implements Runnable {
+	private ConnectionReceiver receiver;
+	private boolean isStopped = false;
+	private ServerSocket serverSocket;
 
-    
-    public ServerSocketListener(ConnectionReceiver receiver){
-    	this.receiver = receiver;
-    	this.receiver.enable();
-    }
+	public ServerSocketListener(ConnectionReceiver receiver) {
+		this.receiver = receiver;
+		this.receiver.enable();
+	}
 
-    /**
+	/**
      * 
      */
-    private void initMessage(){
-    	Log.d("ServerSocketListener","now listening for transfer requests on port:"+NimpresSettings.SERVER_FILE_PORT);
-    }
+	private void initMessage() {
+		Log.d("ServerSocketListener", "now listening for transfer requests on port:" + NimpresSettings.SERVER_FILE_PORT);
+	}
 
-    
-    /**
+	/**
+	 * 
+	 * @return
+	 */
+	public boolean isStopped() {
+		return isStopped;
+	}
+
+	public void run() {
+		// Attempt to listen on the server port
+		try {
+			Log.d("ServerSocketListener", "trying to start up");
+			serverSocket = new ServerSocket(NimpresSettings.SERVER_FILE_PORT, NimpresSettings.SERVER_QUE_SIZE, InetAddress.getByName(Utilities.getLocalIpAddress()));
+			Log.d("ServerSocketListener", "server socket created: " + serverSocket);
+			// this.receiver.enable();
+			initMessage();
+		}
+		catch (Exception e) {
+			Log.d("ServerSocketListener", "Cannot open port:" + NimpresSettings.SERVER_FILE_PORT + " " + e.getMessage());
+			this.stop();
+		}
+
+		/*
+		 * This loop is quite simple, it just keeps checking the open socket if a connection is found it adds it to the queue and then goes back to listening again
+		 */
+		while (!isStopped()) {
+			try {
+				Log.d("ServerSocketListener", "trying to receive");
+				if (receiver.isActive()) {
+					Log.d("ServerSocketListener", "receiver was active");
+					if (receiver.put(serverSocket.accept())) { // This is where the magic happens, listen on the serverSocket and hand it off to the receiver
+						Log.d("ServerSocketListener", "added request to receiver");
+					}
+					else
+						Log.d("ServerSocketListener", "que is full, dropping connection...");
+				}
+				else
+					Log.d("ServerSocketListener", "Receiver inactive");
+			}
+			catch (Exception e) {
+				Log.d("ServerSocketListener", "ERROR - Cannot accept connection on port:" + NimpresSettings.SERVER_FILE_PORT + " " + e.getMessage());
+			}
+		}
+		// If socket listener is stopped then exit program
+		Log.d("ServerSocketListener", "Exiting");
+		System.exit(1);
+	}
+
+	/**
      * 
-     * @return
      */
-    public boolean isStopped(){
-        return isStopped;
-    }
-
-    public void run(){
-        //Attempt to listen on the server port
-        try{            
-        	Log.d("ServerSocketListener","trying to start up");
-            serverSocket = new ServerSocket(NimpresSettings.SERVER_FILE_PORT,NimpresSettings.SERVER_QUE_SIZE,InetAddress.getByName(Utilities.getLocalIpAddress()));
-            Log.d("ServerSocketListener","server socket created: "+serverSocket);
-            //this.receiver.enable();
-            initMessage();
-        } catch(Exception e){
-        	Log.d("ServerSocketListener","Cannot open port:"+NimpresSettings.SERVER_FILE_PORT+" "+e.getMessage());
-            this.stop();
-        }        
-
-        /*
-         * This loop is quite simple, it just keeps checking the open socket
-         * if a connection is found it adds it to the queue and then goes
-         * back to listening again
-         */
-        while(!isStopped()){
-            try{
-            	Log.d("ServerSocketListener","trying to receive");
-                if(receiver.isActive()){
-                	Log.d("ServerSocketListener","receiver was active");
-                    if(receiver.put(serverSocket.accept())){	//This is where the magic happens, listen on the serverSocket and hand it off to the receiver
-                    	Log.d("ServerSocketListener","added request to receiver");
-                    }else
-                    	Log.d("ServerSocketListener","que is full, dropping connection...");
-                }else
-                	Log.d("ServerSocketListener","Receiver inactive");
-            }catch(Exception e){
-            	Log.d("ServerSocketListener","ERROR - Cannot accept connection on port:"+NimpresSettings.SERVER_FILE_PORT+" "+e.getMessage());
-            }
-        }
-        //If socket listener is stopped then exit program
-        Log.d("ServerSocketListener","Exiting");
-        System.exit(1);
-    }
-
-    /**
-     * 
-     */
-    public void stop(){
-        isStopped = true;
-    }
+	public void stop() {
+		isStopped = true;
+	}
 }

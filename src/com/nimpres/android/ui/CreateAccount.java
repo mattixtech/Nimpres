@@ -50,8 +50,7 @@ public class CreateAccount extends Activity {
 				// TODO code to create an account
 				// TODO checking algorithms for the password
 
-				Intent launchview = new Intent(view.getContext(),
-						NimpresClient.class);
+				Intent launchview = new Intent(view.getContext(), NimpresClient.class);
 				startActivity(launchview);
 			}
 		});

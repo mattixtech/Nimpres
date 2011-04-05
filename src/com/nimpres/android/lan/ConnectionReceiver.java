@@ -37,64 +37,69 @@ import com.nimpres.android.settings.NimpresSettings;
 
 public class ConnectionReceiver {
 	private boolean isDisabled = false;
-    private BlockingQueue<Socket> socketQue;
-    
-    public ConnectionReceiver(){
-        this.socketQue = new ArrayBlockingQueue<Socket>(NimpresSettings.SERVER_QUE_SIZE);
-    }
-    
-    /**
-     * Destroys this queue and all connections currently in it
-     */
-    public synchronized void destroy(){
-        socketQue.clear();
-        isDisabled = true;
-    }
+	private BlockingQueue<Socket> socketQue;
 
-    /**
-     * Enables the receiver
-     */
-    public synchronized void enable(){
-    	Log.d("ConnectionReceiver","Enabled");
-        isDisabled = false;
-    }
-    
-    /**
-     * Gets a socket from the queue if there is one
-     * @return
-     */
-    public synchronized Socket get(){
-        try{
-            return socketQue.poll(10, TimeUnit.MILLISECONDS);
-        }catch(Exception e){
-            e.printStackTrace();
-            return null;
-        }
-    }
-    
-    /**
-     * Checks if this receiver is active
-     * @return
-     */
-    public boolean isActive(){
-        return !isDisabled;
-    }
+	public ConnectionReceiver() {
+		this.socketQue = new ArrayBlockingQueue<Socket>(NimpresSettings.SERVER_QUE_SIZE);
+	}
 
-    /**
-     * Checks if the receiver is disactivated
-     * @return
-     */
-    public synchronized boolean isDisabled(){
-        return isDisabled;
-    }
-    
-    /**
-     * Puts a socket into the queue
-     * @param s
-     * @return
-     */
-    public boolean put(Socket s){
-    	//TODO I think this should probably be a synchronized method but it was causing problems so I removed the synchronized keyword
-        return socketQue.offer(s);
-    }
+	/**
+	 * Destroys this queue and all connections currently in it
+	 */
+	public synchronized void destroy() {
+		socketQue.clear();
+		isDisabled = true;
+	}
+
+	/**
+	 * Enables the receiver
+	 */
+	public synchronized void enable() {
+		Log.d("ConnectionReceiver", "Enabled");
+		isDisabled = false;
+	}
+
+	/**
+	 * Gets a socket from the queue if there is one
+	 * 
+	 * @return
+	 */
+	public synchronized Socket get() {
+		try {
+			return socketQue.poll(10, TimeUnit.MILLISECONDS);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	/**
+	 * Checks if this receiver is active
+	 * 
+	 * @return
+	 */
+	public boolean isActive() {
+		return !isDisabled;
+	}
+
+	/**
+	 * Checks if the receiver is disactivated
+	 * 
+	 * @return
+	 */
+	public synchronized boolean isDisabled() {
+		return isDisabled;
+	}
+
+	/**
+	 * Puts a socket into the queue
+	 * 
+	 * @param s
+	 * @return
+	 */
+	public boolean put(Socket s) {
+		// TODO I think this should probably be a synchronized method but it was causing problems so I removed the synchronized keyword
+		return socketQue.offer(s);
+	}
 }

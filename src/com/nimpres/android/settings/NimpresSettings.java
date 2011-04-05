@@ -27,66 +27,65 @@
 package com.nimpres.android.settings;
 
 public class NimpresSettings {
-	
+
 	/*
 	 * API Addresses
 	 */
-	
+
 	public static final String API_BASE_URL = "http://api.nimpres.com/";
 	public static final String API_EXTENSION = ".php";
-	public static final String API_LOGIN = "login"; 								//boolean response
-	public static final String API_PRESENTATION_CURRENT_SLIDE = "get_slide_num"; 	//integer response
-	public static final String API_PRESENTATION_UPDATE_SLIDE = "update_slide_num"; 	//boolean response
-	public static final String API_CREATE_ACCOUNT = "create_account"; 				//boolean response
-	public static final String API_CREATE_PRESENTATION = "create_presentation"; 	//boolean response
-	public static final String API_DELETE_PRESENTATION = "delete_presentation"; 	//boolean response
-	public static final String API_LIST_PRESENTATIONS = "list_presentations"; 		//xml response
-	public static final String API_DOWNLOAD_PRESENTATION = "download_presentation"; //byte buffer response
-	
+	public static final String API_LOGIN = "login"; // boolean response
+	public static final String API_PRESENTATION_CURRENT_SLIDE = "get_slide_num"; // integer response
+	public static final String API_PRESENTATION_UPDATE_SLIDE = "update_slide_num"; // boolean response
+	public static final String API_CREATE_ACCOUNT = "create_account"; // boolean response
+	public static final String API_CREATE_PRESENTATION = "create_presentation"; // boolean response
+	public static final String API_DELETE_PRESENTATION = "delete_presentation"; // boolean response
+	public static final String API_LIST_PRESENTATIONS = "list_presentations"; // xml response
+	public static final String API_DOWNLOAD_PRESENTATION = "download_presentation"; // byte buffer response
+
 	/*
 	 * API Message
 	 */
-	
+
 	public static final String API_RESPONSE_POSITIVE = "OK";
 	public static final String API_RESPONSE_NEGATIVE = "FAIL";
-	
+
 	/*
-     * Timers:
-     */
-    public static final double HELLO_TIMER = 1; //Send hello every X seconds
-    public static final double DEAD_TIMER = 5; //Wait X seconds before removing peer
-    public static final int API_PULL_DELAY = 1500; //Wait X miliseconds before performing another pull from the API
-    public static final int LAN_ADVERTISE_DELAY = 1000;
-    public static final long LAN_TIMEOUT_DELAY = 5000;
-	
+	 * Timers:
+	 */
+	public static final double HELLO_TIMER = 1; // Send hello every X seconds
+	public static final double DEAD_TIMER = 5; // Wait X seconds before removing peer
+	public static final int API_PULL_DELAY = 1500; // Wait X miliseconds before performing another pull from the API
+	public static final int LAN_ADVERTISE_DELAY = 1000;
+	public static final long LAN_TIMEOUT_DELAY = 5000;
+
 	/*
-     * Ports
-     */
-    public static final int SERVER_FILE_PORT = 40888;
-    public static final int SERVER_PEER_PORT = 40999;
-	
-    
-    /*
-     * Settings
-     */
-    public static final String METAFILE_NAME = "meta-inf.xml";
-    public static final String DEFAULT_DPS_FILE = "tmp_api-download_downloaded";
+	 * Ports
+	 */
+	public static final int SERVER_FILE_PORT = 40888;
+	public static final int SERVER_PEER_PORT = 40999;
+
+	/*
+	 * Settings
+	 */
+	public static final String METAFILE_NAME = "meta-inf.xml";
+	public static final String DEFAULT_DPS_FILE = "tmp_api-download_downloaded";
 	public static final String PEER_BROADCAST_ADDRESS = "255.255.255.255";
 	public static final int SERVER_QUE_SIZE = 32;
 	public static final String API_DOWNLOAD_PREFIX = "tmp_api-download_";
-	public static final int MAX_PRESENTATION_SIZE = 1024*1024*100; //in bytes
+	public static final int MAX_PRESENTATION_SIZE = 1024 * 1024 * 100; // in bytes
 	public static final String UPDATE_SOURCE_INTERNET = "internet";
 	public static final String UPDATE_SOURCE_LAN = "lan";
 	/*
-     * Messages
-     */
-	
+	 * Messages
+	 */
+
 	/*
 	 * UDP
 	 */
 	public static final String STATUS_SEPERATOR = "_(>'')>_<(''<)_";
 	public static final String MSG_PRESENTATION_STATUS = "PS";
-	
+
 	/*
 	 * TCP
 	 */

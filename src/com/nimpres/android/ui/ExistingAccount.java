@@ -50,8 +50,7 @@ public class ExistingAccount extends Activity {
 				// TODO login code
 				// TODO checking algorithms for the password
 
-				Intent launchview = new Intent(view.getContext(),
-						NimpresClient.class);
+				Intent launchview = new Intent(view.getContext(), NimpresClient.class);
 				startActivity(launchview);
 			}
 		});

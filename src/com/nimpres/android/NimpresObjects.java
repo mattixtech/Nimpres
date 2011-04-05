@@ -42,25 +42,24 @@ public class NimpresObjects {
 	public static String hostedPresentationFileName = "";
 	public static Context ctx;
 	public static Handler messagingThread = new Handler();
-	
+
 	public static String loadType = "";
 	public static boolean finishedLoading = false;
-	
+
 	public static String presentationTitle = "";
 	public static int presentationID = 0;
 	public static String presentationPassword = "";
-	
+
 	public static boolean hostOnInternet = false;
-	
+
 	public static boolean currentlyViewing = false;
 	public static boolean currentlyPresenting = false;
 
-	public static String presenterName = "test";			//TODO this should be loaded from local config
-	public static String presenterPassword = "test1234";  	//TODO this should be loaded from local config
-	
-	
-	public static String updateSource = "";	//This will be either UPDATE_SOURCE_LAN or UPDATE_SOURCE_INTERNET
-	public static ArrayList<PeerStatus> peerPresentations = new ArrayList<PeerStatus>(); //LAN peers	
-	public static ArrayList<PeerStatus> internetPresentations = new ArrayList<PeerStatus>(); //Internet peers
-	
+	public static String presenterName = "test"; // TODO this should be loaded from local config
+	public static String presenterPassword = "test1234"; // TODO this should be loaded from local config
+
+	public static String updateSource = ""; // This will be either UPDATE_SOURCE_LAN or UPDATE_SOURCE_INTERNET
+	public static ArrayList<PeerStatus> peerPresentations = new ArrayList<PeerStatus>(); // LAN peers
+	public static ArrayList<PeerStatus> internetPresentations = new ArrayList<PeerStatus>(); // Internet peers
+
 }

@@ -44,136 +44,137 @@ import com.nimpres.android.lan.UDPMessage;
 import com.nimpres.android.settings.NimpresSettings;
 import com.nimpres.android.web.APIContact;
 
-
 public class PeerStatus {
-	
+
 	/**
-	 * This method use the APIContact.listPresentations method to retrieve an XML list of all presentations
-	 * for a given user. It then parses this XML and creates a list of PeerStatus objects corresponding to the 
-	 * presentations of that user.
+	 * This method use the APIContact.listPresentations method to retrieve an XML list of all presentations for a given user. It then parses this XML and creates a list of PeerStatus objects corresponding to the presentations of that user.
+	 * 
 	 * @param userID
 	 * @param userPass
 	 * @param userSearch
 	 * @return
 	 */
-	public static ArrayList<PeerStatus> getInternetPresentations(String userID, String userPass, String userSearch){
+	public static ArrayList<PeerStatus> getInternetPresentations(String userID, String userPass, String userSearch) {
 		ArrayList<PeerStatus> internetPresentations = new ArrayList<PeerStatus>();
 		String xmlResponse = APIContact.listPresentations(userID, userPass, userSearch);
-		
-		if( ! xmlResponse.equals(NimpresSettings.API_RESPONSE_NEGATIVE)){
+
+		if (!xmlResponse.equals(NimpresSettings.API_RESPONSE_NEGATIVE)) {
 			String user = userSearch;
 			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 			try {
 				DocumentBuilder db = dbf.newDocumentBuilder();
-				ByteArrayInputStream is = new ByteArrayInputStream(xmlResponse.getBytes("UTF-8")); //Convert the xml string to an InputStream
-				Document doc = db.parse(is);	//Parse the new InputStream into a Document
+				ByteArrayInputStream is = new ByteArrayInputStream(xmlResponse.getBytes("UTF-8")); // Convert the xml string to an InputStream
+				Document doc = db.parse(is); // Parse the new InputStream into a Document
 				doc.getDocumentElement().normalize();
-				Element presentationsRootElement = (Element) doc.getElementsByTagName("presentations").item(0);	//Root element for all 'presentations'
-				
+				Element presentationsRootElement = (Element) doc.getElementsByTagName("presentations").item(0); // Root element for all 'presentations'
+
 				NodeList presentationElements = presentationsRootElement.getElementsByTagName("presentation");
-				
-				//Loop through all of the presentation elements
-				for(int i=0;i<presentationElements.getLength();i++){
-					Log.d("PeerStatus","parsing presentation #"+(i+1)+" from xml api response");
+
+				// Loop through all of the presentation elements
+				for (int i = 0; i < presentationElements.getLength(); i++) {
+					Log.d("PeerStatus", "parsing presentation #" + (i + 1) + " from xml api response");
 					Element thisPresentation = (Element) presentationElements.item(i);
 					String thisPresentationTitle = thisPresentation.getElementsByTagName("title").item(0).getTextContent();
 					int thisPresentationID = Integer.parseInt(thisPresentation.getElementsByTagName("id").item(0).getTextContent());
-					PeerStatus thisPeerStatus = new PeerStatus(thisPresentationTitle,user,thisPresentationID);
+					PeerStatus thisPeerStatus = new PeerStatus(thisPresentationTitle, user, thisPresentationID);
 					thisPeerStatus.setSource(NimpresSettings.UPDATE_SOURCE_INTERNET);
-					Log.d("PeerStatus","adding internet peer status object: "+thisPeerStatus);
+					Log.d("PeerStatus", "adding internet peer status object: " + thisPeerStatus);
 					internetPresentations.add(thisPeerStatus);
-				}				
-			} catch (Exception e) {
+				}
+			}
+			catch (Exception e) {
 				e.printStackTrace();
 			}
-		}else
-			return null;	//None found		
+		}
+		else
+			return null; // None found
 		return internetPresentations;
 	}
-	
+
 	/**
 	 * Returns the requested status if it exists based on the presentation ID
+	 * 
 	 * @param id
 	 * @return
 	 */
-	public static PeerStatus getLANPresentationByID(int id){
-		
-		for(int i=0;i<NimpresObjects.peerPresentations.size();i++){
+	public static PeerStatus getLANPresentationByID(int id) {
+
+		for (int i = 0; i < NimpresObjects.peerPresentations.size(); i++) {
 			PeerStatus thisStatus = NimpresObjects.peerPresentations.get(i);
-			if(thisStatus.presentationID == id){
-				Log.d("PeerStatus","found requested status for id:"+id);
+			if (thisStatus.presentationID == id) {
+				Log.d("PeerStatus", "found requested status for id:" + id);
 				return thisStatus;
 			}
 		}
-		
+
 		return null;
 	}
-	
-	
+
 	private InetAddress peerIP = null;
 	private String presentationName = "";
 	private String presenterName = "";
 	private int presentationID = 0;
 	private int slideNumber = 0;
-	private String source = ""; //internet or lan
+	private String source = ""; // internet or lan
 	private long advertisementTimestamp = 0;
-	
+
 	/**
 	 * Default empty constructor
 	 */
-	public PeerStatus(){}
-	
+	public PeerStatus() {
+	}
+
 	/**
 	 * Standard new PeerStatus with known values for LAN source
+	 * 
 	 * @param peerIP
 	 * @param presentationName
 	 * @param slideNumber
 	 * @param presenterName
 	 * @param presentationID
 	 */
-	public PeerStatus(InetAddress peerIP, String presentationName, int slideNumber, String presenterName, int presentationID){
+	public PeerStatus(InetAddress peerIP, String presentationName, int slideNumber, String presenterName, int presentationID) {
 		this.peerIP = peerIP;
 		this.presentationName = presentationName;
 		this.slideNumber = slideNumber;
 		this.presenterName = presenterName;
 		this.presentationID = presentationID;
 	}
-	
+
 	/**
 	 * Standard constructor for known values from Internet Source
+	 * 
 	 * @param presentationName
 	 * @param presenterName
 	 * @param presentationID
 	 */
-	public PeerStatus(String presentationName, String presenterName, int presentationID){
+	public PeerStatus(String presentationName, String presenterName, int presentationID) {
 		this.presentationName = presentationName;
 		this.presenterName = presenterName;
 		this.presentationID = presentationID;
 	}
-	
+
 	/**
 	 * Create new PeerStatus from a received UDPMessage
+	 * 
 	 * @param message
 	 */
-	public PeerStatus(UDPMessage message){
+	public PeerStatus(UDPMessage message) {
 		String dataStr = message.getDataAsString();
 		int seperatorLength = NimpresSettings.STATUS_SEPERATOR.length();
 		int firstSeperatorIndex = dataStr.indexOf(NimpresSettings.STATUS_SEPERATOR);
-		int secondSeperatorIndex = dataStr.indexOf(NimpresSettings.STATUS_SEPERATOR,firstSeperatorIndex+seperatorLength);
-		int thirdSeperatorIndex = dataStr.indexOf(NimpresSettings.STATUS_SEPERATOR,secondSeperatorIndex+seperatorLength);
-		//Log.d("PeerStatus","first_index:"+firstSeperatorIndex+", second_index:"+secondSeperatorIndex+", third_index:"+thirdSeperatorIndex);
+		int secondSeperatorIndex = dataStr.indexOf(NimpresSettings.STATUS_SEPERATOR, firstSeperatorIndex + seperatorLength);
+		int thirdSeperatorIndex = dataStr.indexOf(NimpresSettings.STATUS_SEPERATOR, secondSeperatorIndex + seperatorLength);
+		// Log.d("PeerStatus","first_index:"+firstSeperatorIndex+", second_index:"+secondSeperatorIndex+", third_index:"+thirdSeperatorIndex);
 		peerIP = message.getRemoteIP();
 		presentationName = dataStr.substring(0, firstSeperatorIndex);
-		slideNumber = Integer.parseInt(dataStr.substring(firstSeperatorIndex+seperatorLength,secondSeperatorIndex));
-		presenterName = dataStr.substring(secondSeperatorIndex+seperatorLength, thirdSeperatorIndex);
-		presentationID = Integer.parseInt(dataStr.substring(thirdSeperatorIndex+seperatorLength).trim()); //Need to trim off all of the trailing 0 bytes 
+		slideNumber = Integer.parseInt(dataStr.substring(firstSeperatorIndex + seperatorLength, secondSeperatorIndex));
+		presenterName = dataStr.substring(secondSeperatorIndex + seperatorLength, thirdSeperatorIndex);
+		presentationID = Integer.parseInt(dataStr.substring(thirdSeperatorIndex + seperatorLength).trim()); // Need to trim off all of the trailing 0 bytes
 	}
-	
-	public String getDataString(){
-		return presentationName + NimpresSettings.STATUS_SEPERATOR +
-		String.valueOf(slideNumber) + NimpresSettings.STATUS_SEPERATOR +
-		presenterName + NimpresSettings.STATUS_SEPERATOR +
-		String.valueOf(presentationID);
+
+	public String getDataString() {
+		return presentationName + NimpresSettings.STATUS_SEPERATOR + String.valueOf(slideNumber) + NimpresSettings.STATUS_SEPERATOR + presenterName + NimpresSettings.STATUS_SEPERATOR + String.valueOf(presentationID);
 	}
 
 	/**
@@ -219,53 +220,59 @@ public class PeerStatus {
 	}
 
 	/**
-	 * @param peerIP the peerIP to set
+	 * @param peerIP
+	 *            the peerIP to set
 	 */
 	public void setPeerIP(InetAddress peerIP) {
 		this.peerIP = peerIP;
 	}
 
 	/**
-	 * @param presentationID the presentationID to set
+	 * @param presentationID
+	 *            the presentationID to set
 	 */
 	public void setPresentationID(int presentationID) {
 		this.presentationID = presentationID;
 	}
 
 	/**
-	 * @param presentationName the presentationName to set
+	 * @param presentationName
+	 *            the presentationName to set
 	 */
 	public void setPresentationName(String presentationName) {
 		this.presentationName = presentationName;
 	}
 
 	/**
-	 * @param presenterName the presenterName to set
+	 * @param presenterName
+	 *            the presenterName to set
 	 */
 	public void setPresenterName(String presenterName) {
 		this.presenterName = presenterName;
 	}
 
 	/**
-	 * @param slideNumber the slideNumber to set
+	 * @param slideNumber
+	 *            the slideNumber to set
 	 */
 	public void setSlideNumber(int slideNumber) {
 		this.slideNumber = slideNumber;
 	}
 
 	/**
-	 * @param source the source to set
+	 * @param source
+	 *            the source to set
 	 */
 	public void setSource(String source) {
 		this.source = source;
 	}
-	
+
 	/**
 	 * 
 	 */
 	@Override
-	public String toString(){
-		return this.presentationName+", ID: "+this.presentationID+", Source: "+this.source;
+	public String toString() {
+		return this.presentationName + ", ID: " + this.presentationID + ", Source: " + this.source;
 	}
 
 	/**
@@ -276,10 +283,11 @@ public class PeerStatus {
 	}
 
 	/**
-	 * @param advertisementTimestamp the advertisementTimestamp to set
+	 * @param advertisementTimestamp
+	 *            the advertisementTimestamp to set
 	 */
 	public void setAdvertisementTimestamp(long advertisementTimestamp) {
 		this.advertisementTimestamp = advertisementTimestamp;
 	}
-	
+
 }

@@ -1,3 +1,29 @@
+/**
+ * Project:			Nimpres Android Client
+ * File name: 		
+ * Date modified:	2011-04-4
+ * Description:		
+ * 
+ * License:			Copyright (c) 2011 (Matthew Brooks, Jordan Emmons, William Kong)
+					
+					Permission is hereby granted, free of charge, to any person obtaining a copy
+					of this software and associated documentation files (the "Software"), to deal
+					in the Software without restriction, including without limitation the rights
+					to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+					copies of the Software, and to permit persons to whom the Software is
+					furnished to do so, subject to the following conditions:
+					
+					The above copyright notice and this permission notice shall be included in
+					all copies or substantial portions of the Software.
+					
+					THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+					IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+					FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+					AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+					LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+					OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+					THE SOFTWARE.
+ */
 package com.nimpres.android.ui;
 
 import android.app.Activity;
@@ -17,21 +43,21 @@ import com.nimpres.android.presentation.Presentation;
 import com.nimpres.android.web.APIContact;
 
 public class PresentationHost extends Activity {
-	
+
 	Menu controlMenu;
-	
+
 	private Presentation hostedPresentation;
 	private float initialX = 0;
-
 
 	private float initialY = 0;
 
 	private float deltaX = 0;
 
 	private float deltaY = 0;
-	
-	public void onConfigurationChanged(){
+
+	public void onConfigurationChanged() {
 	}
+
 	@Override
 	public void onCreate(Bundle created) {
 		super.onCreate(created);
@@ -41,6 +67,7 @@ public class PresentationHost extends Activity {
 		hostedPresentation = NimpresObjects.currentPresentation;
 		updateSlide();
 	}
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
@@ -54,16 +81,16 @@ public class PresentationHost extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle item selection
 		switch (item.getItemId()) {
-		case R.id.pvhmStats:
-			// TODO create a method to collect stats
-			return true;
-		case R.id.pvhmEnd:
-			// TODO perform some checks before ending presentation
-			Intent launchview = new Intent(this, HostEnd.class);
-			startActivity(launchview);
-			return true;
-		default:
-			return super.onOptionsItemSelected(item);
+			case R.id.pvhmStats:
+				// TODO create a method to collect stats
+				return true;
+			case R.id.pvhmEnd:
+				// TODO perform some checks before ending presentation
+				Intent launchview = new Intent(this, HostEnd.class);
+				startActivity(launchview);
+				return true;
+			default:
+				return super.onOptionsItemSelected(item);
 		}
 	}
 
@@ -79,11 +106,11 @@ public class PresentationHost extends Activity {
 				if (event.getAction() == MotionEvent.ACTION_DOWN) {
 					// reset deltaX and deltaY
 					deltaX = deltaY = 0;
-					
+
 					// get initial positions
 					initialX = event.getRawX();
 					initialY = event.getRawY();
-					
+
 				}
 
 				// when screen is released
@@ -91,12 +118,12 @@ public class PresentationHost extends Activity {
 					deltaX = event.getRawX() - initialX;
 					deltaY = event.getRawY() - initialY;
 
-					
-					if (deltaX < 0){
+					if (deltaX < 0) {
 						// Swiped left
 						hostedPresentation.nextSlide();
 						updateSlide();
-					}else if(deltaX > 0){
+					}
+					else if (deltaX > 0) {
 						// Swiped right
 						hostedPresentation.previousSlide();
 						updateSlide();
@@ -118,11 +145,8 @@ public class PresentationHost extends Activity {
 		TextView title = (TextView) findViewById(R.id.phvTitle);
 
 		title.setText(hostedPresentation.getTitle());
-		slide.setImageBitmap(BitmapFactory
-				.decodeFile(hostedPresentation.getPath()
-						+ hostedPresentation
-								.getCurrentSlideFile().getFileName()));
-		
+		slide.setImageBitmap(BitmapFactory.decodeFile(hostedPresentation.getPath() + hostedPresentation.getCurrentSlideFile().getFileName()));
+
 		APIContact.updateSlideNumber(NimpresObjects.presenterName, NimpresObjects.presenterPassword, hostedPresentation.getPresentationID(), "test", hostedPresentation.getCurrentSlide());
 	}
 }

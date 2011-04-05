@@ -59,21 +59,22 @@ public class PresentationView extends Activity {
 	private Runnable viewerUpdateTask = new Runnable() {
 		public void run() {
 			int slideNum = -1;
-			Log.d("PresentationView","Update Tick");
+			Log.d("PresentationView", "Update Tick");
 			if (!NimpresObjects.currentPresentation.isPaused()) {
 				if (Utilities.isOnline(NimpresObjects.ctx)) {
-					//TODO we should do something here to make resuming while on LAN quicker, currently we have to wait for a new status message
-					if(NimpresObjects.updateSource.equals(NimpresSettings.UPDATE_SOURCE_INTERNET))
-						slideNum = APIContact.getSlideNumber(viewedPresentationID, viewedPresentationPassword);						
-					else if(NimpresObjects.updateSource.equals(NimpresSettings.UPDATE_SOURCE_LAN))
+					// TODO we should do something here to make resuming while on LAN quicker, currently we have to wait for a new status message
+					if (NimpresObjects.updateSource.equals(NimpresSettings.UPDATE_SOURCE_INTERNET))
+						slideNum = APIContact.getSlideNumber(viewedPresentationID, viewedPresentationPassword);
+					else if (NimpresObjects.updateSource.equals(NimpresSettings.UPDATE_SOURCE_LAN))
 						slideNum = PeerStatus.getLANPresentationByID(viewedPresentationID).getSlideNumber();
-					else{
+					else {
 						slideNum = 0;
-						Log.d("NimpresClient","could not determine update source for presentation");
+						Log.d("NimpresClient", "could not determine update source for presentation");
 					}
-				}else
-					Log.d("NimpresClient","internet connection not present, api contact cancelled");
-				
+				}
+				else
+					Log.d("NimpresClient", "internet connection not present, api contact cancelled");
+
 				// Make sure slide was not negative (error code -1)
 				if (slideNum >= 0)
 					NimpresObjects.currentPresentation.setCurrentSlide(slideNum); // Update slide number of presentation
@@ -84,21 +85,22 @@ public class PresentationView extends Activity {
 	};
 
 	public void leave() {
-		Intent launchview = new Intent(NimpresObjects.ctx,NimpresClient.class);
+		Intent launchview = new Intent(NimpresObjects.ctx, NimpresClient.class);
 		startActivity(launchview);
 	}
 
 	/**
 	 * 
 	 */
-	public void onConfigurationChanged(){}
+	public void onConfigurationChanged() {
+	}
 
 	@Override
 	public void onCreate(Bundle created) {
 		super.onCreate(created);
 		setContentView(R.layout.presentation_viewer);
 		viewedPresentationID = NimpresObjects.presentationID;
-		viewedPresentationPassword = NimpresObjects.presentationPassword;		
+		viewedPresentationPassword = NimpresObjects.presentationPassword;
 		if (NimpresObjects.currentPresentation.getNumSlides() > 0) {
 			mHandler.removeCallbacks(viewerUpdateTask);
 			mHandler.postDelayed(viewerUpdateTask, 1);
@@ -119,38 +121,37 @@ public class PresentationView extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle item selection
 		switch (item.getItemId()) {
-		case R.id.pvmBack:
-			if (NimpresObjects.currentPresentation.isPaused()) {
-				NimpresObjects.currentPresentation.previousSlide();
-				updateSlide();
-			}
-			return true;
-		case R.id.pvmNext:
-			if (NimpresObjects.currentPresentation.isPaused()) {
-				NimpresObjects.currentPresentation.nextSlide();
-				updateSlide();
-			}
-			return true;
-		case R.id.pvmLeave:
-			NimpresObjects.currentPresentation.setPaused(true);
-			// setContentView(R.layout.end_presentation);
-			leave();
-			return true;
-		case R.id.pvmPause:
-			pauseButton();
-			return true;
-			/*
-			 * case R.id.pvmResume: resumeUI();
-			 * NimpresObjects.currentPresentation.setPaused(false); return true;
-			 */
-		case R.id.pvmJump:
-			if (NimpresObjects.currentPresentation.isPaused()) {
+			case R.id.pvmBack:
+				if (NimpresObjects.currentPresentation.isPaused()) {
+					NimpresObjects.currentPresentation.previousSlide();
+					updateSlide();
+				}
+				return true;
+			case R.id.pvmNext:
+				if (NimpresObjects.currentPresentation.isPaused()) {
+					NimpresObjects.currentPresentation.nextSlide();
+					updateSlide();
+				}
+				return true;
+			case R.id.pvmLeave:
 				NimpresObjects.currentPresentation.setPaused(true);
-				// TODO prompt for slide number
-			}
-			return true;
-		default:
-			return super.onOptionsItemSelected(item);
+				// setContentView(R.layout.end_presentation);
+				leave();
+				return true;
+			case R.id.pvmPause:
+				pauseButton();
+				return true;
+				/*
+				 * case R.id.pvmResume: resumeUI(); NimpresObjects.currentPresentation.setPaused(false); return true;
+				 */
+			case R.id.pvmJump:
+				if (NimpresObjects.currentPresentation.isPaused()) {
+					NimpresObjects.currentPresentation.setPaused(true);
+					// TODO prompt for slide number
+				}
+				return true;
+			default:
+				return super.onOptionsItemSelected(item);
 		}
 	}
 
@@ -159,7 +160,8 @@ public class PresentationView extends Activity {
 		if (isPaused) {
 			NimpresObjects.currentPresentation.setPaused(false);
 			resumeUI();
-		} else {
+		}
+		else {
 			NimpresObjects.currentPresentation.setPaused(true);
 			pauseUI();
 		}
@@ -189,13 +191,8 @@ public class PresentationView extends Activity {
 		TextView slideTitle = (TextView) findViewById(R.id.pvSlideTitle);
 		TextView slideNotes = (TextView) findViewById(R.id.pvNotes);
 		title.setText(NimpresObjects.currentPresentation.getTitle());
-		slideTitle.setText(NimpresObjects.currentPresentation
-				.getCurrentSlideFile().getSlideTitle());
-		slideNotes.setText(NimpresObjects.currentPresentation
-				.getCurrentSlideFile().getSlideComments());
-		slide.setImageBitmap(BitmapFactory
-				.decodeFile(NimpresObjects.currentPresentation.getPath()
-						+ NimpresObjects.currentPresentation
-								.getCurrentSlideFile().getFileName()));
+		slideTitle.setText(NimpresObjects.currentPresentation.getCurrentSlideFile().getSlideTitle());
+		slideNotes.setText(NimpresObjects.currentPresentation.getCurrentSlideFile().getSlideComments());
+		slide.setImageBitmap(BitmapFactory.decodeFile(NimpresObjects.currentPresentation.getPath() + NimpresObjects.currentPresentation.getCurrentSlideFile().getFileName()));
 	}
 }
