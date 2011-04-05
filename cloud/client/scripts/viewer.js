@@ -48,7 +48,7 @@ function validatePass(pid, title){
 			},
 		  success: function(data){
 			  if ((data)== 'OK')
-				  outputText += "<p><a href='http://api.nimpres.com/testing/pres_display.php?pres_id="+pid+"&title="+title+"&pres_password="+pres_pass+"'><strong>Your Presentation is ready!</a></strong></p><br/>";
+				  outputText += "<p><a href='pres_display.php?pres_id="+pid+"&title="+title+"&pres_password="+pres_pass+"'><strong>Your Presentation is ready!</a></strong></p><br/>";
 			  else
 				  outputText += "<p><strong>Incorrect Password...</strong></p><br/>";
 			  
@@ -85,7 +85,7 @@ function ajaxListPres(host){
 					updated_time = $(this).find('updated_time').text();
 					status = $(this).find('status').text();
 					over = $(this).find('over').text();
-					outputText += "<p><a href='http://api.nimpres.com/testing/pres_auth.php?pres_id="+pid+"&title="+title+"'><strong>"+title+"</a></strong></p><br/>";
+					outputText += "<p><a href='pres_auth.php?pres_id="+pid+"&title="+title+"'><strong>"+title+"</a></strong></p><br/>";
 				});
 				$("#loading").hide();
 				$("#output_list").show();
