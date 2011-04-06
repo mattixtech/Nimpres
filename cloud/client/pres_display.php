@@ -45,6 +45,7 @@ body {
 
 $(document).ready(function()
 {
+	getSlideNum(<?php echo $pid;?>,'<?php echo $pres_pass;?>');
 	var t=setInterval("getSlideNum(<?php echo $pid;?>,'<?php echo $pres_pass;?>')",1500);
 }
 );
@@ -58,13 +59,24 @@ $(document).ready(function()
 	<div id="pres_title">
 	<h2><?php echo $title; ?></h2>
 	</div>
+	
+<div align="center">
+	<input type="button" onclick="javascript:previous()" value="Previous" id="previousButton" disabled="disabled"/>
+	<input type="button" onclick="javascript:pause()" value="Pause" id="pauseButton"/>
+	<input type="button" onclick="javascript:next()" value="Next" id="nextButton" disabled="disabled"/>
+	<br/>
+</div>
 
 <img src="" id="slide" />
 <img src="" id="preload_1" style="display:none;"/>
 <img src="" id="preload_2" style="display:none;"/>
 <img src="" id="preload_3" style="display:none;"/>
 <img src="" id="preload_4" style="display:none;"/>
-    
+
+<input id="isPaused" type="hidden" value="false"/>  
+<input id="id" type="hidden" value="<?php echo $pid;?>"/>  
+<input id="password" type="hidden" value="<?php echo $pres_pass;?>"/>    
+<input id="slideNumber" type="hidden" value="-1"/>  
 </div>
 </body>
 
