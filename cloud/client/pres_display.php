@@ -45,7 +45,7 @@ body {
 
 $(document).ready(function()
 {
-	var t=setInterval("getSlideNum(<?php echo $pid;?>,'<?php echo $pres_pass;?>')",500);
+	var t=setInterval("getSlideNum(<?php echo $pid;?>,'<?php echo $pres_pass;?>')",1500);
 }
 );
 
