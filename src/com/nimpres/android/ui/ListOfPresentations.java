@@ -107,6 +107,7 @@ public class ListOfPresentations extends ListActivity {
 
 		selected.setIcon(R.drawable.icon);
 		selected.setTitle("[" + peerStatus.getPresentationName() + "]");
+		NimpresObjects.presentationTitle = peerStatus.getPresentationName();
 		selected.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 
 			@Override

@@ -40,6 +40,7 @@ import android.content.Context;
 import android.os.Environment;
 import android.util.Log;
 
+import com.nimpres.android.NimpresObjects;
 import com.nimpres.android.lan.TCPMessage;
 import com.nimpres.android.presentation.Presentation;
 import com.nimpres.android.settings.NimpresSettings;
@@ -290,7 +291,8 @@ public class DPS {
 			if (remoteType.equalsIgnoreCase(NimpresSettings.UPDATE_SOURCE_INTERNET)) {
 				this.remoteType = NimpresSettings.UPDATE_SOURCE_INTERNET;
 				try {
-					dpsPath = downloadFromAPI(dpsID, dpsPassword, NimpresSettings.API_DOWNLOAD_PREFIX + desiredFolderName, desiredFolderName, ctx);
+					//dpsPath = downloadFromAPI(dpsID, dpsPassword, NimpresSettings.API_DOWNLOAD_PREFIX + desiredFolderName, desiredFolderName, ctx);
+					dpsPath = downloadFromAPI(dpsID, dpsPassword, NimpresObjects.presentationTitle + ".dps", desiredFolderName, ctx);
 				}
 				catch (Exception e) {
 					Log.d("DPS", "Error: " + e.getMessage());
