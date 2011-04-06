@@ -49,7 +49,7 @@ public class NimpresObjects {
 	public static String presentationTitle = "";
 	public static int presentationID = 0;
 	public static String presentationPassword = "";
-
+	
 	public static boolean hostOnInternet = false;
 
 	public static boolean currentlyViewing = false;

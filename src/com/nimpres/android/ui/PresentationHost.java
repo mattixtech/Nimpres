@@ -147,6 +147,6 @@ public class PresentationHost extends Activity {
 		title.setText(hostedPresentation.getTitle());
 		slide.setImageBitmap(BitmapFactory.decodeFile(hostedPresentation.getPath() + hostedPresentation.getCurrentSlideFile().getFileName()));
 
-		APIContact.updateSlideNumber(NimpresObjects.presenterName, NimpresObjects.presenterPassword, hostedPresentation.getPresentationID(), "test", hostedPresentation.getCurrentSlide());
+		APIContact.updateSlideNumber(NimpresObjects.presenterName, NimpresObjects.presenterPassword, hostedPresentation.getPresentationID(), NimpresObjects.presentationPassword, hostedPresentation.getCurrentSlide());
 	}
 }

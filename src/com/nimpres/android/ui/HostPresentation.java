@@ -72,7 +72,16 @@ public class HostPresentation extends Activity {
 
 			String newTitle = NimpresObjects.presentationTitle;
 			String newPassword = NimpresObjects.presentationPassword;
-
+			
+			//Encoding the password for sending
+			try {
+				NimpresObjects.presentationPassword = URLEncoder.encode(NimpresObjects.presentationPassword, "UTF-8");
+			}
+			catch (UnsupportedEncodingException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			
 			int presID = 0;
 			if (NimpresObjects.hostOnInternet) {
 				try {
